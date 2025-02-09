@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VGAMES</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #cc5500;
+        }
+        .info {
+            margin-top: 20px;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="vgames1.github.io/logo.png" alt="VGAMES Logo" class="logo">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+        <p class="info">If you want an account, send a message to <a href="mailto:vuyaniphila86@gmail.com">vuyaniphila86@gmail.com</a></p>
+    </div>
+
+    <script>
+        const users = {
+            "SIHLE23@vgames1.github.io": { password: "iamloco223", id: "00017234" },
+            "dogman@vgames1.github.io": { password: "password1", id: "00034215" },
+            "sabrodeenzo@vgames1.github.io": { password: "password2", id: "00015678" },
+            "shadowpaw@vgames1.github.io": { password: "password3", id: "00027890" },
+            "zenxor@vgames1.github.io": { password: "password4", id: "00038901" },
+            "cyberpanther@vgames1.github.io": { password: "password5", id: "00049012" },
+            "ravenstorm@vgames1.github.io": { password: "password6", id: "00059123" },
+            "zorath@vgames1.github.io": { password: "password7", id: "00067234" },
+            "flamestryker@vgames1.github.io": { password: "password8", id: "00078345" },
+            "nebulawolf@vgames1.github.io": { password: "password9", id: "00089456" },
+            "stargazer@vgames1.github.io": { password: "password10", id: "00090567" }
+        };
+
+        function login() {
+            try {
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                var currentTime = new Date().toLocaleTimeString();
+
+                if (users[email] && password === users[email].password) {
+                    alert("Login successful! Redirecting to VGAMES...");
+                    window.location.href = `https://vgames1.github.io/index.html?name=${email.split('@')[0]}-time-${currentTime}-info?id=${users[email].id}`;
+                    if (window.data && typeof window.data.gtmOnSuccess === 'function') {
+                        window.data.gtmOnSuccess();
+                    }
+                } else {
+                    alert("Invalid credentials. Please try again or request an account.");
+                    if (window.data && typeof window.data.gtmOnFailure === 'function') {
+                        window.data.gtmOnFailure();
+                    }
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                if (window.data && typeof window.data.gtmOnFailure === 'function') {
+                    window.data.gtmOnFailure();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
