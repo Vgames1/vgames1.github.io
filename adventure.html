@@ -1,3 +1,72 @@
+<div id="profileWidget">
+    <button id="widgetBtn">🔍 Check Profile</button>
+    <div id="profilePopup">
+        <span id="closePopup">&times;</span>
+        <h3>User Profile</h3>
+        <img id="userProfilePic" src="default-avatar.png" alt="Profile Picture">
+        <p id="userName">Name: -</p>
+        <p id="userUsername">Username: -</p>
+        <p id="userAge">Age: -</p>
+        <p id="userGender">Gender: -</p>
+        <a id="signInLink" href="vgames1.github.io/login" style="display: none;">Sign In</a>
+    </div>
+</div>
+
+<style>
+    #profileWidget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    #widgetBtn {
+        background: #0078ff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    #profilePopup {
+        display: none;
+        position: absolute;
+        bottom: 50px;
+        right: 0;
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        width: 200px;
+    }
+
+    #profilePopup img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: block;
+        margin: auto;
+    }
+
+    #closePopup {
+        float: right;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    #signInLink {
+        display: block;
+        text-align: center;
+        background: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 10px;
+        text-decoration: none;
+    }
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
