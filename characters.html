@@ -15,14 +15,17 @@
             color: #e0e0e0;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            align-items: flex-start; /* Changed to flex-start for scrollable content */
+            min-height: 100vh;
+            overflow-y: auto; /* Enable vertical scrolling */
         }
 
         .container {
             text-align: center;
             animation: fadeIn 2s ease-in-out;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px; /* Limit maximum width for larger screens */
         }
 
         .logo {
@@ -53,7 +56,8 @@
             padding: 20px;
             box-shadow: 0 0 20px rgba(255, 111, 97, 0.7);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 300px;
+            width: 100%;
+            max-width: 300px; /* Limit width for better responsiveness */
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -97,6 +101,25 @@
         @keyframes glow {
             from { text-shadow: 0 0 10px #ff6f61, 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61; }
             to { text-shadow: 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61, 0 0 50px #ff6f61; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px; /* Smaller font size for mobile */
+            }
+
+            .character {
+                max-width: 100%; /* Full width on small screens */
+            }
+
+            .character-image {
+                width: 120px; /* Smaller image for mobile */
+            }
+
+            .character-info {
+                font-size: 14px; /* Smaller font size for mobile */
+            }
         }
     </style>
 </head>
