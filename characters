@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters - VGames</title>
+    <link rel="icon" href="vgameswhite.png" type="image/png">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+            cursor: pointer;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #ff6f61, 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61;
+            animation: glow 2s infinite alternate;
+            margin-bottom: 40px;
+        }
+
+        .characters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .character {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(255, 111, 97, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 300px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .character:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 111, 97, 1);
+        }
+
+        .character-image {
+            width: 150px;
+            border-radius: 50%;
+            border: 5px solid #ff6f61;
+            box-shadow: 0 0 20px rgba(255, 111, 97, 0.7);
+            margin-bottom: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .character-info {
+            font-size: 16px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+
+        .character-info h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .character-info p {
+            margin: 5px 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #ff6f61, 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61; }
+            to { text-shadow: 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61, 0 0 50px #ff6f61; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://vgames1.github.io" target="_blank">
+            <img src="vgameswhite.png" alt="VGames Logo" class="logo">
+        </a>
+        <h1>Characters</h1>
+        <div class="characters">
+            <!-- Pedro -->
+            <div class="character" id="pedro">
+                <img src="Pedro Webster.webp" alt="Pedro Webster" class="character-image">
+                <div class="character-info">
+                    <h2>Pedro Webster</h2>
+                    <p><strong>Age:</strong> 17</p>
+                    <p><strong>Parents:</strong> Maria and Carlos Webster</p>
+                    <p><strong>School:</strong> Springfield High</p>
+                    <p><strong>Town:</strong> Springfield</p>
+                    <p><strong>Country:</strong> USA</p>
+                    <p><strong>Languages:</strong> English, Spanish</p>
+                    <p><strong>Main Objective:</strong> Find his missing brother, Zavier, while navigating dangerous territories.</p>
+                </div>
+            </div>
+            <!-- Raúl -->
+            <div class="character" id="raul">
+                <img src="Raúl Andujar.webp" alt="Raúl Andujar" class="character-image">
+                <div class="character-info">
+                    <h2>Raúl Andujar</h2>
+                    <p><strong>Age:</strong> 16</p>
+                    <p><strong>Parents:</strong> Sofia and Juan Andujar</p>
+                    <p><strong>School:</strong> Oakwood Academy</p>
+                    <p><strong>Town:</strong> Oakwood</p>
+                    <p><strong>Country:</strong> Spain</p>
+                    <p><strong>Languages:</strong> Spanish, English</p>
+                    <p><strong>Main Objective:</strong> Become the top student in his class while dealing with bullying and academic pressure.</p>
+                </div>
+            </div>
+            <!-- Zoey -->
+            <div class="character" id="zoey">
+                <img src="Zoey Vandall.webp" alt="Zoey Vandall" class="character-image">
+                <div class="character-info">
+                    <h2>Zoey Vandall</h2>
+                    <p><strong>Age:</strong> 18</p>
+                    <p><strong>Parents:</strong> Emily and James Vandall</p>
+                    <p><strong>School:</strong> Crestwood High</p>
+                    <p><strong>Town:</strong> Crestwood</p>
+                    <p><strong>Country:</strong> Canada</p>
+                    <p><strong>Languages:</strong> English, French</p>
+                    <p><strong>Main Objective:</strong> Uncover the truth behind her family's mysterious past while balancing school life.</p>
+                </div>
+            </div>
+            <!-- Gina -->
+            <div class="character" id="gina">
+                <img src="Gina Caldwell.webp" alt="Gina Caldwell" class="character-image">
+                <div class="character-info">
+                    <h2>Gina Caldwell</h2>
+                    <p><strong>Age:</strong> 17</p>
+                    <p><strong>Parents:</strong> Linda and Robert Caldwell</p>
+                    <p><strong>School:</strong> Brookside High</p>
+                    <p><strong>Town:</strong> Brookside</p>
+                    <p><strong>Country:</strong> Australia</p>
+                    <p><strong>Languages:</strong> English, Italian</p>
+                    <p><strong>Main Objective:</strong> Overcome personal challenges and prove herself as a leader in her school.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Make character images move unless touched
+        const characters = document.querySelectorAll(".character");
+
+        characters.forEach(character => {
+            const image = character.querySelector(".character-image");
+
+            let isMoving = true;
+            let x = 0;
+            let y = 0;
+            let dx = 2;
+            let dy = 2;
+
+            function moveImage() {
+                if (isMoving) {
+                    x += dx;
+                    y += dy;
+
+                    // Bounce off the edges
+                    if (x + image.width > character.clientWidth || x < 0) {
+                        dx = -dx;
+                    }
+                    if (y + image.height > character.clientHeight || y < 0) {
+                        dy = -dy;
+                    }
+
+                    image.style.transform = `translate(${x}px, ${y}px)`;
+                    requestAnimationFrame(moveImage);
+                }
+            }
+
+            // Start moving
+            moveImage();
+
+            // Stop moving when touched
+            character.addEventListener("mouseenter", () => {
+                isMoving = false;
+                image.style.transform = "translate(0, 0)";
+            });
+
+            // Resume moving when not touched
+            character.addEventListener("mouseleave", () => {
+                isMoving = true;
+                moveImage();
+            });
+        });
+    </script>
+</body>
+</html>
