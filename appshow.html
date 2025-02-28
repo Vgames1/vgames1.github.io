@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X and O Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #container {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        #game-container {
+            display: none;
+        }
+
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px auto;
+        }
+
+        .cell {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        #download-message {
+            display: none;
+            text-align: center;
+        }
+
+        #update-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #update-btn:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img src="https://vgames1.github.io/vgameswhite.png" alt="VGames Logo" id="logo">
+        <div id="game-container">
+            <h1>X and O Game</h1>
+            <div id="game-board"></div>
+            <button id="update-btn">Update</button>
+        </div>
+        <div id="download-message">
+            <p>Download the app at <a href="https://vgames1.github.io/apps#currentversion">https://vgames1.github.io/apps#currentversion</a></p>
+            <p>Or play games at <a href="https://vgames1.github.io">https://vgames1.github.io</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Check URL for valid ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        const allowedIds = ["30215-v(001)", "21836-v(002)"];
+
+        const gameContainer = document.getElementById('game-container');
+        const downloadMessage = document.getElementById('download-message');
+        const gameBoard = document.getElementById('game-board');
+        const updateBtn = document.getElementById('update-btn');
+
+        if (allowedIds.includes(id)) {
+            // Show game if ID is valid
+            gameContainer.style.display = 'block';
+            initializeGame();
+        } else {
+            // Show download message if URL is clean
+            downloadMessage.style.display = 'block';
+        }
+
+        // Initialize the game
+        function initializeGame() {
+            let currentPlayer = 'X';
+            let board = Array(9).fill(null);
+
+            // Create the game board
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.addEventListener('click', () => handleCellClick(i, cell));
+                gameBoard.appendChild(cell);
+            }
+
+            // Handle cell click
+            function handleCellClick(index, cell) {
+                if (board[index] || checkWinner(board)) return;
+                board[index] = currentPlayer;
+                cell.textContent = currentPlayer;
+                if (checkWinner(board)) {
+                    alert(`${currentPlayer} wins!`);
+                    resetGame();
+                } else if (board.every(cell => cell)) {
+                    alert("It's a draw!");
+                    resetGame();
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+            }
+
+            // Check for a winner
+            function checkWinner(board) {
+                const winningCombinations = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6] // Diagonals
+                ];
+                for (const combo of winningCombinations) {
+                    const [a, b, c] = combo;
+                    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            // Reset the game
+            function resetGame() {
+                board = Array(9).fill(null);
+                gameBoard.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+                currentPlayer = 'X';
+            }
+        }
+
+        // Update button functionality
+        updateBtn.addEventListener('click', () => {
+            localStorage.setItem('updateUrl', 'https://vgames1.github.io/update');
+            window.location.href = 'https://vgames1.github.io/update';
+        });
+    </script>
+</body>
+</html>
