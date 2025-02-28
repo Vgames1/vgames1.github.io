@@ -47,7 +47,7 @@
             font-size: 20px;
             color: #ffffff;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .characters {
@@ -96,7 +96,7 @@
             margin-bottom: 10px;
         }
 
-        .home-button {
+        .home-button, .feedback-button {
             background: #ff6f61;
             color: white;
             border: none;
@@ -107,9 +107,10 @@
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            margin: 10px;
         }
 
-        .home-button:hover {
+        .home-button:hover, .feedback-button:hover {
             background: #ff3b2f;
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 111, 97, 0.7);
@@ -168,7 +169,9 @@
             <img src="vgameswhite.png" alt="VGames Logo" class="logo">
         </a>
         <h1>404 - Page Not Found</h1>
-        <p>Oops! The page you're looking for doesn't exist. Here are some characters you might be interested in:</p>
+        <p>The page <strong id="page-name">[name of the page]</strong> could not be found.</p>
+        <p>If you're experiencing issues, please send feedback to VILAKAZI STUDIO.</p>
+        <button class="feedback-button" onclick="sendFeedback()">Send Feedback</button>
         <div class="characters">
             <!-- Pedro -->
             <div class="character">
@@ -205,5 +208,19 @@
         </div>
         <a href="https://vgames1.github.io" class="home-button">Go Back to VGames</a>
     </div>
+
+    <script>
+        // Dynamically display the page name
+        const pageName = window.location.pathname.split('/').pop() || '[name of the page]';
+        document.getElementById('page-name').textContent = pageName;
+
+        // Function to send feedback
+        function sendFeedback() {
+            const email = 'vilakazigames@gmail.com';
+            const subject = 'Feedback on VGames Page';
+            const body = `Hi VILAKAZI STUDIO,\n\nI encountered an issue on the page: ${window.location.href}.\n\n[Describe your issue here]`;
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+    </script>
 </body>
 </html>
