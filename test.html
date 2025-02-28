@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML to File - VGames</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 800px;
+            height: 300px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            resize: none;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 800px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff6f61;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .custom-alert.show {
+            display: block;
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- VGames Logo -->
+    <img src="https://vgames1.github.io/vgameswhite.png" alt="VGames Logo" class="logo">
+
+    <h1>HTML to File Converter</h1>
+
+    <!-- HTML Code Input -->
+    <textarea id="html-code" placeholder="Enter your HTML code here..."></textarea>
+
+    <!-- File Name Input -->
+    <input type="text" id="file-name" placeholder="Enter file name (e.g., mypage.html)" value="file.html">
+
+    <!-- Download Button -->
+    <button onclick="downloadHtmlFile()">Download as HTML File</button>
+
+    <!-- Custom Alert -->
+    <div id="custom-alert" class="custom-alert"></div>
+
+    <script>
+        function downloadHtmlFile() {
+            const htmlCode = document.getElementById('html-code').value;
+            const fileNameInput = document.getElementById('file-name').value.trim();
+            const fileName = fileNameInput || 'file.html'; // Default to 'file.html' if empty
+
+            if (!htmlCode.trim()) {
+                showCustomAlert("Please enter some HTML code!");
+                return;
+            }
+
+            // Create a Blob with the HTML content
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+
+            // Create a download link
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName; // Use the custom file name
+            link.click();
+
+            // Clean up
+            URL.revokeObjectURL(link.href);
+
+            // Show success message
+            showCustomAlert(`File "${fileName}" downloaded successfully!`);
+        }
+
+        function showCustomAlert(message) {
+            const alertBox = document.getElementById('custom-alert');
+            alertBox.textContent = message;
+            alertBox.classList.add('show');
+
+            // Hide the alert after 3 seconds
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
