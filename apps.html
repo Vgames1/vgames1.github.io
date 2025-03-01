@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VGAMES Apps</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+            padding: 20px;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .app {
+            width: 80%;
+            margin: 10px;
+            padding: 20px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .app img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+        .app button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .app button:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+        .help-section {
+            margin-top: 20px;
+            text-align: left;
+            max-width: 600px;
+        }
+        .help-section h3 {
+            color: #007BFF;
+        }
+        .help-section img {
+            width: 100%;
+            max-width: 300px;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+        }
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .custom-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .custom-alert img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .custom-alert button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <img src="https://vgames1.github.io/vgameswhite.png" alt="VGAMES Logo" class="logo" onclick="window.location.href='https://vgames1.github.io'">
+
+        <!-- App 1: VSTUDIO GAMES Version 1 -->
+        <div class="app">
+            <img src="https://vgames1.github.io/vgamesblack.png" alt="VSTUDIO GAMES Icon">
+            <h2>VSTUDIO GAMES Version 1</h2>
+            <p>Includes a classic Tic Tac Toe game.</p>
+            <button onclick="window.location.href='https://files.appsgeyser.com/VSTUDIO%20GAME_18625671.apk'">Download</button>
+        </div>
+
+        <!-- App 2: Not Available -->
+        <div class="app">
+            <img src="https://vgames1.github.io/vgameswhite.png" alt="App 2 Icon">
+            <h2>App 2</h2>
+            <p>Coming soon...</p>
+            <button disabled>Not Available</button>
+        </div>
+
+        <!-- App 3: Not Available -->
+        <div class="app">
+            <img src="https://vgames1.github.io/vgameswhite.png" alt="App 3 Icon">
+            <h2>App 3</h2>
+            <p>Coming soon...</p>
+            <button disabled>Not Available</button>
+        </div>
+
+        <!-- App 4: Not Available -->
+        <div class="app">
+            <img src="https://vgames1.github.io/vgameswhite.png" alt="App 4 Icon">
+            <h2>App 4</h2>
+            <p>Coming soon...</p>
+            <button disabled>Not Available</button>
+        </div>
+
+        <!-- App 5: Not Available -->
+        <div class="app">
+            <img src="https://vgames1.github.io/vgameswhite.png" alt="App 5 Icon">
+            <h2>App 5</h2>
+            <p>Coming soon...</p>
+            <button disabled>Not Available</button>
+        </div>
+
+        <!-- Help Section -->
+        <div class="help-section">
+            <h3>How to Play Tic Tac Toe</h3>
+            <p>Tic Tac Toe is a two-player game played on a 3x3 grid. Players take turns marking a space in the grid, one using <strong>X</strong> and the other using <strong>O</strong>. The goal is to be the first to get three of your marks in a row (horizontally, vertically, or diagonally).</p>
+            <h4>Example of a Winning Scenario:</h4>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Tic_tac_toe.svg/200px-Tic_tac_toe.svg.png" alt="Tic Tac Toe Winning Example">
+            <p>In the example above, <strong>X</strong> has won by placing three marks diagonally.</p>
+            <h4>Steps to Play:</h4>
+            <ol>
+                <li>Player 1 (X) and Player 2 (O) take turns.</li>
+                <li>Click on an empty cell to place your mark.</li>
+                <li>The first player to get three of their marks in a row wins.</li>
+                <li>If all cells are filled without a winner, the game is a draw.</li>
+            </ol>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            By using our services, you agree to our
+            <a href="https://vgames1.github.io/t'c" target="_blank">Terms & Conditions</a>,
+            <a href="https://vgames1.github.io/pp" target="_blank">Privacy Policy</a>, and
+            <a href="https://vgames1.github.io/cookiep" target="_blank">Cookie Policy</a>.
+        </div>
+    </div>
+
+    <!-- Custom Alert for Current Version -->
+    <div class="custom-alert" id="currentVersionAlert">
+        <img src="https://vgames1.github.io/vgameswhite.png" alt="VGAMES Logo">
+        <p>Current Version: <strong>VSTUDIO GAMES Version 1</strong></p>
+        <button onclick="closeCustomAlert()">Close</button>
+    </div>
+
+    <script>
+        // Show Current Version Popup
+        if (window.location.hash === "#currentversion") {
+            document.getElementById("currentVersionAlert").style.display = "block";
+        }
+
+        // Close Custom Alert
+        function closeCustomAlert() {
+            document.getElementById("currentVersionAlert").style.display = "none";
+        }
+    </script>
+</body>
+</html>
