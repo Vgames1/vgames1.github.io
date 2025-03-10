@@ -242,6 +242,7 @@
         mediaPlayer.src = fileURL;
         mediaPlayer.load();
         showAlert('File loaded successfully!', () => mediaPlayer.play());
+        updateMediaSession(file.name);
       }
     });
 
@@ -266,6 +267,32 @@
     mediaPlayer.addEventListener('pause', () => {
       audioVisualizer.style.display = 'none';
     });
+
+    // Media Session API
+    const updateMediaSession = (title) => {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: title || 'VGames Player',
+          artist: 'Vilakazi V',
+          artwork: [
+            { src: 'vgamesblack.png', sizes: '96x96', type: 'image/png' },
+            { src: 'vgameswhite.png', sizes: '96x96', type: 'image/png' },
+          ],
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => mediaPlayer.play());
+        navigator.mediaSession.setActionHandler('pause', () => mediaPlayer.pause());
+        navigator.mediaSession.setActionHandler('seekbackward', () => {
+          mediaPlayer.currentTime = Math.max(0, mediaPlayer.currentTime - 10);
+        });
+        navigator.mediaSession.setActionHandler('seekforward', () => {
+          mediaPlayer.currentTime = Math.min(mediaPlayer.duration, mediaPlayer.currentTime + 10);
+        });
+      }
+    };
+
+    // Initialize Media Session
+    updateMediaSession();
   </script>
 </body>
 </html>
