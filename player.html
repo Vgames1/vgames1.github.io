@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Custom Music Player</title>
+  <title>Custom Music/Video Player</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,19 +23,33 @@
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    video {
+    .media-wrapper {
       width: 100%;
-      display: block;
+      position: relative;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      background: black;
+    }
+    #mediaPlayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain; /* Maintain aspect ratio */
     }
     .controls {
       padding: 10px;
+      width: 100%;
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
     }
-    .controls button, .controls select {
+    .controls button, .controls select, .controls input {
       padding: 8px 12px;
       border: none;
       border-radius: 5px;
@@ -43,7 +57,7 @@
       color: white;
       cursor: pointer;
     }
-    .controls button:hover, .controls select:hover {
+    .controls button:hover, .controls select:hover, .controls input:hover {
       background: #777;
     }
     .quality-select {
@@ -78,17 +92,23 @@
     .share-link button:hover {
       background: #777;
     }
+    .file-input {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="player-container">
-    <video id="mediaPlayer" controlsList="nodownload" controls>
-      <source id="videoSource" src="F__k Love.mp4" type="video/mp4">
-      <source id="audioSource" src="F__k Love.mp3" type="audio/mp3">
-      Your browser does not support the video/audio tag.
-    </video>
+    <div class="media-wrapper">
+      <video id="mediaPlayer" controlsList="nodownload"></video>
+    </div>
     <div class="controls">
       <button id="playPauseBtn">Play</button>
+      <select id="mediaSelect">
+        <option value="video">Play Video (F__k Love.mp4)</option>
+        <option value="audio">Play Song (F__k Love.mp3)</option>
+        <option value="custom">Play Your Own File</option>
+      </select>
       <select id="qualitySelect" class="quality-select">
         <option value="1080">1080p HD</option>
         <option value="720">720p</option>
@@ -96,6 +116,7 @@
         <option value="144">144p</option>
       </select>
       <button id="fullscreenBtn" class="fullscreen-btn">F</button>
+      <input type="file" id="fileInput" class="file-input" accept="video/*, audio/*" style="display: none;">
       <div class="share-link">
         <input type="text" id="shareInput" readonly>
         <button id="copyLinkBtn">Copy Link</button>
@@ -105,16 +126,14 @@
 
   <script>
     const mediaPlayer = document.getElementById('mediaPlayer');
-    const videoSource = document.getElementById('videoSource');
-    const audioSource = document.getElementById('audioSource');
     const playPauseBtn = document.getElementById('playPauseBtn');
+    const mediaSelect = document.getElementById('mediaSelect');
     const qualitySelect = document.getElementById('qualitySelect');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const shareInput = document.getElementById('shareInput');
     const copyLinkBtn = document.getElementById('copyLinkBtn');
+    const fileInput = document.getElementById('fileInput');
 
-    // Initial setup
-    let currentTime = 0;
     let isPlaying = false;
 
     // Prevent right-click and downloading
@@ -130,6 +149,30 @@
         playPauseBtn.textContent = 'Pause';
       }
       isPlaying = !isPlaying;
+    });
+
+    // Media selection
+    mediaSelect.addEventListener('change', () => {
+      const selectedOption = mediaSelect.value;
+      if (selectedOption === 'video') {
+        mediaPlayer.src = 'F__k Love.mp4';
+        mediaPlayer.load();
+      } else if (selectedOption === 'audio') {
+        mediaPlayer.src = 'F__k Love.mp3';
+        mediaPlayer.load();
+      } else if (selectedOption === 'custom') {
+        fileInput.click();
+      }
+    });
+
+    // File input for custom files
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        const fileURL = URL.createObjectURL(file);
+        mediaPlayer.src = fileURL;
+        mediaPlayer.load();
+      }
     });
 
     // Quality selection
