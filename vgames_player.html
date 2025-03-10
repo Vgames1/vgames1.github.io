@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VGames Player</title>
+  <style>
+    /* Global Styles */
+    :root {
+      --bg-color: #1e1e1e;
+      --text-color: white;
+      --control-bg: #333;
+      --control-hover: #555;
+      --accent-color: #ff5722;
+    }
+
+    [data-theme="light"] {
+      --bg-color: #f4f4f4;
+      --text-color: black;
+      --control-bg: #ddd;
+      --control-hover: #bbb;
+      --accent-color: #2196f3;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .player-container {
+      max-width: 800px;
+      width: 100%;
+      background: var(--control-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .media-wrapper {
+      width: 100%;
+      position: relative;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      background: black;
+    }
+
+    #mediaPlayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .controls {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .controls button, .controls select, .controls input {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: var(--control-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .controls button:hover, .controls select:hover, .controls input:hover {
+      background: var(--control-hover);
+    }
+
+    .fullscreen-btn {
+      margin-left: auto;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .custom-alert {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--control-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+    }
+
+    .custom-alert button {
+      margin: 5px;
+    }
+
+    .audio-visualizer {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .audio-bar {
+      width: 5px;
+      height: 20px;
+      background: var(--accent-color);
+      animation: audioBar 1s infinite alternate;
+    }
+
+    @keyframes audioBar {
+      0% { height: 10px; }
+      100% { height: 50px; }
+    }
+
+    .fullscreen-ad {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+      display: none;
+    }
+
+    .fullscreen-ad img {
+      width: 100px;
+      height: auto;
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="player-container">
+    <div class="media-wrapper">
+      <video id="mediaPlayer" controlsList="nodownload"></video>
+      <div class="fullscreen-ad" id="fullscreenAd">
+        <a href="https://vgames1.github.io" target="_blank">
+          <img src="ad_preview.png" alt="Ad Preview">
+        </a>
+      </div>
+    </div>
+    <div class="controls">
+      <button id="playPauseBtn">Play</button>
+      <input type="file" id="fileInput" class="file-input" accept="video/*, audio/*">
+      <button id="uploadBtn">Upload File</button>
+      <button id="fullscreenBtn" class="fullscreen-btn">Fullscreen</button>
+    </div>
+    <div class="audio-visualizer" id="audioVisualizer">
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+      <div class="audio-bar"></div>
+    </div>
+  </div>
+
+  <!-- Custom Alert -->
+  <div class="custom-alert" id="customAlert">
+    <p id="alertMessage"></p>
+    <button id="alertConfirm">OK</button>
+    <button id="alertCancel">Cancel</button>
+  </div>
+
+  <script>
+    const mediaPlayer = document.getElementById('mediaPlayer');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const fileInput = document.getElementById('fileInput');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const audioVisualizer = document.getElementById('audioVisualizer');
+    const fullscreenAd = document.getElementById('fullscreenAd');
+    const customAlert = document.getElementById('customAlert');
+    const alertMessage = document.getElementById('alertMessage');
+    const alertConfirm = document.getElementById('alertConfirm');
+    const alertCancel = document.getElementById('alertCancel');
+
+    let isPlaying = false;
+    let isFullscreen = false;
+
+    // Theme Detection
+    const detectTheme = () => {
+      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+    };
+    detectTheme();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
+
+    // Custom Alert
+    const showAlert = (message, confirmCallback, cancelCallback) => {
+      alertMessage.textContent = message;
+      customAlert.style.display = 'block';
+      alertConfirm.onclick = () => {
+        customAlert.style.display = 'none';
+        if (confirmCallback) confirmCallback();
+      };
+      alertCancel.onclick = () => {
+        customAlert.style.display = 'none';
+        if (cancelCallback) cancelCallback();
+      };
+    };
+
+    // Play/Pause Button
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        mediaPlayer.pause();
+        playPauseBtn.textContent = 'Play';
+      } else {
+        mediaPlayer.play();
+        playPauseBtn.textContent = 'Pause';
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // Upload File
+    uploadBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (file) {
+        const fileURL = URL.createObjectURL(file);
+        mediaPlayer.src = fileURL;
+        mediaPlayer.load();
+        showAlert('File loaded successfully!', () => mediaPlayer.play());
+      }
+    });
+
+    // Fullscreen Button
+    fullscreenBtn.addEventListener('click', () => {
+      if (!isFullscreen) {
+        if (mediaPlayer.requestFullscreen) mediaPlayer.requestFullscreen();
+        fullscreenAd.style.display = 'block';
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        fullscreenAd.style.display = 'none';
+      }
+      isFullscreen = !isFullscreen;
+    });
+
+    // Audio Visualizer
+    mediaPlayer.addEventListener('play', () => {
+      if (mediaPlayer.tagName === 'AUDIO') {
+        audioVisualizer.style.display = 'flex';
+      }
+    });
+    mediaPlayer.addEventListener('pause', () => {
+      audioVisualizer.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
