@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Music Player</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .player-container {
+      max-width: 800px;
+      width: 100%;
+      background: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    video {
+      width: 100%;
+      display: block;
+    }
+    .controls {
+      padding: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .controls button, .controls select {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #555;
+      color: white;
+      cursor: pointer;
+    }
+    .controls button:hover, .controls select:hover {
+      background: #777;
+    }
+    .quality-select {
+      margin-left: auto;
+    }
+    .fullscreen-btn {
+      margin-left: 10px;
+    }
+    .share-link {
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .share-link input {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      background: #555;
+      color: white;
+    }
+    .share-link button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      background: #555;
+      color: white;
+      cursor: pointer;
+    }
+    .share-link button:hover {
+      background: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="player-container">
+    <video id="mediaPlayer" controlsList="nodownload" controls>
+      <source id="videoSource" src="F__k Love.mp4" type="video/mp4">
+      <source id="audioSource" src="F__k Love.mp3" type="audio/mp3">
+      Your browser does not support the video/audio tag.
+    </video>
+    <div class="controls">
+      <button id="playPauseBtn">Play</button>
+      <select id="qualitySelect" class="quality-select">
+        <option value="1080">1080p HD</option>
+        <option value="720">720p</option>
+        <option value="480">480p</option>
+        <option value="144">144p</option>
+      </select>
+      <button id="fullscreenBtn" class="fullscreen-btn">F</button>
+      <div class="share-link">
+        <input type="text" id="shareInput" readonly>
+        <button id="copyLinkBtn">Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const mediaPlayer = document.getElementById('mediaPlayer');
+    const videoSource = document.getElementById('videoSource');
+    const audioSource = document.getElementById('audioSource');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const qualitySelect = document.getElementById('qualitySelect');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const shareInput = document.getElementById('shareInput');
+    const copyLinkBtn = document.getElementById('copyLinkBtn');
+
+    // Initial setup
+    let currentTime = 0;
+    let isPlaying = false;
+
+    // Prevent right-click and downloading
+    mediaPlayer.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // Play/Pause button
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        mediaPlayer.pause();
+        playPauseBtn.textContent = 'Play';
+      } else {
+        mediaPlayer.play();
+        playPauseBtn.textContent = 'Pause';
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // Quality selection
+    qualitySelect.addEventListener('change', () => {
+      const quality = qualitySelect.value;
+      if (quality === '144') {
+        mediaPlayer.style.filter = 'blur(2px)';
+        mediaPlayer.playbackRate = 1.0;
+      } else {
+        mediaPlayer.style.filter = 'none';
+        mediaPlayer.playbackRate = 1.0;
+      }
+    });
+
+    // Fullscreen button
+    fullscreenBtn.addEventListener('click', () => {
+      if (mediaPlayer.requestFullscreen) {
+        mediaPlayer.requestFullscreen();
+      } else if (mediaPlayer.mozRequestFullScreen) {
+        mediaPlayer.mozRequestFullScreen();
+      } else if (mediaPlayer.webkitRequestFullscreen) {
+        mediaPlayer.webkitRequestFullscreen();
+      } else if (mediaPlayer.msRequestFullscreen) {
+        mediaPlayer.msRequestFullscreen();
+      }
+    });
+
+    // Share link with timestamp
+    function updateShareLink() {
+      const currentTime = Math.floor(mediaPlayer.currentTime);
+      const minutes = Math.floor(currentTime / 60);
+      const seconds = currentTime % 60;
+      const timestamp = minutes > 0 ? `${minutes}m${seconds}s` : `${seconds}s`;
+      const baseUrl = window.location.href.split('?')[0];
+      shareInput.value = `${baseUrl}?tm=${timestamp}`;
+    }
+
+    mediaPlayer.addEventListener('timeupdate', updateShareLink);
+
+    // Copy link button
+    copyLinkBtn.addEventListener('click', () => {
+      shareInput.select();
+      document.execCommand('copy');
+      alert('Link copied to clipboard!');
+    });
+
+    // Handle timestamped links
+    const urlParams = new URLSearchParams(window.location.search);
+    const timestamp = urlParams.get('tm');
+    if (timestamp) {
+      const timeArray = timestamp.split(/m|s/).filter(Boolean);
+      let totalSeconds = 0;
+      if (timeArray.length === 2) {
+        totalSeconds = parseInt(timeArray[0]) * 60 + parseInt(timeArray[1]);
+      } else if (timeArray.length === 1) {
+        totalSeconds = parseInt(timeArray[0]);
+      }
+      mediaPlayer.currentTime = totalSeconds;
+    }
+  </script>
+</body>
+</html>
