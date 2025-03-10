@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buy F_ck Love</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    img.song-image {
+      width: 150px;
+      height: auto;
+      float: left;
+      margin-right: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      margin-top: 0;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+    }
+    .button img {
+      vertical-align: middle;
+      margin-right: 10px;
+      width: 20px;
+      height: 20px;
+    }
+    .whatsapp {
+      background-color: #25D366;
+    }
+    .call {
+      background-color: white;
+      color: black;
+      border: 1px solid #ccc;
+    }
+    .email {
+      background: linear-gradient(to bottom, #D44638, #D44638);
+      color: white;
+    }
+    .call.disabled {
+      background-color: gray;
+      cursor: not-allowed;
+    }
+    .youtube-link {
+      margin-top: 20px;
+    }
+    .youtube-link img {
+      width: 50px;
+      height: auto;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="image_large_0284a784-71e3-47fa-90e8-7e91483e4083.jpeg" alt="Song Cover" class="song-image">
+    <h1>Buy F_ck Love</h1>
+    <p>Produced by Vilakazi V under SUNO label</p>
+    <p>Price: $14 / £10 / R240 / €13 (converted based on your country)</p>
+    <p>Listen on:</p>
+    <p>
+      <a href="https://youtube.com/shorts/pavAWnQJRSE" target="_blank">YouTube Shorts</a> |
+      <a href="https://soundcloud.com/vilakazi-v/f-k-love" target="_blank">SoundCloud</a>
+    </p>
+
+    <div class="buttons">
+      <a href="https://www.whatsapp.com/channel/0029Vb8kcAN9mrGYdCUzRU0i" class="button whatsapp">
+        <img src="wa.png" alt="WhatsApp Logo"> Contact Me
+      </a>
+      <button id="callButton" class="button call" onclick="handleCall()">
+        <img src="call.png" alt="Call Logo"> Call
+      </button>
+      <a href="mailto:pooftheman2@gmail.com?subject=Buying F_ck Love&body=I would like to buy F_ck Love for the price of ($14 or £10 or R240 or based on my country converted to US dollar or pay in €13 and if in Africa pay R240). The song is F_ck Love produced by Vilakazi V under SUNO label. To listen, visit https://youtube.com/shorts/pavAWnQJRSE and https://soundcloud.com/vilakazi-v/f-k-love." class="button email">
+        <img src="gmail.png" alt="Gmail Logo"> Email
+      </a>
+    </div>
+
+    <p id="callMessage" style="color: red; display: none;">Servers are currently busy. Please use WhatsApp or Email.</p>
+
+    <div class="youtube-link">
+      <p>Visit my YouTube channel:</p>
+      <a href="https://www.youtube.com/@Mystery-User-V" target="_blank">
+        <img src="youtube.png" alt="YouTube Logo">
+        <img src="channels4_profile.jpg" alt="Channel Logo">
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function handleCall() {
+      const callButton = document.getElementById('callButton');
+      const callMessage = document.getElementById('callMessage');
+      callButton.classList.add('disabled');
+      callMessage.style.display = 'block';
+      callButton.innerHTML = `<img src="call.png" alt="Call Logo"> Call (Unavailable)`;
+      callButton.onclick = null;
+    }
+  </script>
+</body>
+</html>
