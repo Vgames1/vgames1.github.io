@@ -1,113 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="Pedro's Game - VGAMES">
-<meta property="og:description" content="Play as Pedro in this exciting VGAMES adventure!">
-<meta property="og:image" content="https://vgames1.github.io/vgamesblack">
-<meta property="og:url" content="https://vgames1.github.io">
-<meta property="og:type" content="website">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VGames - Choose Your Character</title>
-    <link rel="icon" href="vgameswhite.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VGames - Play All Kinds of Games</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
-        <img src="vgameswhite.png" alt="VGames Logo" class="logo">
-        <h1>Choose Your Character</h1>
-        <div class="characters">
-            <div class="character">
-                <img src="Raúl Andujar.webp" alt="Raúl Andujar">
-                <h2>Raúl Andujar</h2>
-                <a href="https://vgames1.github.io/rual/" target="_blank" class="playButton">Play</a>
-            </div>
-            <div class="character">
-                <img src="Pedro Webster.webp" alt="Pedro Webster">
-                <h2>Pedro Webster</h2>
-                <a href="https://vgames1.github.io/pedro/" target="_blank" class="playButton">Play</a>
-            </div>
-            <div class="character">
-                <img src="Zoey Vandall.webp" alt="Zoey Vandall">
-                <h2>Zoey Vandall</h2>
-                <a href="https://vgames1.github.io/zoey" target="_blank" class="playButton">Play</a>
-            </div>
-            <div class="character">
-                <img src="Gina Caldwell.webp" alt="Gina Caldwell">
-                <h2>Gina Caldwell</h2>
-                <a href="https://vgames1.github.io/zoey" target="_blank" class="playButton">Play</a>
-            </div>
-        </div>
+<body class="theme-bg">
+  <header>
+    <img src="https://vgames1.github.io/vgameswhite.png" alt="VGames Logo">
+    <div class="header-right">
+      <span id="currentTime"></span>
+      <a href="#" id="loginLink" class="login-btn">Login</a>
     </div>
+  </header>
+
+  <div class="game-container" id="gameContainer">
+    <!-- Game cards will be dynamically inserted here -->
+  </div>
+
+  <div id="gameWindow" class="game-window">
+    <div id="gameLoading">Game Loading...</div>
+    <iframe id="gameFrame" src=""></iframe>
+    <button id="timePlayingBtn" class="time-playing-btn">Time Playing: 0s</button>
+  </div>
+
+  <script src="index.js"></script>
 </body>
 </html>
-<div class="widget" id="widget">
-    <img src="https://vgames1.github.io/vgameswhite.png" alt="VGAMES Logo" id="widgetLogo">
-    <div class="message">
-        Download the current app at <a href="https://vgames1.github.io/apps" style="color: #007BFF; text-decoration: none;">vgames1.github.io/apps</a> for a better and offline experience!
-    </div>
-    <button class="close-btn" onclick="removeWidget()">×</button>
-</div>
-
-<style>
-    .widget {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: #121212;
-        color: white;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
-    .widget img {
-        width: 50px;
-        height: 50px;
-        margin-right: 10px;
-        transition: opacity 0.5s;
-    }
-    .widget .message {
-        flex-grow: 1;
-        text-align: left;
-    }
-    .widget .close-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-    }
-    @keyframes shatter {
-        0% { transform: scale(1); opacity: 1; }
-        100% { transform: scale(0); opacity: 0; }
-    }
-    .shatter {
-        animation: shatter 0.5s ease-out forwards;
-    }
-</style>
-
-<script>
-    // Switch Logo Every Second
-    const widgetLogo = document.getElementById("widgetLogo");
-    let isWhiteLogo = true;
-
-    setInterval(() => {
-        isWhiteLogo = !isWhiteLogo;
-        widgetLogo.src = isWhiteLogo
-            ? "https://vgames1.github.io/vgameswhite.png"
-            : "https://vgames1.github.io/vgamesblack.png";
-    }, 1000);
-
-    // Remove Widget with Shatter Animation
-    function removeWidget() {
-        const widget = document.getElementById("widget");
-        widget.classList.add("shatter");
-        setTimeout(() => {
-            widget.remove();
-        }, 500); // Match the duration of the animation
-    }
-</script>
