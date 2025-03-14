@@ -65,9 +65,10 @@
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      width: calc(25% - 15px);
+      width: calc(20% - 15px); /* Adjusted for 5 columns */
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
     }
 
     .game-card:hover {
@@ -77,26 +78,25 @@
 
     .game-card img {
       width: 100%;
-      height: 150px;
+      height: 100px;
       object-fit: cover;
     }
 
     .game-card h3 {
       margin: 10px;
-      font-size: 16px;
+      font-size: 14px;
       color: #fff;
     }
 
-    .game-card p {
-      margin: 10px;
-      font-size: 12px;
-      color: #ccc;
-    }
-
-    .game-card .tags {
-      margin: 10px;
+    .game-card .time-played {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 3px 6px;
+      border-radius: 5px;
       font-size: 10px;
-      color: #888;
+      color: #fff;
     }
 
     .game-window {
@@ -111,6 +111,25 @@
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       overflow: hidden;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ff4444;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .close-btn:hover {
+      background-color: #ff6666;
     }
 
     #gameLoading {
@@ -145,51 +164,26 @@
       background-color: #777;
     }
 
-    /* App Download Message */
-    .app-download-message {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #4CAF50;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-    }
-
     /* Responsive Styles */
     @media (max-width: 768px) {
       .game-card {
-        width: calc(50% - 15px);
+        width: calc(33.33% - 15px);
       }
     }
 
     @media (max-width: 480px) {
       .game-card {
-        width: 100%;
+        width: calc(50% - 15px);
       }
 
       .game-window {
         width: 90%;
         height: 60%;
       }
-
-      .app-download-message {
-        top: 10px;
-        font-size: 14px;
-      }
     }
   </style>
 </head>
 <body class="theme-bg">
-  <!-- App Download Message -->
-  <div id="appDownloadMessage" class="app-download-message">
-    Thank you for downloading our app lite X and enjoy it!
-  </div>
-
   <header>
     <img src="https://vgames1.github.io/vgameswhite.png" alt="VGames Logo">
     <div class="header-right">
@@ -203,6 +197,7 @@
   </div>
 
   <div id="gameWindow" class="game-window">
+    <button class="close-btn" id="closeBtn">X</button>
     <div id="gameLoading">Game Loading...</div>
     <iframe id="gameFrame" src=""></iframe>
     <button id="timePlayingBtn" class="time-playing-btn">Time Playing: 0s</button>
@@ -211,14 +206,21 @@
   <script>
     // Games data
     const games = [
-      {
-        title: "Tank Arena",
-        embed: "https://cloud.onlinegames.io/games/2025/construct/293/tank-arena/index-og.html",
-        image: "https://www.onlinegames.io/media/posts/956/responsive/Tank-Arena-Online-xs.jpg",
-        tags: "2-player,2d,action,arcade,arena,crazy,free,fun,tank",
-        description: "Tank Arena is an online tank battle game that you can play with your friend on the same device. In a 2D maze, each tank’s shot can bounce off walls, so you never know where danger might appear next. Similar to the famous browser game Tank Trouble, this game ups the challenge by letting you take on AI tanks, go head-to-head with a friend, or try intense online matches. Now load Tank Arena and sneak in a quick battle when you’ve got some free time!"
-      },
-       {
+     {
+    "title": "Tank Arena",
+    "embed": "https://cloud.onlinegames.io/games/2025/construct/293/tank-arena/index-og.html",
+    "image": "https://www.onlinegames.io/media/posts/956/responsive/Tank-Arena-Online-xs.jpg",
+    "tags": "2-player,2d,action,arcade,arena,crazy,free,fun,tank",
+    "description": "Tank Arena is an online tank battle game that you can play with your friend on the same device.  In a 2D maze, each tank’s shot can bounce off walls, so you never know where danger might appear next.  Similar to the famous browser game Tank Trouble, this game ups the challenge by letting you take on AI tanks, go head-to-head with a friend, or try intense online matches.  Now load Tank Arena and sneak in a quick battle when you’ve got some free time!"
+  },
+  {
+    "title": "Kings io",
+    "embed": "https://cloud.onlinegames.io/games/2025/construct/208/kings-io/index-og.html",
+    "image": "https://www.onlinegames.io/media/posts/952/responsive/Kings-io-xs.jpg",
+    "tags": "2d,arena,army,battle,free,io-games,strategy,war",
+    "description": "The road to royalty is that way!  ⬆️ If you're ready to rule your own kingdom, play Kings io.  This is an exciting online strategy game where you start as a small-time ruler, determined to rise to glory by building a grand empire.  If you’re up for gathering gold, recruiting strong troops, and outsmarting enemy kings, then this free game is your perfect battlefield."
+  },
+  {
     "title": "Squid Race Simulator",
     "embed": "https://www.onlinegames.io/games/2021/unity3/squid-race-simulator/index.html",
     "image": "https://www.onlinegames.io/media/posts/950/responsive/squid-race-simulator-xs.jpg",
@@ -1617,40 +1619,19 @@
     "image": "https://www.onlinegames.io/media/posts/587/responsive/Draw-the-Bird-Path-xs.jpg",
     "tags": "1-player,2d,animal,brain,cute,drawing,free,html5,kids,logic,mobile,mouse,puzzle",
     "description": "Draw The Bird Path is a drawing game where the player tries to guide sweet birds home by drawing paths.  Help the birds find their nests.  Create a path for them by overcoming obstacles and objects.  But be careful when guiding more than one bird to their home; they should not collide with each other."
-  }
-      // Add more games here
-    ];
-
-    // Hidden login URL
-    const loginUrl = "vgames1.github.io/login?pageid=72349vxs";
-    document.getElementById('loginLink').href = loginUrl;
-
-    // Check URL for access level
-    const urlParams = new URLSearchParams(window.location.search);
-    const accessLevel = urlParams.get('access');
-
-    // Check if URL contains "appadome"
-    if (urlParams.has('appadome')) {
-      const appDownloadMessage = document.getElementById('appDownloadMessage');
-      appDownloadMessage.style.display = 'block';
-      setTimeout(() => {
-        appDownloadMessage.style.display = 'none';
-      }, 5000); // Hide message after 5 seconds
-    }
+  },
+  ] ;
 
     // Function to render games
     function renderGames() {
       const gameContainer = document.getElementById('gameContainer');
-      const allowedGames = accessLevel === 'accepted' ? games : games.slice(0, 3);
-
-      allowedGames.forEach(game => {
+      games.forEach(game => {
         const gameCard = document.createElement('div');
         gameCard.className = 'game-card';
         gameCard.innerHTML = `
           <img src="${game.image}" alt="${game.title}">
           <h3>${game.title}</h3>
-          <p>${game.description}</p>
-          <div class="tags">Tags: ${game.tags}</div>
+          <div class="time-played">0s</div>
         `;
         gameCard.addEventListener('click', () => {
           document.getElementById('gameLoading').style.display = 'flex';
@@ -1664,6 +1645,35 @@
         });
         gameContainer.appendChild(gameCard);
       });
+    }
+
+    // Close game window
+    document.getElementById('closeBtn').addEventListener('click', () => {
+      document.getElementById('gameWindow').style.display = 'none';
+      document.getElementById('gameFrame').src = ''; // Stop the game
+    });
+
+    // Fullscreen functionality
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'f' && !e.shiftKey) {
+        toggleFullscreen();
+      } else if (e.key === 'F' && e.shiftKey) {
+        exitFullscreen();
+      }
+    });
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function exitFullscreen() {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
     }
 
     // Initial render
