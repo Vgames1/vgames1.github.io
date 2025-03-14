@@ -3,86 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gina's Game</title>
-    <link rel="icon" href="vgameswhite.png" type="image/png">
-    <link rel="stylesheet" href="mes.css">
+    <title>Gina's Game - Discontinued</title>
+    <link rel="icon" href="https://vgames1.github.io/vgamesblack.png" type="image/png">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #fff;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .character-image {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .ad-container {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .ad-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .ad-container p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .ad-container a {
+            background-color: #555;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .ad-container a:hover {
+            background-color: #777;
+        }
+
+        /* Unavailable Widget */
+        #unavailable-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease-in-out;
+        }
+
+        #unavailable-widget.show {
+            opacity: 1;
+            visibility: visible;
+            bottom: 40px;
+        }
+
+        #unavailable-widget img {
+            width: 60px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        #unavailable-widget button {
+            background: red;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #unavailable-widget button:hover {
+            background: darkred;
+        }
+    </style>
 </head>
 <body>
+    <!-- Unavailable Widget -->
+    <div id="unavailable-widget">
+        <img src="https://vgames1.github.io/vgamesblack.png" alt="VGAMES Logo">
+        <p><strong>Gina's Game is No Longer Available</strong></p>
+        <p>We regret to inform you that Gina's Game has been discontinued. Explore our other exciting games on the main page!</p>
+        <button onclick="closeUnavailableWidget()">Got it!</button>
+    </div>
+
+    <!-- Main Content -->
     <div class="container">
         <a href="https://vgames1.github.io" target="_blank">
-            <img src="vgameswhite.png" alt="VGames Logo" class="logo">
+            <img src="https://vgames1.github.io/vgameswhite.png" alt="VGames Logo" class="logo">
         </a>
         <h1>Gina Caldwell</h1>
         <img src="Gina Caldwell.webp" alt="Gina Caldwell" class="character-image">
-        <p class="message">Gina's game will be available by <strong>February 20th</strong>. Stay tuned!</p>
+        <p class="message">Gina's game is no longer available. Thank you for your support!</p>
+
+        <!-- Ad for Main Page -->
+        <div class="ad-container">
+            <h2>Explore More Games!</h2>
+            <p>Discover a wide variety of exciting games on our main page. Click below to start playing!</p>
+            <a href="https://vgames1.github.io" target="_blank">Visit VGames</a>
+        </div>
     </div>
+
+    <script>
+        // Show Unavailable Widget
+        function showUnavailableWidget() {
+            setTimeout(() => {
+                document.getElementById("unavailable-widget").classList.add("show");
+            }, 1000); // Show after 1 second
+        }
+
+        // Close Unavailable Widget
+        function closeUnavailableWidget() {
+            document.getElementById("unavailable-widget").classList.remove("show");
+        }
+
+        // Show widget on page load
+        window.onload = showUnavailableWidget;
+    </script>
 </body>
 </html>
-<style>
-  #apology-widget {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #222;
-    color: #fff;
-    padding: 15px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    font-family: Arial, sans-serif;
-    text-align: center;
-    max-width: 90%;
-    width: 400px;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.5s ease-in-out;
-  }
-
-  #apology-widget.show {
-    opacity: 1;
-    visibility: visible;
-    bottom: 40px;
-  }
-
-  #apology-widget img {
-    width: 60px;
-    height: auto;
-    margin-bottom: 10px;
-  }
-
-  #apology-widget button {
-    background: red;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    margin-top: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  #apology-widget button:hover {
-    background: darkred;
-  }
-</style>
-
-<div id="apology-widget">
-  <img src="vgamesblack.png" alt="VGAMES Logo">
-  <p><strong>Apology for Delay – Gina’s Story Update</strong></p>
-  <p>We planned to release **Gina’s Story** on February 20, but due to setbacks, it will now be available on <strong>March 10</strong>. Thank you for your patience! 💜</p>
-  <button onclick="closeApologyWidget()">Got it!</button>
-</div>
-
-<script>
-  function showApologyWidget() {
-    setTimeout(() => {
-      document.getElementById("apology-widget").classList.add("show");
-    }, 1000); // Show after 1 second
-  }
-
-  function closeApologyWidget() {
-    document.getElementById("apology-widget").classList.remove("show");
-  }
-
-  window.onload = showApologyWidget;
-</script>
