@@ -1,297 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found - VGames</title>
-    <link rel="icon" href="vgameswhite.png" type="image/png">
-    <style>
-        /* General Styles */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            color: #e0e0e0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align content to the top */
-            min-height: 100vh;
-            overflow-y: auto; /* Enable vertical scrolling */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 404 Page Specific Styles */
+    body {
+      background-color: #1a1a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
 
-        .container {
-            text-align: center;
-            animation: fadeIn 2s ease-in-out;
-            padding: 20px;
-            width: 100%;
-            max-width: 1200px;
-        }
+    .error-container {
+      max-width: 600px;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
 
-        .logo {
-            width: 150px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
-            cursor: pointer;
-        }
+    h1 {
+      font-size: 48px;
+      margin: 0 0 20px;
+      color: #ff4444;
+    }
 
-        h1 {
-            font-size: 48px;
-            color: #ffffff;
-            text-shadow: 0 0 10px #ff6f61, 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61;
-            animation: glow 2s infinite alternate;
-            margin-bottom: 20px;
-        }
+    p {
+      font-size: 18px;
+      margin: 0 0 30px;
+      color: #ccc;
+    }
 
-        p {
-            font-size: 20px;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            margin-bottom: 20px;
-        }
+    .ad-container {
+      margin: 20px 0;
+      background-color: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .characters {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
+    .ad-container iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+    }
 
-        .character {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(255, 111, 97, 0.7);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 100%;
-            max-width: 200px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    .ad-label {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
 
-        .character:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 111, 97, 1);
-        }
+    .home-btn {
+      display: inline-block;
+      background-color: #555;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
 
-        .character-image {
-            width: 100px;
-            border-radius: 50%;
-            border: 5px solid #ff6f61;
-            box-shadow: 0 0 20px rgba(255, 111, 97, 0.7);
-            margin-bottom: 15px;
-            transition: transform 0.5s ease;
-        }
+    .home-btn:hover {
+      background-color: #777;
+    }
 
-        .character-info {
-            font-size: 16px;
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-        }
-
-        .character-info h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .home-button, .feedback-button {
-            background: #ff6f61;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px;
-        }
-
-        .home-button:hover, .feedback-button:hover {
-            background: #ff3b2f;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 111, 97, 0.7);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes glow {
-            from { text-shadow: 0 0 10px #ff6f61, 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61; }
-            to { text-shadow: 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61, 0 0 50px #ff6f61; }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 36px;
-            }
-
-            p {
-                font-size: 16px;
-            }
-
-            .character {
-                max-width: 150px;
-            }
-
-            .character-image {
-                width: 80px;
-            }
-
-            .character-info h2 {
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .characters {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .character {
-                max-width: 100%;
-                width: 80%;
-            }
-        }
-    </style>
+    .timer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <a href="https://vgames1.github.io" target="_blank">
-            <img src="vgameswhite.png" alt="VGames Logo" class="logo">
-        </a>
-        <h1>404 - Page Not Found</h1>
-        <p>The page <strong id="page-name">[name of the page]</strong> could not be found.</p>
-        <p>If you're experiencing issues, please send feedback to VILAKAZI STUDIO.</p>
-        <button class="feedback-button" onclick="sendFeedback()">Send Feedback</button>
-        <div class="characters">
-            <!-- Pedro -->
-            <div class="character">
-                <img src="Pedro Webster.webp" alt="Pedro Webster" class="character-image">
-                <div class="character-info">
-                    <h2>Pedro</h2>
-                    <p>Find his missing brother, Zavier.</p>
-                </div>
-            </div>
-            <!-- Raúl -->
-            <div class="character">
-                <img src="Raúl Andujar.webp" alt="Raúl Andujar" class="character-image">
-                <div class="character-info">
-                    <h2>Raúl</h2>
-                    <p>Become the top student in his class.</p>
-                </div>
-            </div>
-            <!-- Zoey -->
-            <div class="character">
-                <img src="Zoey Vandall.webp" alt="Zoey Vandall" class="character-image">
-                <div class="character-info">
-                    <h2>Zoey</h2>
-                    <p>Uncover her family's mysterious past.</p>
-                </div>
-            </div>
-            <!-- Gina -->
-            <div class="character">
-                <img src="Gina Caldwell.webp" alt="Gina Caldwell" class="character-image">
-                <div class="character-info">
-                    <h2>Gina</h2>
-                    <p>Overcome personal challenges.</p>
-                </div>
-            </div>
-        </div>
-        <a href="https://vgames1.github.io" class="home-button">Go Back to VGames</a>
+  <div class="error-container">
+    <h1>404 - Page Not Found</h1>
+    <p>Oops! The page you're looking for doesn't exist. But while you're here, why not play a quick game?</p>
+
+    <!-- Ad Container with Game -->
+    <div class="ad-container">
+      <div class="ad-label">Games we have for you </div>
+      <iframe id="gameFrame" src="https://cloud.onlinegames.io/games/2025/construct/293/tank-arena/index-og.html"></iframe>
     </div>
 
-    <script>
-        // Dynamically display the page name
-        const pageName = window.location.pathname.split('/').pop() || '[name of the page]';
-        document.getElementById('page-name').textContent = pageName;
+    <!-- Timer Display -->
+    <div class="timer" id="timer">Redirecting in <span id="countdown">60</span> seconds...</div>
 
-        // Function to send feedback
-        function sendFeedback() {
-            const email = 'vilakazigames@gmail.com';
-            const subject = 'Feedback on VGames Page';
-            const body = `Hi VILAKAZI STUDIO,\n\nI encountered an issue on the page: ${window.location.href}.\n\n[Describe your issue here]`;
-            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        }
-    </script>
-</body>
-</html>
+    <!-- Home Button -->
+    <a href="/" class="home-btn">Go Back Home</a>
+  </div>
 
-<div class="widget" id="widget">
-    <img src="https://vgames1.github.io/vgameswhite.png" alt="VGAMES Logo" id="widgetLogo">
-    <div class="message">
-        Download the current app at <a href="https://vgames1.github.io/apps" style="color: #007BFF; text-decoration: none;">vgames1.github.io/apps</a> for a better and offline experience!
-    </div>
-    <button class="close-btn" onclick="removeWidget()">×</button>
-</div>
+  <script>
+    // Timer for redirection
+    let timeLeft = 60;
+    const timerElement = document.getElementById('countdown');
+    const gameFrame = document.getElementById('gameFrame');
 
-<style>
-    .widget {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background-color: #121212;
-        color: white;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-        z-index: 1000;
-    }
-    .widget img {
-        width: 50px;
-        height: 50px;
-        margin-right: 10px;
-        transition: opacity 0.5s;
-    }
-    .widget .message {
-        flex-grow: 1;
-        text-align: left;
-    }
-    .widget .close-btn {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
-    }
-    @keyframes shatter {
-        0% { transform: scale(1); opacity: 1; }
-        100% { transform: scale(0); opacity: 0; }
-    }
-    .shatter {
-        animation: shatter 0.5s ease-out forwards;
-    }
-</style>
+    // Update the timer every second
+    const timerInterval = setInterval(() => {
+      timeLeft--;
+      timerElement.textContent = timeLeft;
 
-<script>
-    // Switch Logo Every Second
-    const widgetLogo = document.getElementById("widgetLogo");
-    let isWhiteLogo = true;
-
-    setInterval(() => {
-        isWhiteLogo = !isWhiteLogo;
-        widgetLogo.src = isWhiteLogo
-            ? "https://vgames1.github.io/vgameswhite.png"
-            : "https://vgames1.github.io/vgamesblack.png";
+      // Redirect to the main page after 60 seconds
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        window.location.href = "/";
+      }
     }, 1000);
 
-    // Remove Widget with Shatter Animation
-    function removeWidget() {
-        const widget = document.getElementById("widget");
-        widget.classList.add("shatter");
-        setTimeout(() => {
-            widget.remove();
-        }, 500); // Match the duration of the animation
-    }
-</script>
+    // Check if the game is being interacted with
+    let isPlaying = false;
+    let interactionTimeout;
+
+    const resetInteractionTimeout = () => {
+      clearTimeout(interactionTimeout);
+      interactionTimeout = setTimeout(() => {
+        if (isPlaying) {
+          alert("You've been inactive for 3 minutes. Please restart the page.");
+          window.location.href = "/";
+        }
+      }, 180000); // 3 minutes
+    };
+
+    // Listen for interaction with the game iframe
+    gameFrame.addEventListener('mouseenter', () => {
+      isPlaying = true;
+      resetInteractionTimeout();
+    });
+
+    gameFrame.addEventListener('mouseleave', () => {
+      isPlaying = false;
+      resetInteractionTimeout();
+    });
+
+    // Initial setup
+    resetInteractionTimeout();
+  </script>
+</body>
+</html>
