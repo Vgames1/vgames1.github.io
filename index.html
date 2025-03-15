@@ -361,6 +361,36 @@
     .login-modal button:hover {
       background-color: #777;
     }
+
+    /* Custom Alert Styles */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #333;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      color: #fff;
+      text-align: center;
+    }
+
+    .custom-alert button {
+      background-color: #555;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .custom-alert button:hover {
+      background-color: #777;
+    }
   </style>
 </head>
 <body>
@@ -433,6 +463,12 @@
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     <button id="submitLogin">Login</button>
+  </div>
+
+  <!-- Custom Alert -->
+  <div id="customAlert" class="custom-alert">
+    <p id="alertMessage"></p>
+    <button onclick="closeCustomAlert()">OK</button>
   </div>
 
   <script>
@@ -1852,7 +1888,7 @@
     "image": "https://www.onlinegames.io/media/posts/587/responsive/Draw-the-Bird-Path-xs.jpg",
     "tags": "1-player,2d,animal,brain,cute,drawing,free,html5,kids,logic,mobile,mouse,puzzle",
     "description": "Draw The Bird Path is a drawing game where the player tries to guide sweet birds home by drawing paths.  Help the birds find their nests.  Create a path for them by overcoming obstacles and objects.  But be careful when guiding more than one bird to their home; they should not collide with each other."
-      },
+  },
       // Add more games here
     ];
 
@@ -1901,6 +1937,7 @@
         const isLiked = localStorage.getItem(`liked_${game.title}`) === 'true';
         localStorage.setItem(`liked_${game.title}`, !isLiked);
         likeBtn.classList.toggle('liked', !isLiked);
+        showCustomAlert(`You ${!isLiked ? 'liked' : 'unliked'} ${game.title}`);
       });
 
       // Fullscreen functionality
@@ -1952,7 +1989,7 @@
 
     function copyLink() {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      showCustomAlert('Link copied to clipboard!');
     }
 
     function showEmbedCode() {
@@ -2015,13 +2052,23 @@
           const accounts = JSON.parse(data);
           const user = accounts.find(acc => acc.username === username && acc.password === password);
           if (user) {
-            alert('Login successful!');
+            showCustomAlert('Login successful!');
             document.getElementById('loginModal').style.display = 'none';
           } else {
-            alert('Invalid username or password');
+            showCustomAlert('Invalid username or password');
           }
         });
     });
+
+    // Custom Alert functionality
+    function showCustomAlert(message) {
+      document.getElementById('alertMessage').textContent = message;
+      document.getElementById('customAlert').style.display = 'block';
+    }
+
+    function closeCustomAlert() {
+      document.getElementById('customAlert').style.display = 'none';
+    }
 
     // Check URL for game parameter
     const urlParams = new URLSearchParams(window.location.search);
