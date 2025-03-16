@@ -26,7 +26,7 @@
     header img {
       height: 50px;
       cursor: pointer;
-      pointer-events: none; 
+      pointer-events: none; /* Prevent logo download */
     }
 
     .header-right {
@@ -65,6 +65,7 @@
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
+      aspect-ratio: 1 / 1; /* Perfect square */
     }
 
     .game-card:hover {
@@ -98,17 +99,14 @@
 
     .game-card.big {
       width: calc(33.33% - 15px);
-      height: 200px;
     }
 
     .game-card.medium {
       width: calc(25% - 15px);
-      height: 150px;
     }
 
     .game-card.small {
       width: calc(20% - 15px);
-      height: 100px;
     }
 
     footer {
@@ -130,7 +128,7 @@
     }
 
     .game-window {
-      width: 800px; 
+      width: 800px; /* Larger game window */
       height: 600px;
       background-color: #222;
       border-radius: 15px;
@@ -146,7 +144,7 @@
       width: 100%;
       height: 100%;
       border: none;
-      display: none; 
+      display: none; /* Hidden until game loads */
     }
 
     .game-window .loading {
@@ -240,7 +238,7 @@
       display: none;
     }
 
-  
+    /* Search Page Styles */
     .search-page {
       display: none;
       padding: 20px;
@@ -280,7 +278,7 @@
       gap: 15px;
     }
 
-    
+    /* Share Modal Styles */
     .share-modal {
       display: none;
       position: fixed;
@@ -309,7 +307,7 @@
       background-color: #777;
     }
 
-   
+    /* Login Modal Styles */
     .login-modal {
       display: none;
       position: fixed;
@@ -400,6 +398,26 @@
       gap: 10px;
       margin: 20px 0;
     }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .game-card.big, .game-card.medium, .game-card.small {
+        width: calc(50% - 15px); /* Two columns on mobile */
+      }
+
+      .game-window {
+        width: 100%;
+        height: 300px; /* Smaller game window for mobile */
+      }
+
+      .game-page-content {
+        flex-direction: column;
+      }
+
+      .game-info {
+        margin-top: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -415,10 +433,13 @@
 
     <!-- Category Buttons -->
     <div class="category-buttons">
-      <button class="category-btn" onclick="filterGames('multiplayer')">Multiplayer Games</button>
-      <button class="category-btn" onclick="filterGames('solo')">Solo Games</button>
-      <button class="category-btn" onclick="filterGames('shooting')">Shooting Games</button>
-      <button class="category-btn" onclick="filterGames('love')">Love Games</button>
+      <button class="category-btn" onclick="filterGames('all')">All</button>
+      <button class="category-btn" onclick="filterGames('multiplayer')">Multiplayer</button>
+      <button class="category-btn" onclick="filterGames('solo')">Solo</button>
+      <button class="category-btn" onclick="filterGames('shooting')">Shooting</button>
+      <button class="category-btn" onclick="filterGames('love')">Love</button>
+      <button class="category-btn" onclick="filterGames('liked')">Liked</button>
+      <button class="category-btn" onclick="filterGames('recent')">Recently Played</button>
     </div>
 
     <div class="game-container" id="gameContainer">
@@ -515,15 +536,14 @@
         description: "Run, stop, survive! Squid Race Simulator brings the iconic Red Light, Green Light game from Squid Game to your screen.",
         category: "solo"
       },
-      // Add more games here
-      {
+        {
     "title": "Kings io",
     "embed": "https://cloud.onlinegames.io/games/2025/construct/208/kings-io/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/952/responsive/Kings-io-xs.jpg",
     "tags": "2d,arena,army,battle,free,io-games,strategy,war",
     "description": "The road to royalty is that way!  ⬆️ If you're ready to rule your own kingdom, play Kings io.  This is an exciting online strategy game where you start as a small-time ruler, determined to rise to glory by building a grand empire.  If you’re up for gathering gold, recruiting strong troops, and outsmarting enemy kings, then this free game is your perfect battlefield."
   },
-   {
+        {
     "title": "SpartaHoppers",
     "embed": "https://cloud.onlinegames.io/games/2025/construct/227/spartahoppers/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/949/responsive/sparta-hoppers-game-xs.jpg",
@@ -1980,7 +2000,7 @@
       // Share button functionality
       document.getElementById('shareBtn').addEventListener('click', () => {
         document.getElementById('shareModal').style.display = 'block';
-        document.getElementById('embedText').value = `<iframe src="${window.location.href}?sharegame=${encodeURIComponent(game.title)}" width="800" height="600"></iframe>`;
+        document.getElementById('embedText').value = `<iframe src="${window.location.href}?game=${encodeURIComponent(game.title)}" width="800" height="600"></iframe>`;
       });
 
       // Show game when loaded
@@ -1989,25 +2009,27 @@
         document.getElementById('gameFrame').style.display = 'block';
       };
 
-      // Render more games
-      renderMoreGames();
+      // Render more games (excluding the current game)
+      renderMoreGames(game);
     }
 
-    // Render more games
-    function renderMoreGames() {
+    // Render more games (excluding the current game)
+    function renderMoreGames(currentGame) {
       const moreGamesContainer = document.getElementById('moreGamesContainer');
       moreGamesContainer.innerHTML = ''; // Clear existing games
       games.forEach(game => {
-        const gameCard = document.createElement('div');
-        gameCard.className = `game-card ${getRandomSize()}`;
-        gameCard.innerHTML = `
-          <img src="${game.image}" alt="${game.title}">
-          <h3>${game.title}</h3>
-        `;
-        gameCard.addEventListener('click', () => {
-          showGamePage(game);
-        });
-        moreGamesContainer.appendChild(gameCard);
+        if (game.title !== currentGame.title) {
+          const gameCard = document.createElement('div');
+          gameCard.className = `game-card ${getRandomSize()}`;
+          gameCard.innerHTML = `
+            <img src="${game.image}" alt="${game.title}">
+            <h3>${game.title}</h3>
+          `;
+          gameCard.addEventListener('click', () => {
+            showGamePage(game);
+          });
+          moreGamesContainer.appendChild(gameCard);
+        }
       });
     }
 
@@ -2059,18 +2081,17 @@
       document.getElementById('mainPage').style.display = 'block';
     });
 
-    document.getElementById('searchInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        const query = e.target.value.toLowerCase();
-        const results = games.filter(game => game.title.toLowerCase().includes(query));
-        const resultsContainer = document.getElementById('searchResults');
-        resultsContainer.innerHTML = results.map(game => `
-          <div class="game-card ${getRandomSize()}">
-            <img src="${game.image}" alt="${game.title}">
-            <h3>${game.title}</h3>
-          </div>
-        `).join('');
-      }
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      const results = games.filter(game => game.title.toLowerCase().includes(query));
+      const resultsContainer = document.getElementById('searchResults');
+      resultsContainer.innerHTML = results.map(game => `
+        <div class="game-card ${getRandomSize()}">
+          <img src="${game.image}" alt="${game.title}">
+          <h3>${game.title}</h3>
+        </div>
+      `).join('');
+      document.getElementById('searchResults').innerHTML += `<p>${results.length} games found</p>`;
     });
 
     // Login functionality
@@ -2120,13 +2141,22 @@
 
     // Filter games by category
     function filterGames(category) {
-      const filteredGames = games.filter(game => game.category === category);
+      let filteredGames = [];
+      if (category === 'all') {
+        filteredGames = games;
+      } else if (category === 'liked') {
+        filteredGames = games.filter(game => localStorage.getItem(`liked_${game.title}`) === 'true');
+      } else if (category === 'recent') {
+        filteredGames = games.filter(game => localStorage.getItem(`recent_${game.title}`) === 'true');
+      } else {
+        filteredGames = games.filter(game => game.category === category);
+      }
       renderGames(filteredGames);
     }
 
     // Check URL for game parameter
     const urlParams = new URLSearchParams(window.location.search);
-    const gameName = urlParams.get('sharegame');
+    const gameName = urlParams.get('game');
     if (gameName) {
       const game = games.find(g => g.title.toLowerCase() === gameName.toLowerCase());
       if (game) {
