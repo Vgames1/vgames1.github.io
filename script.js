@@ -16,13 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "description": "Have you heard about Sparta before?  The ancient Roman city where warriors once clashed on grand stages.  They were the coolest guys of their era.  Only, in this online game, your gladiators can’t walk cuz they can only hop!"
         },
         // Add more games here
-        {
-            "title": "Game 3",
-            "embed": "https://example.com/game3",
-            "image": "https://example.com/game3.jpg",
-            "tags": "action,adventure",
-            "description": "This is a sample game description."
-        }
+      
     ];
 
     // DOM Elements
