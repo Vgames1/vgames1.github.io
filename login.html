@@ -77,21 +77,23 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Decrypt and validate credentials
+            // Check if the username exists
             const encryptedPassword = accounts[username];
             if (!encryptedPassword) {
                 showError("Invalid username or password.");
                 return;
             }
 
+            // Decrypt and validate the password
             const decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, 'secret-key').toString(CryptoJS.enc.Utf8);
             if (decryptedPassword === password) {
-                // Send user info back to the allowed website
-                const userInfo = {
+                // Send verification message to the parent window
+                const verificationMessage = {
+                    status: "verified",
                     username: username,
                     message: "Login successful!"
                 };
-                window.opener.postMessage(userInfo, `https://${referrer}`);
+                window.opener.postMessage(verificationMessage, `https://${referrer}`);
                 window.close(); // Close the login window
             } else {
                 showError("Invalid username or password.");
