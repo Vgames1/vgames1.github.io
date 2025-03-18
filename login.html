@@ -1,199 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Widget</title>
-  <link rel="icon" href="vgamesblack.png" type="image/png">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      user-select: none; /* Prevent text selection */
-    }
-    .login-widget {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      max-width: 300px;
-      width: 100%;
-    }
-    .login-widget h2 {
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-    .login-widget input {
-      width: 100%;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    .login-widget button {
-      width: 100%;
-      padding: 0.75rem;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-    .login-widget button:hover {
-      background: #0056b3;
-    }
-    .login-widget a {
-      color: #007bff;
-      text-decoration: none;
-      display: block;
-      margin-top: 1rem;
-    }
-    .login-widget a:hover {
-      text-decoration: underline;
-    }
-    .custom-prompt {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 1rem;
-      border-radius: 5px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-    .custom-prompt.dark {
-      background: black;
-      color: white;
-    }
-    .floating-box {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #007bff;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" type="image/png" href="https://vgames1.github.io/vgamesblack.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .login-container img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container button {
+            background-color: #ff4b2b;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .login-container button:hover {
+            background-color: #ff416c;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <div class="login-widget">
-    <h2>Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <a href="vgames1.github.io/preff">Create Account</a>
-  </div>
+    <div class="login-container">
+        <img src="https://vgames1.github.io/vgamesblack.png" alt="Logo">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <div id="error-message" class="error-message"></div>
+    </div>
 
-  <div id="customPrompt" class="custom-prompt">
-    <p id="promptMessage"></p>
-    <button onclick="hidePrompt()">OK</button>
-  </div>
+    <script src="scfghjk.js"></script>
+    <script>
+        // Validate referrer
+        const allowedDomains = ["vgames1.github.io", "vuyani1.github.io", "vcloud24.github.io"];
+        const referrer = document.referrer ? new URL(document.referrer).hostname : null;
 
-  <div id="floatingBox" class="floating-box" onclick="handleFloatingBoxClick()">
-    <span id="floatingBoxText">Log In</span>
-  </div>
+        if (!referrer || !allowedDomains.includes(referrer)) {
+            document.body.innerHTML = `<h1>Access Denied</h1><p>You are not allowed to access this page.</p>`;
+        }
 
-  <script src="hue.js"></script>
-  <script>
-    // Check if user is logged in
-    const ip = localStorage.getItem('ip');
-    const vcoro2 = localStorage.getItem('vcoro2');
-    const username = localStorage.getItem('username');
+        // Login function
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
-    if (ip && vcoro2 && username) {
-      // Update floating box text
-      document.getElementById('floatingBoxText').textContent = username;
-    }
+            // Decrypt and validate credentials
+            const encryptedPassword = accounts[username];
+            if (!encryptedPassword) {
+                showError("Invalid username or password.");
+                return;
+            }
 
-    // Handle floating box click
-    function handleFloatingBoxClick() {
-      if (ip && vcoro2 && username) {
-        // Show account info
-        showPrompt(`Logged in as: ${username}`);
-      } else {
-        // Show login widget
-        document.querySelector('.login-widget').style.display = 'block';
-      }
-    }
+            const decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, 'secret-key').toString(CryptoJS.enc.Utf8);
+            if (decryptedPassword === password) {
+                // Send user info back to the allowed website
+                const userInfo = {
+                    username: username,
+                    message: "Login successful!"
+                };
+                window.opener.postMessage(userInfo, `https://${referrer}`);
+                window.close(); // Close the login window
+            } else {
+                showError("Invalid username or password.");
+            }
+        }
 
-    // Prevent screenshots and screen recordings
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        document.body.innerHTML = '<h1>Access Restricted</h1>';
-      }
-    });
-
-    // Validate IP address
-    function validateIP() {
-      const ip = localStorage.getItem('ip');
-      if (!ip || ip === '0.0.0.0' || ip === '127.0.0.1') {
-        showPrompt('Access Denied: Suspicious IP Address');
-        return false;
-      }
-      return true;
-    }
-
-    function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-
-      // Validate login using hue.js auto-generated accounts
-      if (validateLogin(username, password)) {
-        // Store IP, vcoro2, and username in local storage
-        localStorage.setItem('ip', '192.168.1.1');
-        localStorage.setItem('vcoro2', 'someEncryptedValue');
-        localStorage.setItem('username', username);
-
-        // Update floating box text
-        document.getElementById('floatingBoxText').textContent = username;
-
-        // Redirect with encrypted code
-        redirectWithEncryptedCode();
-      } else {
-        showPrompt('Invalid username or password.');
-      }
-    }
-
-    function redirectWithEncryptedCode() {
-      const encryptedCode = btoa('userInfo'); // Simulate encryption
-      const currentUrl = window.location.href;
-      if (currentUrl.includes('widget=true')) {
-        // If embedded as a widget, send info to parent site
-        window.parent.postMessage({ hiu: encryptedCode }, '*');
-      } else {
-        // If standalone, redirect with encrypted code
-        window.location.href = `${currentUrl}?hiu=${encryptedCode}`;
-      }
-    }
-
-    function showPrompt(message) {
-      const prompt = document.getElementById('customPrompt');
-      const promptMessage = document.getElementById('promptMessage');
-      promptMessage.textContent = message;
-      prompt.style.display = 'block';
-
-      // Toggle dark/light mode
-      const isNight = new Date().getHours() >= 18 || new Date().getHours() < 6;
-      prompt.classList.toggle('dark', isNight);
-    }
-
-    function hidePrompt() {
-      document.getElementById('customPrompt').style.display = 'none';
-    }
-  </script>
+        // Show error message
+        function showError(message) {
+            document.getElementById('error-message').textContent = message;
+        }
+    </script>
 </body>
 </html>
