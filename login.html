@@ -85,42 +85,35 @@
     </div>
 
     <script>
-        // Encrypted accounts using AES encryption (mock data)
+        // Accounts with plaintext passwords (for testing purposes)
         const accounts = {
-         "ShadowNinja": "U2FsdGVkX1+3QJ4Z7X8Z5A==", 
-            "CyberPunk": "U2FsdGVkX1+5X8Z5A7X8Z5A==", 
-            "QuantumLeap": "U2FsdGVkX1+9X8Z5A7X8Z5A==", 
-            "NeonPhantom": "U2FsdGVkX1+1X8Z5A7X8Z5A==", 
-            "Starlight": "U2FsdGVkX1+2X8Z5A7X8Z5A==",
-            "IronWolf": "U2FsdGVkX1+3X8Z5A7X8Z5A==", 
-            "DarkKnight": "U2FsdGVkX1+4X8Z5A7X8Z5A==", 
-            "GoldenEagle": "U2FsdGVkX1+5X8Z5A7X8Z5A==",
-            "CrimsonTiger": "U2FsdGVkX1+6X8Z5A7X8Z5A==", 
-            "SilverFox": "U2FsdGVkX1+7X8Z5A7X8Z5A==",
-            "MysticDragon": "U2FsdGVkX1+8X8Z5A7X8Z5A==",
-            "FrostGiant": "U2FsdGVkX1+9X8Z5A7X8Z5A==",
-            "ThunderBird": "U2FsdGVkX1+0X8Z5A7X8Z5A==", 
-            "SolarFlare": "U2FsdGVkX1+1X8Z5A7X8Z5A==", 
-            "LunarWolf": "U2FsdGVkX1+2X8Z5A7X8Z5A==", 
-            "OceanWave": "U2FsdGVkX1+3X8Z5A7X8Z5A==", 
-            "MountainPeak": "U2FsdGVkX1+4X8Z5A7X8Z5A==", 
-            "DesertStorm": "U2FsdGVkX1+5X8Z5A7X8Z5A==", 
-            "ForestGuardian": "U2FsdGVkX1+6X8Z5A7X8Z5A==",
-            "SkyHunter": "U2FsdGVkX1+7X8Z5A7X8Z5A==", 
-            "NightOwl": "U2FsdGVkX1+8X8Z5A7X8Z5A==", 
-            "FirePhoenix": "U2FsdGVkX1+9X8Z5A7X8Z5A==", 
-            "IceBear": "U2FsdGVkX1+0X8Z5A7X8Z5A==", 
-            "StormRider": "U2FsdGVkX1+1X8Z5A7X8Z5A==", 
-            "TimeTraveler": "U2FsdGVkX1+2X8Z5A7X8Z5A==", 
-            "vilakaziv": "U2FsdGVkX1+3X8Z5A7X8Z5A==" 
+            "ShadowNinja": "Ninja@123!",
+            "CyberPunk": "Punk$456!",
+            "QuantumLeap": "Leap#789!",
+            "NeonPhantom": "Phantom$101!",
+            "Starlight": "Star@2022!",
+            "IronWolf": "Wolf#303!",
+            "DarkKnight": "Knight$404!",
+            "GoldenEagle": "Eagle@505!",
+            "CrimsonTiger": "Tiger#606!",
+            "SilverFox": "Fox$707!",
+            "MysticDragon": "Dragon@808!",
+            "FrostGiant": "Giant$909!",
+            "ThunderBird": "Bird@101!",
+            "SolarFlare": "Flare#202!",
+            "LunarWolf": "Lunar$303!",
+            "OceanWave": "Wave@404!",
+            "MountainPeak": "Peak#505!",
+            "DesertStorm": "Storm$606!",
+            "ForestGuardian": "Guardian@707!",
+            "SkyHunter": "Hunter#808!",
+            "NightOwl": "Owl$909!",
+            "FirePhoenix": "Phoenix@101!",
+            "IceBear": "Bear#202!",
+            "StormRider": "Rider$303!",
+            "TimeTraveler": "Traveler@404!",
+            "vilakaziv": "Vilakazi#505!"
         };
-
-        // Function to decrypt passwords (mock implementation)
-        function decryptPassword(encryptedPassword) {
-            // In a real-world scenario, use a library like CryptoJS to decrypt the password
-            // For demonstration purposes, we'll assume the decrypted password is the same as the encrypted one
-            return encryptedPassword; // Replace with actual decryption logic
-        }
 
         // Function to handle login
         function login() {
@@ -141,11 +134,10 @@
 
             // Check if the username exists
             if (accounts.hasOwnProperty(username)) {
-                const encryptedPassword = accounts[username];
-                const decryptedPassword = decryptPassword(encryptedPassword);
+                const storedPassword = accounts[username];
 
-                // Mock password validation (replace with actual decryption and comparison)
-                if (password === decryptedPassword) {
+                // Compare entered password with stored password
+                if (password === storedPassword) {
                     // Login successful
                     verifiedMessage.textContent = 'Login successful! Redirecting...';
                     setTimeout(() => {
