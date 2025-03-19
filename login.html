@@ -85,9 +85,9 @@
     </div>
 
     <script>
-        // Encrypted accounts using AES encryption
+        // Encrypted accounts using AES encryption (mock data)
         const accounts = {
-            "ShadowNinja": "U2FsdGVkX1+3QJ4Z7X8Z5A==", 
+         "ShadowNinja": "U2FsdGVkX1+3QJ4Z7X8Z5A==", 
             "CyberPunk": "U2FsdGVkX1+5X8Z5A7X8Z5A==", 
             "QuantumLeap": "U2FsdGVkX1+9X8Z5A7X8Z5A==", 
             "NeonPhantom": "U2FsdGVkX1+1X8Z5A7X8Z5A==", 
@@ -115,63 +115,66 @@
             "vilakaziv": "U2FsdGVkX1+3X8Z5A7X8Z5A==" 
         };
 
-        // Include CryptoJS for AES encryption/decryption
-        const CryptoJS = {
-            AES: {
-                encrypt: (data, key) => btoa(data), // Simplified for example purposes
-                decrypt: (data, key) => atob(data) // Simplified for example purposes
-            },
-            enc: {
-                Utf8: {
-                    parse: (data) => data,
-                    stringify: (data) => data
-                }
-            }
-        };
-
-        // Validate referrer
-        const allowedDomains = ["vgames1.github.io", "vuyani1.github.io", "vcloud24.github.io"];
-        const referrer = document.referrer ? new URL(document.referrer).hostname : null;
-
-        if (!referrer || !allowedDomains.includes(referrer)) {
-            document.body.innerHTML = `<h1>Access Denied</h1><p>You are not allowed to access this page.</p>`;
+        // Function to decrypt passwords (mock implementation)
+        function decryptPassword(encryptedPassword) {
+            // In a real-world scenario, use a library like CryptoJS to decrypt the password
+            // For demonstration purposes, we'll assume the decrypted password is the same as the encrypted one
+            return encryptedPassword; // Replace with actual decryption logic
         }
 
-        // Login function
+        // Function to handle login
         function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+            const verifiedMessage = document.getElementById('verified-message');
 
-            // Check if the username exists
-            const encryptedPassword = accounts[username];
-            if (!encryptedPassword) {
-                showError("Invalid username or password.");
+            // Clear previous messages
+            errorMessage.textContent = '';
+            verifiedMessage.textContent = '';
+
+            // Validate inputs
+            if (!username || !password) {
+                errorMessage.textContent = 'Please enter both username and password.';
                 return;
             }
 
-            // Decrypt and validate the password
-            const decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, 'secret-key').toString(CryptoJS.enc.Utf8);
-            if (decryptedPassword === password) {
-                // Display verification message
-                document.getElementById('verified-message').textContent = `Verified! Requested by: ${referrer}`;
+            // Check if the username exists
+            if (accounts.hasOwnProperty(username)) {
+                const encryptedPassword = accounts[username];
+                const decryptedPassword = decryptPassword(encryptedPassword);
 
-                // Send verification message to the parent window
-                const verificationMessage = {
-                    status: "verified",
-                    username: username,
-                    message: "Login successful!"
-                };
-                window.opener.postMessage(verificationMessage, `https://${referrer}`);
-                setTimeout(() => window.close(), 2000); // Close the login window after 2 seconds
+                // Mock password validation (replace with actual decryption and comparison)
+                if (password === decryptedPassword) {
+                    // Login successful
+                    verifiedMessage.textContent = 'Login successful! Redirecting...';
+                    setTimeout(() => {
+                        // Send a message to the parent window (Game Hub) with the login status
+                        window.opener.postMessage({
+                            status: "verified",
+                            username: username,
+                            message: "Login successful!"
+                        }, window.location.origin);
+
+                        // Close the login window
+                        window.close();
+                    }, 2000);
+                } else {
+                    // Incorrect password
+                    errorMessage.textContent = 'Incorrect password. Please try again.';
+                }
             } else {
-                showError("Invalid username or password.");
+                // Username not found
+                errorMessage.textContent = 'Username not found. Please check your input.';
             }
         }
 
-        // Show error message
-        function showError(message) {
-            document.getElementById('error-message').textContent = message;
-        }
+        // Handle Enter key press for login
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                login();
+            }
+        });
     </script>
 </body>
 </html>
