@@ -234,7 +234,7 @@
                 "tags": "1-player,2d,animal,brain,cute,drawing,free,html5,kids,logic,mobile,mouse,puzzle",
                 "description": "Draw The Bird Path is a drawing game where the player tries to guide sweet birds home by drawing paths. Help the birds find their nests. Create a path for them by overcoming obstacles and objects. But be careful when guiding more than one bird to their home; they should not collide with each other."
             },
-              {
+                      {
         title: "Tank Arena",
         embed: "https://cloud.onlinegames.io/games/2025/construct/293/tank-arena/index-og.html",
         image: "https://www.onlinegames.io/media/posts/956/responsive/Tank-Arena-Online-xs.jpg",
@@ -1696,16 +1696,23 @@
             if (username) {
                 alert(`Welcome back, ${username}!`);
             } else {
-                window.location.href = 'https://vgames1.github.io/login?id%call=?main';
+                // Open the login page in a new window
+                const loginWindow = window.open('login.html', 'Login', 'width=400,height=500');
+                // Listen for the login verification message
+                window.addEventListener('message', (event) => {
+                    if (event.origin === window.location.origin && event.data.status === "verified") {
+                        localStorage.setItem('username', event.data.username);
+                        loginButton.textContent = event.data.username;
+                        alert(event.data.message);
+                    }
+                });
             }
         }
 
         // Check login status
         function checkLoginStatus() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const username = urlParams.get('accepted%user%acc%name%is');
+            const username = localStorage.getItem('username');
             if (username) {
-                localStorage.setItem('username', username);
                 loginButton.textContent = username;
             }
         }
@@ -1743,7 +1750,6 @@
         }
     </script>
     <script async src="https://script.adquake.com/js/adquake.js" adquake-key="MTXz/iwJQEKL8SIDzdTiRw=="></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1327653381351844"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1327653381351844" crossorigin="anonymous"></script>
 </body>
 </html>
