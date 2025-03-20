@@ -71,7 +71,16 @@
             font-size: 16px;
             font-weight: bold;
         }
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+            font-size: 12px;
+            color: #bbb;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
     <div class="login-container">
@@ -80,85 +89,131 @@
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
         <button onclick="login()">Login</button>
+        <button onclick="createAccount()" style="margin-top: 10px; background-color: #4caf50;">Create Account</button>
         <div id="error-message" class="error-message"></div>
         <div id="verified-message" class="verified-message"></div>
     </div>
 
-    <script>
-        // Accounts with plaintext passwords (for testing purposes)
-        const accounts = {
-            "ShadowNinja": "Ninja@123!",
-            "CyberPunk": "Punk$456!",
-            "QuantumLeap": "Leap#789!",
-            "NeonPhantom": "Phantom$101!",
-            "Starlight": "Star@2022!",
-            "IronWolf": "Wolf#303!",
-            "DarkKnight": "Knight$404!",
-            "GoldenEagle": "Eagle@505!",
-            "CrimsonTiger": "Tiger#606!",
-            "SilverFox": "Fox$707!",
-            "MysticDragon": "Dragon@808!",
-            "FrostGiant": "Giant$909!",
-            "ThunderBird": "Bird@101!",
-            "SolarFlare": "Flare#202!",
-            "LunarWolf": "Lunar$303!",
-            "OceanWave": "Wave@404!",
-            "MountainPeak": "Peak#505!",
-            "DesertStorm": "Storm$606!",
-            "ForestGuardian": "Guardian@707!",
-            "SkyHunter": "Hunter#808!",
-            "NightOwl": "Owl$909!",
-            "FirePhoenix": "Phoenix@101!",
-            "IceBear": "Bear#202!",
-            "StormRider": "Rider$303!",
-            "TimeTraveler": "Traveler@404!",
-            "vilakaziv": "Vilakazi#505!"
-        };
+    <div class="footer">
+        Request ID: <span id="request-id"></span>
+    </div>
 
-        // Function to handle login
+    <script>
+        // Encrypted accounts storage
+    const accounts = {
+    "ShadowNinja": "U2FsdGVkX1+3QJ4Z7X8Z5A==",
+    "CyberPunk": "U2FsdGVkX1+5X8Z5A7X8Z5A==",
+    "QuantumLeap": "U2FsdGVkX1+9X8Z5A7X8Z5A==",
+    "NeonPhantom": "U2FsdGVkX1+1X8Z5A7X8Z5A==",
+    "Starlight": "U2FsdGVkX1+2X8Z5A7X8Z5A==",
+    "IronWolf": "U2FsdGVkX1+3X8Z5A7X8Z5A==",
+    "DarkKnight": "U2FsdGVkX1+4X8Z5A7X8Z5A==",
+    "GoldenEagle": "U2FsdGVkX1+5X8Z5A7X8Z5A==",
+    "CrimsonTiger": "U2FsdGVkX1+6X8Z5A7X8Z5A==",
+    "SilverFox": "U2FsdGVkX1+7X8Z5A7X8Z5A=="
+};
+
+        // Secret key for AES encryption
+        const secretKey = "my-secret-key";
+
+        // Generate a request ID
+        function generateRequestId() {
+            const id = CryptoJS.SHA256(new Date().toISOString() + Math.random()).toString();
+            return id.slice(0, -5) + '*****'; // Hide last 5 characters
+        }
+
+        // Display request ID in footer
+        document.getElementById('request-id').textContent = generateRequestId();
+
+        // Get unique emoji for username
+        function getEmoji(username) {
+            const emojis = ["😀", "😎", "🤖", "👻", "🐱", "🐉", "🦊", "🐺", "🦅", "🐯"];
+            const hash = CryptoJS.MD5(username).toString();
+            const index = parseInt(hash, 16) % emojis.length;
+            return emojis[index];
+        }
+
+        // Encrypt password using AES
+        function encryptPassword(password) {
+            return CryptoJS.AES.encrypt(password, secretKey).toString();
+        }
+
+        // Decrypt password using AES
+        function decryptPassword(encryptedPassword) {
+            return CryptoJS.AES.decrypt(encryptedPassword, secretKey).toString(CryptoJS.enc.Utf8);
+        }
+
+        // Login function
         function login() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             const errorMessage = document.getElementById('error-message');
             const verifiedMessage = document.getElementById('verified-message');
 
-            // Clear previous messages
             errorMessage.textContent = '';
             verifiedMessage.textContent = '';
 
-            // Validate inputs
             if (!username || !password) {
                 errorMessage.textContent = 'Please enter both username and password.';
                 return;
             }
 
-            // Check if the username exists
             if (accounts.hasOwnProperty(username)) {
-                const storedPassword = accounts[username];
+                // Decrypt the stored password
+                const decryptedPassword = decryptPassword(accounts[username]);
 
-                // Compare entered password with stored password
-                if (password === storedPassword) {
-                    // Login successful
+                if (password === decryptedPassword) {
                     verifiedMessage.textContent = 'Login successful! Redirecting...';
+                    const emoji = getEmoji(username);
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('emoji', emoji);
+                    localStorage.setItem('loginTime', new Date().toISOString());
+
                     setTimeout(() => {
-                        // Send a message to the parent window (Game Hub) with the login status
                         window.opener.postMessage({
                             status: "verified",
                             username: username,
+                            emoji: emoji,
                             message: "Login successful!"
                         }, window.location.origin);
-
-                        // Close the login window
                         window.close();
                     }, 2000);
                 } else {
-                    // Incorrect password
                     errorMessage.textContent = 'Incorrect password. Please try again.';
                 }
             } else {
-                // Username not found
                 errorMessage.textContent = 'Username not found. Please check your input.';
             }
+        }
+
+        // Create account function
+        function createAccount() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (!username || !password) {
+                errorMessage.textContent = 'Please enter both username and password.';
+                return;
+            }
+
+            if (accounts.hasOwnProperty(username)) {
+                errorMessage.textContent = 'Username already exists. Please choose another.';
+                return;
+            }
+
+            // Encrypt the password before storing
+            const encryptedPassword = encryptPassword(password);
+            accounts[username] = encryptedPassword;
+
+            // Send account creation request via email
+            const deviceName = navigator.userAgent;
+            const ipAddress = ''; // You can use a service to fetch the IP address
+            const emailBody = `New account request:\n\nUsername: ${username}\nDevice: ${deviceName}\nIP Address: ${ipAddress}`;
+            const mailtoLink = `mailto:pooftheman2@gmail.com?subject=New Account Request&body=${encodeURIComponent(emailBody)}`;
+            window.location.href = mailtoLink;
+
+            alert('Account creation request sent. You will be notified once your account is approved.');
         }
 
         // Handle Enter key press for login
