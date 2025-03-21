@@ -11,8 +11,8 @@
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #121212;
+            color: #ffffff;
         }
 
         /* Top Bar */
@@ -21,8 +21,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #1f1f1f;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .top-bar h1 {
@@ -66,10 +66,10 @@
 
         .game-tile {
             width: 150px;
-            background-color: #fff;
+            background-color: #1f1f1f;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -79,7 +79,7 @@
 
         .game-tile:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 75, 43, 0.2);
+            box-shadow: 0 8px 20px rgba(255, 75, 43, 0.3);
         }
 
         .game-tile img {
@@ -92,13 +92,13 @@
             margin: 10px;
             font-size: 1.2rem;
             text-align: center;
-            color: #333;
+            color: #ffffff;
         }
 
         .game-tile p {
             margin: 5px 10px;
             font-size: 0.9rem;
-            color: #666;
+            color: #bbb;
             text-align: center;
         }
 
@@ -114,7 +114,7 @@
             height: 500px;
             border: none;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         .game-page button {
@@ -148,6 +148,7 @@
         .game-page .game-info .description {
             width: calc(100% - 170px);
             text-align: left;
+            color: #ffffff;
         }
 
         .game-page .more-games {
@@ -158,15 +159,73 @@
         .footer {
             text-align: center;
             padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #1f1f1f;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
             margin-top: 20px;
         }
 
         .footer p {
             margin: 0;
             font-size: 0.9rem;
-            color: #666;
+            color: #bbb;
+        }
+
+        /* Search Popup */
+        .search-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1f1f1f;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .search-popup input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .search-popup button {
+            background-color: #ff4b2b;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Game Catalogue Buttons */
+        .catalogue-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #1f1f1f;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .catalogue-buttons button {
+            background-color: #333;
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .catalogue-buttons button:hover {
+            background-color: #ff4b2b;
         }
     </style>
 </head>
@@ -182,6 +241,14 @@
             <button onclick="showSearchPopup()">Search</button>
             <button onclick="showMoreOptions()">More</button>
         </div>
+    </div>
+
+    <!-- Game Catalogue Buttons -->
+    <div class="catalogue-buttons">
+        <button onclick="filterGames('1-player')">1 Player</button>
+        <button onclick="filterGames('2-player')">2 Player</button>
+        <button onclick="filterGames('action')">Action</button>
+        <button onclick="filterGames('adventure')">Adventure</button>
     </div>
 
     <!-- Games Container -->
@@ -211,6 +278,12 @@
         <p>Vilakazigames2025© All rights reserved</p>
     </div>
 
+    <!-- Search Popup -->
+    <div class="search-popup" id="search-popup">
+        <input type="text" id="search-input" placeholder="Search games...">
+        <button onclick="searchGames()">Search</button>
+    </div>
+
     <script>
         const games = [
             {
@@ -234,30 +307,23 @@
                 "tags": "1-player,2d,animal,brain,cute,drawing,free,html5,kids,logic,mobile,mouse,puzzle",
                 "description": "Draw The Bird Path is a drawing game where the player tries to guide sweet birds home by drawing paths. Help the birds find their nests. Create a path for them by overcoming obstacles and objects. But be careful when guiding more than one bird to their home; they should not collide with each other."
             },
-                      {
-        title: "Tank Arena",
-        embed: "https://cloud.onlinegames.io/games/2025/construct/293/tank-arena/index-og.html",
-        image: "https://www.onlinegames.io/media/posts/956/responsive/Tank-Arena-Online-xs.jpg",
-        tags: "2-player,2d,action,arcade,arena,crazy,free,fun,tank",
-        description: "Tank Arena is an online tank battle game that you can play with your friend on the same device.",
-        category: "multiplayer"
-      },
-      {
-        title: "Squid Race Simulator",
-        embed: "https://www.onlinegames.io/games/2021/unity3/squid-race-simulator/index.html",
-        image: "https://www.onlinegames.io/media/posts/950/responsive/squid-race-simulator-xs.jpg",
-        tags: "1-player,3d,action,avoid,crazy,free,fun,mobile,running",
-        description: "Run, stop, survive! Squid Race Simulator brings the iconic Red Light, Green Light game from Squid Game to your screen.",
-        category: "solo"
-      },
-        {
-    "title": "Kings io",
-    "embed": "https://cloud.onlinegames.io/games/2025/construct/208/kings-io/index-og.html",
-    "image": "https://www.onlinegames.io/media/posts/952/responsive/Kings-io-xs.jpg",
-    "tags": "2d,arena,army,battle,free,io-games,strategy,war",
-    "description": "The road to royalty is that way!  ⬆️ If you're ready to rule your own kingdom, play Kings io.  This is an exciting online strategy game where you start as a small-time ruler, determined to rise to glory by building a grand empire.  If you’re up for gathering gold, recruiting strong troops, and outsmarting enemy kings, then this free game is your perfect battlefield."
-  },
-        {
+            {
+                title: "Tank Arena",
+                embed: "https://cloud.onlinegames.io/games/2025/construct/293/tank-arena/index-og.html",
+                image: "https://www.onlinegames.io/media/posts/956/responsive/Tank-Arena-Online-xs.jpg",
+                tags: "2-player,2d,action,arcade,arena,crazy,free,fun,tank",
+                description: "Tank Arena is an online tank battle game that you can play with your friend on the same device.",
+                category: "multiplayer"
+            },
+            {
+                title: "Squid Race Simulator",
+                embed: "https://www.onlinegames.io/games/2021/unity3/squid-race-simulator/index.html",
+                image: "https://www.onlinegames.io/media/posts/950/responsive/squid-race-simulator-xs.jpg",
+                tags: "1-player,3d,action,avoid,crazy,free,fun,mobile,running",
+                description: "Run, stop, survive! Squid Race Simulator brings the iconic Red Light, Green Light game from Squid Game to your screen.",
+                category: "solo"
+            },
+                    {
     "title": "SpartaHoppers",
     "embed": "https://cloud.onlinegames.io/games/2025/construct/227/spartahoppers/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/949/responsive/sparta-hoppers-game-xs.jpg",
@@ -1628,6 +1694,13 @@
     "image": "https://www.onlinegames.io/media/posts/762/responsive/Racing-Cars-2-xs.jpg",
     "tags": "1-player,2d,arcade,car,driving,free,kids,mobile,racing,speed",
     "description": "Racing Cars 2 is a driving game where you will steer your car on a city road.  However, the road will test your driving skills with ups and downs.  You cannot lose control of the car! \nOtherwise, the car can turn upside down, which will cause it to explode."
+  },
+                  {
+    "title": "Kings io",
+    "embed": "https://cloud.onlinegames.io/games/2025/construct/208/kings-io/index-og.html",
+    "image": "https://www.onlinegames.io/media/posts/952/responsive/Kings-io-xs.jpg",
+    "tags": "2d,arena,army,battle,free,io-games,strategy,war",
+    "description": "The road to royalty is that way!  ⬆️ If you're ready to rule your own kingdom, play Kings io.  This is an exciting online strategy game where you start as a small-time ruler, determined to rise to glory by building a grand empire.  If you’re up for gathering gold, recruiting strong troops, and outsmarting enemy kings, then this free game is your perfect battlefield."
   }
         ];
 
@@ -1638,6 +1711,7 @@
         const gameDescription = document.getElementById('game-description');
         const moreGamesContainer = document.querySelector('.more-games .games-container');
         const loginButton = document.getElementById('login-button');
+        const searchPopup = document.getElementById('search-popup');
 
         // Load games when the page loads
         window.onload = function () {
@@ -1646,17 +1720,20 @@
         };
 
         // Load games
-        function loadGames() {
+        function loadGames(filterTag = '') {
+            gamesContainer.innerHTML = '';
             games.forEach((game, index) => {
-                const tile = document.createElement('div');
-                tile.className = `game-tile ${index % 3 === 0 ? 'big' : ''}`;
-                tile.innerHTML = `
-                    <img src="${game.image}" alt="${game.title}">
-                    <h3>${game.title}</h3>
-                    <p>${game.tags}</p>
-                `;
-                tile.addEventListener('click', () => loadGame(game));
-                gamesContainer.appendChild(tile);
+                if (!filterTag || game.tags.includes(filterTag)) {
+                    const tile = document.createElement('div');
+                    tile.className = `game-tile ${index % 3 === 0 ? 'big' : ''}`;
+                    tile.innerHTML = `
+                        <img src="${game.image}" alt="${game.title}">
+                        <h3>${game.title}</h3>
+                        <p>${game.tags}</p>
+                    `;
+                    tile.addEventListener('click', () => loadGame(game));
+                    gamesContainer.appendChild(tile);
+                }
             });
         }
 
@@ -1696,9 +1773,7 @@
             if (username) {
                 alert(`Welcome back, ${username}!`);
             } else {
-                // Open the login page in a new window
                 const loginWindow = window.open('login.html', 'Login', 'width=400,height=500');
-                // Listen for the login verification message
                 window.addEventListener('message', (event) => {
                     if (event.origin === window.location.origin && event.data.status === "verified") {
                         localStorage.setItem('username', event.data.username);
@@ -1748,8 +1823,35 @@
                 gameIframe.msRequestFullscreen();
             }
         }
+
+        // Show search popup
+        function showSearchPopup() {
+            searchPopup.style.display = 'block';
+        }
+
+        // Search games
+        function searchGames() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filteredGames = games.filter(game => game.title.toLowerCase().includes(query));
+            gamesContainer.innerHTML = '';
+            filteredGames.forEach(game => {
+                const tile = document.createElement('div');
+                tile.className = 'game-tile';
+                tile.innerHTML = `
+                    <img src="${game.image}" alt="${game.title}">
+                    <h3>${game.title}</h3>
+                    <p>${game.tags}</p>
+                `;
+                tile.addEventListener('click', () => loadGame(game));
+                gamesContainer.appendChild(tile);
+            });
+            searchPopup.style.display = 'none';
+        }
+
+        // Filter games by tag
+        function filterGames(tag) {
+            loadGames(tag);
+        }
     </script>
-    <script async src="https://script.adquake.com/js/adquake.js" adquake-key="MTXz/iwJQEKL8SIDzdTiRw=="></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1327653381351844" crossorigin="anonymous"></script>
 </body>
 </html>
