@@ -228,6 +228,7 @@
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             transition: transform 0.3s;
+            cursor: pointer;
         }
         
         .related-game:hover {
@@ -375,7 +376,7 @@
         <!-- Game Display -->
         <div class="game-display">
             <div class="game-iframe-container">
-                <iframe class="game-iframe" id="game-iframe" src="" allowfullscreen></iframe>
+                <iframe class="game-iframe" id="game-iframe" src="" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
                 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
             </div>
             
@@ -412,7 +413,8 @@
     <footer>
         <p>© VGAMES2025 | All rights reserved</p>
     </footer>
-   <script>
+
+    <script>
         // DOM elements
         const gameIframe = document.getElementById('game-iframe');
         const gameImage = document.getElementById('game-image');
@@ -434,29 +436,46 @@
             try {
                 // Load game data from JSON file
                 const response = await fetch('game.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load games data');
+                }
                 games = await response.json();
+                
+                // Process games data - convert tags string to array if needed
+                games = games.map(game => {
+                    if (typeof game.tags === 'string') {
+                        game.tags = game.tags.split(',').map(tag => tag.trim());
+                    }
+                    return game;
+                });
                 
                 // Get game parameter from URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const gameParam = urlParams.get('game');
                 
-                if (gameParam) {
-                    // Find game by title (converted to slug)
-                    currentGame = games.find(game => 
-                        game.title.toLowerCase().replace(/ /g, '-') === gameParam.toLowerCase()
-                    );
-                    
-                    if (currentGame) {
-                        loadGame(currentGame);
-                        loadRelatedGames(currentGame.tags);
-                    } else {
-                        // If no valid game found, redirect to index.html
-                        window.location.href = 'index.html';
-                    }
-                } else {
-                    // If no game parameter, redirect to index.html
+                if (!gameParam) {
                     window.location.href = 'index.html';
+                    return;
                 }
+                
+                // Find game by slug (converted from title)
+                currentGame = games.find(game => {
+                    const gameSlug = game.title.toLowerCase()
+                        .replace(/[^\w\s-]/g, '') // Remove special chars
+                        .replace(/\s+/g, '-')     // Replace spaces with dashes
+                        .replace(/-+/g, '-');      // Remove consecutive dashes
+                    return gameSlug === gameParam.toLowerCase();
+                });
+                
+                if (!currentGame) {
+                    // If no valid game found, redirect to index.html
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                loadGame(currentGame);
+                loadRelatedGames(currentGame.tags);
+                
             } catch (error) {
                 console.error('Error loading game data:', error);
                 window.location.href = 'index.html';
@@ -470,37 +489,57 @@
             // Set game content
             gameIframe.src = game.embed;
             gameImage.src = game.image;
+            gameImage.alt = game.title;
             gameTitle.textContent = game.title;
             gameDescription.textContent = game.description;
             
             // Update document title
-            document.title = `VGAMES Hub - ${game.title}`;
+            document.title = `${game.title} - VGAMES Hub`;
             
             // Hide loading when iframe loads
             gameIframe.onload = function() {
                 hideLoading();
             };
+            
+            // Handle iframe loading errors
+            gameIframe.onerror = function() {
+                hideLoading();
+                alert('Failed to load the game. Please try again later.');
+            };
         }
 
         // Load related games based on tags
         function loadRelatedGames(tags) {
+            if (!Array.isArray(tags)) {
+                tags = [];
+            }
+            
             relatedGamesContainer.innerHTML = '';
             
-            // Find games with similar tags
+            // Find games with similar tags (excluding current game)
             const related = games
-                .filter(game => game !== currentGame && game.tags.some(tag => tags.includes(tag)))
-                .slice(0, 4); // Show max 4 related games
+                .filter(game => game !== currentGame)
+                .filter(game => {
+                    if (!game.tags || !Array.isArray(game.tags)) return false;
+                    return game.tags.some(tag => tags.includes(tag));
+                })
+                .slice(0, 6); // Show max 6 related games
             
+            // If no related games found, show random popular games
             if (related.length === 0) {
-                // If no related games found, show popular games
-                related.push(...games
+                const shuffled = [...games]
                     .filter(game => game !== currentGame)
-                    .slice(0, 4));
+                    .sort(() => 0.5 - Math.random());
+                related.push(...shuffled.slice(0, 6));
             }
             
             // Create related game tiles
             related.forEach(game => {
-                const gameSlug = game.title.toLowerCase().replace(/ /g, '-');
+                const gameSlug = game.title.toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                    
                 const gameElement = document.createElement('div');
                 gameElement.className = 'related-game';
                 gameElement.innerHTML = `
@@ -517,16 +556,37 @@
         // Toggle fullscreen
         function toggleFullscreen() {
             if (!isFullscreen) {
-                document.documentElement.requestFullscreen();
+                if (gameIframe.requestFullscreen) {
+                    gameIframe.requestFullscreen();
+                } else if (gameIframe.webkitRequestFullscreen) {
+                    gameIframe.webkitRequestFullscreen();
+                } else if (gameIframe.msRequestFullscreen) {
+                    gameIframe.msRequestFullscreen();
+                }
                 isFullscreen = true;
             } else {
-                document.exitFullscreen();
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                isFullscreen = false;
             }
         }
 
         // Handle fullscreen change
         document.addEventListener('fullscreenchange', () => {
             isFullscreen = !!document.fullscreenElement;
+        });
+        
+        document.addEventListener('webkitfullscreenchange', () => {
+            isFullscreen = !!document.webkitFullscreenElement;
+        });
+        
+        document.addEventListener('msfullscreenchange', () => {
+            isFullscreen = !!document.msFullscreenElement;
         });
 
         // Detect device type
@@ -574,11 +634,15 @@
         // Like game
         function likeGame() {
             alert(`You liked ${gameTitle.textContent}!`);
+            // In a real implementation, you would send this to your backend
         }
 
         // Share game
         function shareGame() {
-            const gameSlug = gameTitle.textContent.toLowerCase().replace(/ /g, '-');
+            const gameSlug = gameTitle.textContent.toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
             const shareUrl = `${window.location.origin}/game.html?game=${gameSlug}`;
             
             if (navigator.share) {
