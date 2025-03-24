@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VGAMES - South Africa's Premier Gaming Platform</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+      background: url('http://www.vgames.run.place/vgameswhite.png') center/cover no-repeat fixed;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+    .container {
+      background: rgba(0, 20, 137, 0.85);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      border: 3px solid #ffb81c;
+      backdrop-filter: blur(5px);
+    }
+    .flag-container {
+      margin-bottom: 20px;
+    }
+    .flag-map {
+      max-width: 200px;
+      margin: 10px auto;
+    }
+    h1 {
+      color: #ffb81c;
+      margin-bottom: 20px;
+      font-size: 2.2em;
+      text-transform: uppercase;
+    }
+    h2 {
+      color: #fff;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+    .logo {
+      width: 180px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+    .recipient-selector, #subjectInput {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.9);
+      border: 2px solid #ffb81c;
+      font-size: 16px;
+    }
+    .contact-form textarea {
+      height: 150px;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 2px solid #ffb81c;
+      border-radius: 5px;
+      font-size: 16px;
+      background: rgba(255,255,255,0.9);
+    }
+    .contact-form button {
+      background-color: #E03C31;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      border: 2px solid #ffb81c;
+    }
+    .contact-form button:hover {
+      background-color: #ffb81c;
+      transform: scale(1.02);
+    }
+    .about-section {
+      margin: 25px 0;
+      padding: 15px;
+      background: rgba(0, 119, 73, 0.7);
+      border-radius: 10px;
+      border-left: 5px solid #ffb81c;
+    }
+    .alert {
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+      font-size: 16px;
+      display: none;
+    }
+    .alert.error {
+      background-color: rgba(224, 60, 49, 0.8);
+      color: #fff;
+      border: 2px solid #ffb81c;
+    }
+    .contact-link {
+      color: #ffb81c;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .contact-link:hover {
+      text-decoration: underline;
+    }
+    .partner-logo {
+      height: 25px;
+      vertical-align: middle;
+      margin: 0 5px;
+    }
+    .copyright {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ffb81c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="flag-container">
+      <svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 90 60">
+        <defs>
+          <clipPath id="b"><path d="m0 0 45 30L0 60z"/></clipPath>
+          <clipPath id="a"><path d="M0 0h90v60H0z"/></clipPath>
+        </defs>
+        <path fill="#E03C31" d="M0 0h90v30H45z"/>
+        <path fill="#001489" d="M0 60h90V30H45z"/>
+        <g clip-path="url(#a)" fill="none">
+          <path stroke="#FFF" stroke-width="20" d="M90 30H45L0 0v60l45-30"/>
+          <path fill="#000" stroke="#ffb81c" stroke-width="20" clip-path="url(#b)" d="m0 0 45 30L0 60"/>
+          <path stroke="#007749" stroke-width="12" d="m0 0 45 30h45M0 60l45-30"/>
+        </g>
+      </svg>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Flag_map_of_South_Africa.svg" alt="South Africa Map" class="flag-map">
+    </div>
+
+    <img src="http://www.vgames.run.place/vgameswhite.png" alt="VGAMES Logo" class="logo">
+    <h1>VGAMES Support Centre</h1>
+    <h2>South Africa's Leading Gaming Platform</h2>
+
+    <div class="about-section">
+      <p>VGAMES is proudly South African, bringing you over 200+ high-quality games. We partner with <img src="https://www.onlinegames.io/media/website/online-games-io.png" alt="OnlineGames.io" class="partner-logo"> <a href="https://www.onlinegames.io" target="_blank" class="contact-link">OnlineGames.io</a> to deliver the best gaming experience. All domains under vgames.run.place are official VGAMES platforms.</p>
+    </div>
+
+    <div id="errorAlert" class="alert error"></div>
+
+    <form class="contact-form" id="contactForm">
+      <select class="recipient-selector" id="recipientSelector" required>
+        <option value="">-- Select who to contact --</option>
+        <option value="help@vgames.run.place">General Help & Support</option>
+        <option value="admin@vgames.run.place">Administrator</option>
+        <option value="vuyani@vgames.run.place">Owner (Vuyani)</option>
+      </select>
+      
+      <input type="text" id="subjectInput" placeholder="Subject" required>
+      
+      <textarea id="messageInput" placeholder="Type your message here..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+
+    <p>Alternatively, email us directly: 
+      <a href="mailto:help@vgames.run.place" class="contact-link">Help</a> | 
+      <a href="mailto:admin@vgames.run.place" class="contact-link">Admin</a> | 
+      <a href="mailto:vuyani@vgames.run.place" class="contact-link">Owner</a>
+    </p>
+    
+    <div class="copyright">&copy; VGAMES2025. All rights reserved.</div>
+  </div>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const recipient = document.getElementById('recipientSelector').value;
+      const subject = document.getElementById('subjectInput').value;
+      const message = document.getElementById('messageInput').value;
+      
+      document.getElementById('errorAlert').style.display = 'none';
+      
+      try {
+    
+        const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+        window.location.href = mailtoLink;
+        
+        
+        setTimeout(() => {
+          document.getElementById('errorAlert').textContent = "Couldn't open email client. Redirecting you to Gmail to send your message...";
+          document.getElementById('errorAlert').style.display = 'block';
+          
+
+          setTimeout(() => {
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+            window.open(gmailLink, '_blank');
+          }, 2000);
+        }, 1000);
+      } catch (error) {
+        document.getElementById('errorAlert').textContent = "Error occurred. Please try again or contact us directly.";
+        document.getElementById('errorAlert').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
