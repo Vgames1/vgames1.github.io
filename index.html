@@ -1855,3 +1855,204 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VGAMES - South Africa's Premier Gaming Platform</title>
+  <style>
+    /* Existing styles remain the same... */
+
+    /* New styles for offline popup */
+    .offline-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 20, 137, 0.95);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .offline-popup svg {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      fill: #ffb81c;
+    }
+    .offline-popup h2 {
+      color: #ffb81c;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+    .offline-popup p {
+      margin-bottom: 25px;
+      font-size: 1.2em;
+      max-width: 500px;
+    }
+    .offline-popup a {
+      color: #ffb81c;
+      text-decoration: underline;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+    .close-popup {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #ffb81c;
+    }
+    .loading-indicator {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 20, 137, 0.85);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: white;
+    }
+    .loading-spinner {
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 5px solid #ffb81c;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Preload WiFi SVG -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <symbol id="wifi-icon" viewBox="0 0 24 24">
+      <path d="M12 21c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0-16c-3.3 0-6 2.7-6 6 0 1.1.9 2 2 2s2-.9 2-2c0-1.1.9-2 2-2s2 .9 2 2c0 1.1.9 2 2 2s2-.9 2-2c0-3.3-2.7-6-6-6z"/>
+      <path d="M12 9c-2.8 0-5 2.2-5 5 0 1.1.9 2 2 2s2-.9 2-2c0-.6.4-1 1-1s1 .4 1 1c0 1.1.9 2 2 2s2-.9 2-2c0-2.8-2.2-5-5-5z"/>
+      <path d="M12 3C7.6 3 4 6.6 4 11c0 1.1.9 2 2 2s2-.9 2-2c0-2.2 1.8-4 4-4s4 1.8 4 4c0 1.1.9 2 2 2s2-.9 2-2c0-4.4-3.6-8-8-8z"/>
+    </symbol>
+  </svg>
+
+  <!-- Loading Indicator -->
+  <div class="loading-indicator" id="loadingIndicator">
+    <div class="loading-spinner"></div>
+    <p>Loading games, please wait...</p>
+  </div>
+
+  <!-- Offline Popup -->
+  <div class="offline-popup" id="offlinePopup">
+    <div class="close-popup" id="closePopup">✕</div>
+    <svg>
+      <use xlink:href="#wifi-icon"></use>
+    </svg>
+    <h2>No Internet Connection</h2>
+    <p>You need to be connected to the internet to access VGAMES. Please check your connection and try again.</p>
+    <div>
+      <a href="https://help.vgames.run.place" target="_blank">Get Help</a>
+      or
+      <a href="#" id="retryConnection">Tap here to retry</a>
+    </div>
+  </div>
+
+  <!-- Existing container remains the same... -->
+  <div class="container">
+    <!-- All existing content remains the same... -->
+  </div>
+
+  <script>
+    // Offline detection and popup
+    const offlinePopup = document.getElementById('offlinePopup');
+    const closePopup = document.getElementById('closePopup');
+    const retryConnection = document.getElementById('retryConnection');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+
+    // Check connection status
+    function updateOnlineStatus() {
+      if (navigator.onLine) {
+        offlinePopup.style.display = 'none';
+      } else {
+        offlinePopup.style.display = 'flex';
+      }
+    }
+
+    // Show loading indicator for games
+    function simulateGameLoading() {
+      loadingIndicator.style.display = 'flex';
+      setTimeout(() => {
+        if (navigator.onLine) {
+          loadingIndicator.style.display = 'none';
+        } else {
+          loadingIndicator.style.display = 'none';
+          offlinePopup.style.display = 'flex';
+        }
+      }, 3000); // Simulate 3 second loading time
+    }
+
+    // Event listeners
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    closePopup.addEventListener('click', () => {
+      offlinePopup.style.display = 'none';
+    });
+    retryConnection.addEventListener('click', () => {
+      window.location.reload();
+    });
+
+    // Initial check
+    updateOnlineStatus();
+    
+    // Simulate game loading (replace with actual game loading logic)
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      simulateGameLoading();
+      
+      // Existing form handling code...
+      const recipient = document.getElementById('recipientSelector').value;
+      const subject = document.getElementById('subjectInput').value;
+      const message = document.getElementById('messageInput').value;
+      
+      document.getElementById('errorAlert').style.display = 'none';
+      
+      try {
+        const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+        window.location.href = mailtoLink;
+        
+        setTimeout(() => {
+          document.getElementById('errorAlert').textContent = "Couldn't open email client. Redirecting you to Gmail to send your message...";
+          document.getElementById('errorAlert').style.display = 'block';
+          
+          setTimeout(() => {
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+            window.open(gmailLink, '_blank');
+          }, 2000);
+        }, 1000);
+      } catch (error) {
+        document.getElementById('errorAlert').textContent = "Error occurred. Please try again or contact us directly.";
+        document.getElementById('errorAlert').style.display = 'block';
+      }
+    });
+
+    // Simulate initial game loading
+    window.addEventListener('load', () => {
+      setTimeout(simulateGameLoading, 500);
+    });
+  </script>
+</body>
+</html>
