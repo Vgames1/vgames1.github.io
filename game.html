@@ -415,21 +415,23 @@
 
     <script>
         // Game data
-        const games = [
-            
-  { "title": "Survival Island",
+  const games = [
+  { 
+    "title": "Survival Island",
     "embed": "https://cloud.onlinegames.io/games/2024/unity2/survival-island/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/970/responsive/Survival-Island-xs.jpg",
     "tags": "1-player,3d,adventure,crafting,free,minecraft,simulator,survival,unity",
-    "description": "Imagine waking up on a sunny, deserted shore with the sound of waves gently rolling into pebbles on the beach.  No buildings, no people, just sand, palm trees, and hidden secrets everywhere.  Welcome to Survival Island, an exciting casual progression game where you gather, craft, explore, and survive.  Play this browser-based free game right here on OnlineGames."
+    "description": "Imagine waking up on a sunny, deserted shore..."
   },
   {
     "title": "Mahjong",
     "embed": "https://cloud.onlinegames.io/games/2025/unity/mahjong/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/966/responsive/Mahjong-xs.jpg",
     "tags": "1-player,2d,brain,cozy,free,html5,logic,mouse,puzzle,strategy",
-    "description": "Mahjong Online is a game of patience, skill, and a bit of luck.  In this version of a decades-old game, your goal will be to match identical tiles to remove them from the board until none remain.  The difficulty comes with this rule: only free tiles can be picked.  So, blocked tiles must be open on at least one side."
+    "description": "Mahjong Online is a game of patience..."
   },
+  // ... rest of your games
+
   {
     "title": "Nuts and Bolts Puzzle",
     "embed": "https://cloud.onlinegames.io/games/2025/unity/nuts-and-bolts-puzzle/index-og.html",
@@ -1851,7 +1853,8 @@
     "tags": "1-player,2d,crazy,free,fun,html5,mobile,mouse,simulator",
     "description": "Jackpot Casino is a free slot game where your main aim is to line up the same symbols on the slot machine side by side to claim your prize.  You will see that the machine is adorned with many symbols.  Spin the reels and try to get at least three identical tokens shoulder-to-shoulder.  Hit the jackpot in this exciting kids game!"
   }
-        ];
+
+      ];
 
         // DOM elements
         const gameIframe = document.getElementById('game-iframe');
