@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game - VGAMES Hub</title>
+    <link rel="icon" type="image/png" href="http://www.vgames.run.place/vgameswhite.png">
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #007749;
+            --secondary: #E03C31;
+            --accent: #ffb81c;
+            --dark: #001489;
+            --light: #ffffff;
+            --text: #333333;
+            --bg: #f5f5f5;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: var(--light);
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo {
+            height: 40px;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .nav-button {
+            background-color: var(--secondary);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 2px solid var(--accent);
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .nav-button:hover {
+            background-color: var(--accent);
+        }
+        
+        /* Main Game Container */
+        .game-container {
+            flex: 1;
+            padding: 1rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Game Display */
+        .game-display {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .game-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #000;
+        }
+        
+        .game-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .fullscreen-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        /* Game Info */
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: rgba(0, 119, 73, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        @media (min-width: 768px) {
+            .game-info {
+                flex-direction: row;
+            }
+        }
+        
+        .game-image {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--accent);
+            align-self: center;
+        }
+        
+        .game-details {
+            flex: 1;
+        }
+        
+        .game-title {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .game-description {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .game-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .game-action-btn {
+            background-color: var(--secondary);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 2px solid var(--accent);
+            transition: all 0.3s;
+        }
+        
+        .game-action-btn:hover {
+            background-color: var(--accent);
+        }
+        
+        /* Related Games */
+        .related-games {
+            margin-top: 2rem;
+        }
+        
+        .related-title {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        
+        .related-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .related-game {
+            background-color: var(--light);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .related-game:hover {
+            transform: translateY(-5px);
+        }
+        
+        .related-game img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+        
+        .related-game h3 {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: var(--light);
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+        
+        /* Landscape warning */
+        .landscape-warning {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 137, 0.95);
+            z-index: 1100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            color: var(--light);
+        }
+        
+        .landscape-warning h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        /* Loading Indicator */
+        .loading-indicator {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 137, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--accent);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Device-specific styles */
+        .mobile-view {
+            display: none;
+        }
+        
+        .desktop-view {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-view {
+                display: block;
+            }
+            
+            .desktop-view {
+                display: none;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .nav-button {
+                flex: 1;
+                text-align: center;
+            }
+        }
+        
+        @media screen and (orientation:portrait) {
+            .landscape-warning {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="http://www.vgames.run.place/vgameswhite.png" alt="VGAMES Logo" class="logo">
+                <h1>VGAMES Hub</h1>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-button" id="login-button">Login</button>
+                <button class="nav-button" onclick="window.location.href='index.html'">Home</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Loading Indicator -->
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="loading-spinner"></div>
+        <p>Loading game, please wait...</p>
+    </div>
+
+    <!-- Main Content -->
+    <main class="game-container">
+        <!-- Game Display -->
+        <div class="game-display">
+            <div class="game-iframe-container">
+                <iframe class="game-iframe" id="game-iframe" src="" allowfullscreen></iframe>
+                <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+            </div>
+            
+            <div class="game-info">
+                <img class="game-image" id="game-image" src="" alt="Game Image">
+                <div class="game-details">
+                    <h2 class="game-title" id="game-title">Game Title</h2>
+                    <p class="game-description" id="game-description">Game description goes here</p>
+                    <div class="game-actions">
+                        <button class="game-action-btn" onclick="likeGame()">Like</button>
+                        <button class="game-action-btn" onclick="shareGame()">Share</button>
+                        <button class="game-action-btn" onclick="window.location.href='index.html'">Home</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Related Games -->
+        <div class="related-games">
+            <h3 class="related-title">You Might Also Like</h3>
+            <div class="related-container" id="related-games">
+                <!-- Related games will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Landscape Warning -->
+    <div class="landscape-warning">
+        <h2>Please rotate your device to landscape mode</h2>
+        <p>For the best gaming experience, please turn your device sideways</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© VGAMES2025 | All rights reserved</p>
+    </footer>
+   <script>
+        // DOM elements
+        const gameIframe = document.getElementById('game-iframe');
+        const gameImage = document.getElementById('game-image');
+        const gameTitle = document.getElementById('game-title');
+        const gameDescription = document.getElementById('game-description');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const loginButton = document.getElementById('login-button');
+        const relatedGamesContainer = document.getElementById('related-games');
+        let isFullscreen = false;
+        let currentGame = null;
+        let games = [];
+
+        // Initialize the page
+        window.onload = async function() {
+            showLoading();
+            checkLoginStatus();
+            detectDevice();
+            
+            try {
+                // Load game data from JSON file
+                const response = await fetch('game.json');
+                games = await response.json();
+                
+                // Get game parameter from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const gameParam = urlParams.get('game');
+                
+                if (gameParam) {
+                    // Find game by title (converted to slug)
+                    currentGame = games.find(game => 
+                        game.title.toLowerCase().replace(/ /g, '-') === gameParam.toLowerCase()
+                    );
+                    
+                    if (currentGame) {
+                        loadGame(currentGame);
+                        loadRelatedGames(currentGame.tags);
+                    } else {
+                        // If no valid game found, redirect to index.html
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    // If no game parameter, redirect to index.html
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Error loading game data:', error);
+                window.location.href = 'index.html';
+            }
+        };
+
+        // Load game
+        function loadGame(game) {
+            showLoading();
+            
+            // Set game content
+            gameIframe.src = game.embed;
+            gameImage.src = game.image;
+            gameTitle.textContent = game.title;
+            gameDescription.textContent = game.description;
+            
+            // Update document title
+            document.title = `VGAMES Hub - ${game.title}`;
+            
+            // Hide loading when iframe loads
+            gameIframe.onload = function() {
+                hideLoading();
+            };
+        }
+
+        // Load related games based on tags
+        function loadRelatedGames(tags) {
+            relatedGamesContainer.innerHTML = '';
+            
+            // Find games with similar tags
+            const related = games
+                .filter(game => game !== currentGame && game.tags.some(tag => tags.includes(tag)))
+                .slice(0, 4); // Show max 4 related games
+            
+            if (related.length === 0) {
+                // If no related games found, show popular games
+                related.push(...games
+                    .filter(game => game !== currentGame)
+                    .slice(0, 4));
+            }
+            
+            // Create related game tiles
+            related.forEach(game => {
+                const gameSlug = game.title.toLowerCase().replace(/ /g, '-');
+                const gameElement = document.createElement('div');
+                gameElement.className = 'related-game';
+                gameElement.innerHTML = `
+                    <img src="${game.image}" alt="${game.title}">
+                    <h3>${game.title}</h3>
+                `;
+                gameElement.addEventListener('click', () => {
+                    window.location.href = `game.html?game=${gameSlug}`;
+                });
+                relatedGamesContainer.appendChild(gameElement);
+            });
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!isFullscreen) {
+                document.documentElement.requestFullscreen();
+                isFullscreen = true;
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Handle fullscreen change
+        document.addEventListener('fullscreenchange', () => {
+            isFullscreen = !!document.fullscreenElement;
+        });
+
+        // Detect device type
+        function detectDevice() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                document.body.classList.add('mobile-device');
+            } else {
+                document.body.classList.add('desktop-device');
+            }
+        }
+
+        // Handle login
+        function handleLogin() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                alert(`Welcome back, ${username}!`);
+            } else {
+                const loginWindow = window.open('http://login.vgames.run.place', 'Login', 'width=400,height=500');
+                // Check for login status periodically
+                const checkLogin = setInterval(() => {
+                    try {
+                        if (loginWindow.closed) {
+                            clearInterval(checkLogin);
+                            checkLoginStatus();
+                        }
+                    } catch (e) {
+                        clearInterval(checkLogin);
+                    }
+                }, 500);
+            }
+        }
+
+        // Check login status
+        function checkLoginStatus() {
+            const username = localStorage.getItem('username');
+            if (username) {
+                loginButton.textContent = username;
+            } else {
+                loginButton.textContent = 'Login';
+            }
+            loginButton.onclick = handleLogin;
+        }
+
+        // Like game
+        function likeGame() {
+            alert(`You liked ${gameTitle.textContent}!`);
+        }
+
+        // Share game
+        function shareGame() {
+            const gameSlug = gameTitle.textContent.toLowerCase().replace(/ /g, '-');
+            const shareUrl = `${window.location.origin}/game.html?game=${gameSlug}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: gameTitle.textContent,
+                    text: `Check out this game on VGAMES: ${gameTitle.textContent}`,
+                    url: shareUrl
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(shareUrl);
+                });
+            } else {
+                copyToClipboard(shareUrl);
+            }
+        }
+
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Game link copied to clipboard!');
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+                prompt('Copy this link to share:', text);
+            });
+        }
+
+        // Show loading indicator
+        function showLoading() {
+            loadingIndicator.style.display = 'flex';
+        }
+
+        // Hide loading indicator
+        function hideLoading() {
+            loadingIndicator.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
