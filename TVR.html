@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The VGAMES Regulations (TVR)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a35ff;
+            --secondary: #ff3366;
+            --accent: #00cc99;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .book-container {
+            perspective: 1500px;
+            width: 100%;
+            max-width: 900px;
+            height: 600px;
+            position: relative;
+        }
+        
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+        
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow-y: auto;
+            transform-origin: left center;
+            transition: transform 0.8s;
+            backface-visibility: hidden;
+        }
+        
+        .page-cover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .partner-logo {
+            width: 200px;
+            height: auto;
+            margin: 20px 0;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .page-author {
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .chapter-title {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .section-title {
+            color: var(--secondary);
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+        }
+        
+        .error-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .error-code {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .nav-btn:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .search-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-input {
+            padding: 10px 15px;
+            border: 2px solid var(--primary);
+            border-radius: 30px 0 0 30px;
+            outline: none;
+            width: 0;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .search-input.active {
+            width: 200px;
+            opacity: 1;
+        }
+        
+        .search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-box {
+            background-color: #e7f5ff;
+            border-left: 4px solid #228be6;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .book-container {
+                height: 500px;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .chapter-title {
+                font-size: 1.5rem;
+            }
+            
+            .partner-logo {
+                width: 150px;
+            }
+        }
+        
+        @keyframes highlight {
+            0% { background-color: transparent; }
+            50% { background-color: rgba(106, 53, 255, 0.2); }
+            100% { background-color: transparent; }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <div class="search-box">
+            <input type="number" class="search-input" placeholder="Error code..." min="1" max="150">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    
+    <div class="book-container">
+        <div class="book" id="book">
+            <!-- Cover Page -->
+            <div class="page page-cover" id="cover">
+                <img src="http://www.vgames.run.place/vgstu.png" alt="VGAMES STUDIO Logo" class="logo" onerror="this.src='https://via.placeholder.com/150?text=VGAMES+LOGO'">
+                <h1 class="page-title">The VGAMES Regulations</h1>
+                <h2 class="page-subtitle">(TVR) - Version 2.1</h2>
+                <p class="page-author">By VGAMES STUDIO</p>
+                <div class="page-number">Cover</div>
+            </div>
+            
+            <!-- Table of Contents -->
+            <div class="page" id="contents">
+                <h2 class="chapter-title">Table of Contents</h2>
+                <ul style="list-style-type: none; line-height: 2;">
+                    <li><a href="#" onclick="goToPage(1); return false;">1. Introduction</a></li>
+                    <li><a href="#" onclick="goToPage(2); return false;">2. About VGAMES</a></li>
+                    <li><a href="#" onclick="goToPage(3); return false;">3. Error Code Definitions (1-50)</a></li>
+                    <li><a href="#" onclick="goToPage(4); return false;">4. Error Code Definitions (51-100)</a></li>
+                    <li><a href="#" onclick="goToPage(5); return false;">5. Error Code Definitions (101-150)</a></li>
+                    <li><a href="#" onclick="goToPage(6); return false;">6. Terms and Conditions</a></li>
+                    <li><a href="#" onclick="goToPage(7); return false;">7. Privacy Policy</a></li>
+                    <li><a href="#" onclick="goToPage(8); return false;">8. Cookie Policy</a></li>
+                    <li><a href="#" onclick="goToPage(9); return false;">9. Safety Protocols</a></li>
+                    <li><a href="#" onclick="goToPage(10); return false;">10. Account Management</a></li>
+                </ul>
+                <div class="page-number">Page 1</div>
+            </div>
+            
+            <!-- Introduction -->
+            <div class="page" id="intro">
+                <h2 class="chapter-title">1. Introduction</h2>
+                <p>Welcome to The VGAMES Regulations (TVR), the official documentation for VGAMES STUDIO's digital platforms.</p>
+                <p>This document serves as the comprehensive guide to understanding our error codes, terms of service, and policies that govern your interaction with our services.</p>
+                
+                <h3 class="section-title">How to Use This Document</h3>
+                <p>This book is organized into several sections:</p>
+                <ul>
+                    <li>About VGAMES (Page 2)</li>
+                    <li>Error Code Definitions (Pages 3-5)</li>
+                    <li>Terms and Conditions (Page 6)</li>
+                    <li>Privacy Policy (Page 7)</li>
+                    <li>Cookie Policy (Page 8)</li>
+                    <li>Safety Protocols (Page 9)</li>
+                    <li>Account Management (Page 10)</li>
+                </ul>
+                
+                <p>Use the navigation buttons or search for specific error codes using the search function.</p>
+                <div class="page-number">Page 2</div>
+            </div>
+            
+            <!-- About VGAMES -->
+            <div class="page" id="about">
+                <h2 class="chapter-title">2. About VGAMES</h2>
+                
+                <img src="https://www.onlinegames.io/media/website/online-games-io.png" alt="OnlineGames.io Partner Logo" class="partner-logo" onerror="this.src='https://via.placeholder.com/200x60?text=ONLINEGAMES.IO'">
+                
+                <p>VGAMES partners with <strong>OnlineGames.io</strong> to bring high-quality games to regions where their services are unavailable or restricted.</p>
+                
+                <div class="info-box">
+                    <p><strong>Important Note:</strong> VGAMES is not a copy of OnlineGames.io. We are an independent service with these key differences:</p>
+                    <ul>
+                        <li>We serve regions OnlineGames.io cannot reach</li>
+                        <li>We implement additional security layers</li>
+                        <li>We provide localized content and support</li>
+                    </ul>
+                </div>
+                
+                <h3 class="section-title">Our Security Model</h3>
+                <p>All game links are routed through our safety verification system:</p>
+                <p><code>vgames.run.io/safety</code></p>
+                
+                <p>This system:</p>
+                <ul>
+                    <li>Scans for malware and malicious scripts</li>
+                    <li>Verifies IP addresses and geographic locations</li>
+                    <li>Blocks suspicious traffic before it reaches game servers</li>
+                    <li>Cannot be accessed directly by users</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <p><strong>IP Protection:</strong> We automatically ban IP addresses that:</p>
+                    <ul>
+                        <li>Appear to be spoofed or bogus</li>
+                        <li>Originate from known malicious networks</li>
+                        <li>Exhibit suspicious behavior patterns</li>
+                    </ul>
+                </div>
+                
+                <div class="page-number">Page 3</div>
+            </div>
+            
+            <!-- Error Codes 1-50 -->
+            <div class="page" id="errors1-50">
+                <h2 class="chapter-title">3. Error Code Definitions (1-50)</h2>
+                
+                <h3 class="section-title">Basic Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 1:</span> Standard 404 Page Not Found error
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 2:</span> Server Busy - The server is currently overloaded
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 3:</span> Resource Not Found - Similar to 404 but for specific content
+                </div>
+                
+                <h3 class="section-title">Authentication Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 10:</span> Invalid Credentials - Incorrect username/password
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 11:</span> Account Locked - Too many failed login attempts
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 12:</span> Session Expired - Please log in again
+                </div>
+                
+                <h3 class="section-title">Connection Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 20:</span> Connection Timeout
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 21:</span> SSL Handshake Failed
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 22:</span> Proxy Connection Refused
+                </div>
+                
+                <div class="page-number">Page 4</div>
+            </div>
+            
+            <!-- Error Codes 51-100 -->
+            <div class="page" id="errors51-100">
+                <h2 class="chapter-title">4. Error Code Definitions (51-100)</h2>
+                
+                <h3 class="section-title">Payment Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 50:</span> Payment Declined
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 51:</span> Insufficient Funds
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 52:</span> Payment Processor Unavailable
+                </div>
+                
+                <h3 class="section-title">Content Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 60:</span> Age Restriction - Content not available for your age group
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 61:</span> Geographic Restriction
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 62:</span> Content Under Maintenance
+                </div>
+                
+                <h3 class="section-title">System Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 90:</span> Database Connection Failed
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 91:</span> Cache Server Unreachable
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 100:</span> Critical System Failure
+                </div>
+                
+                <div class="page-number">Page 5</div>
+            </div>
+            
+            <!-- Error Codes 101-150 -->
+            <div class="page" id="errors101-150">
+                <h2 class="chapter-title">5. Error Code Definitions (101-150)</h2>
+                
+                <h3 class="section-title">Security Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 101:</span> IP Address Banned - See page 13 for appeal
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 102:</span> Suspicious Activity Detected
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 103:</span> VPN/Proxy Not Allowed
+                </div>
+                
+                <h3 class="section-title">Safety Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 120:</span> Content Blocked by Safety Filter
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 121:</span> Malware Detected in Request
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 122:</span> Security Verification Failed
+                </div>
+                
+                <h3 class="section-title">Partner Errors</h3>
+                <div class="error-item">
+                    <span class="error-code">Error 140:</span> OnlineGames.io Service Unavailable
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 141:</span> Partner API Limit Reached
+                </div>
+                <div class="error-item">
+                    <span class="error-code">Error 150:</span> Cross-Service Authentication Failed
+                </div>
+                
+                <div class="page-number">Page 6</div>
+            </div>
+            
+            <!-- Terms and Conditions -->
+            <div class="page" id="terms">
+                <h2 class="chapter-title">6. Terms and Conditions</h2>
+                
+                <h3 class="section-title">1. Acceptance of Terms</h3>
+                <p>By accessing or using any VGAMES STUDIO services, you agree to be bound by these Terms.</p>
+                
+                <h3 class="section-title">2. User Responsibilities</h3>
+                <p>Users are responsible for maintaining the confidentiality of their account information.</p>
+                
+                <h3 class="section-title">3. Content Usage</h3>
+                <p>All content is property of VGAMES STUDIO and may not be reproduced without permission.</p>
+                
+                <h3 class="section-title">4. Limitation of Liability</h3>
+                <p>VGAMES STUDIO shall not be liable for any indirect, incidental, or consequential damages.</p>
+                
+                <div class="page-number">Page 7</div>
+            </div>
+            
+ <!-- Privacy Policy -->
+<div class="page" id="privacy">
+    <h2 class="chapter-title">7. Privacy Policy</h2>
+    
+    <div class="info-box">
+        <p><strong>Last Updated:</strong> April 3, 2025</p>
+        <p>This Privacy Policy explains how VGAMES STUDIO collects, uses, and protects your information in compliance with global data protection regulations.</p>
+    </div>
+    
+    <h3 class="section-title">1. Information Collection</h3>
+    <p>We collect information through multiple channels to ensure service quality and security:</p>
+    
+    <div class="warning-box">
+        <h4>Data Minimization Principle:</h4>
+        <p>We only collect data essential for service operation and user protection.</p>
+    </div>
+    
+    <h4>Directly Provided Data</h4>
+    <ul>
+        <li><strong>Account Information:</strong> Username, encrypted password, recovery email</li>
+        <li><strong>Verification Data:</strong> Age verification (month/year only), country/region</li>
+        <li><strong>Payment Processing:</strong> Tokenized transactions through PCI-DSS compliant partners</li>
+    </ul>
+    
+    <h4>Automatically Collected Data</h4>
+    <ul>
+        <li><strong>Device Fingerprint:</strong> Hardware hash (non-PII), OS version, browser type</li>
+        <li><strong>Network Data:</strong> IP address (anonymized after 30 days), connection type</li>
+        <li><strong>Security Signals:</strong> Request timestamps, TLS handshake metadata</li>
+    </ul>
+    
+    <h4>Third-Party Data</h4>
+    <ul>
+        <li><strong>OnlineGames.io:</strong> Game-specific analytics (fully anonymized)</li>
+        <li><strong>Safety Partners:</strong> Malware threat intelligence feeds</li>
+    </ul>
+    
+    <h3 class="section-title">2. Data Usage</h3>
+    <p>Your information enables these critical functions:</p>
+    
+    <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+        <tr style="background-color: #f5f5f5;">
+            <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Purpose</th>
+            <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Legal Basis</th>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">Service delivery and maintenance</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Contractual necessity</td>
+        </tr>
+        <tr style="background-color: #f5f5f5;">
+            <td style="padding: 10px; border: 1px solid #ddd;">Security threat prevention</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Legitimate interest</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">Regional content compliance</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Legal obligation</td>
+        </tr>
+    </table>
+    
+    <h3 class="section-title">3. Data Sharing</h3>
+    <p>We implement strict data sharing protocols:</p>
+    
+    <div class="warning-box">
+        <h4>No Sale of Personal Data:</h4>
+        <p>VGAMES STUDIO does not and will never sell user data to third parties.</p>
+    </div>
+    
+    <h4>Essential Service Providers</h4>
+    <ul>
+        <li><strong>Hosting Partners:</strong> Github,AWS, Google Cloud (encrypted data only)</li>
+        <li><strong>Payment Processors:</strong> PayPal (tokenized transactions)</li>
+        <li><strong>Security Vendors:</strong> Cloudflare, Captcha  (threat intelligence)</li>
+    </ul>
+    
+    <h4>Legal Requirements</h4>
+    <p>We may disclose information when legally compelled to:</p>
+    <ul>
+        <li>Court orders or subpoenas</li>
+        <li>Law enforcement requests (with proper jurisdiction)</li>
+        <li>Regulatory investigations</li>
+    </ul>
+    
+    <h3 class="section-title">4. Data Protection</h3>
+    <p>Our security framework includes:</p>
+    
+    <h4>Technical Measures</h4>
+    <ul>
+        <li>End-to-end encryption (AES-256)</li>
+        <li>Annual penetration testing</li>
+        <li>Hardware Security Modules (HSMs) for key management</li>
+    </ul>
+    
+    <h4>Organizational Measures</h4>
+    <ul>
+        <li>Employee privacy training (bi-annual)</li>
+        <li>Data Protection Officer oversight</li>
+        <li>Vendor security audits</li>
+    </ul>
+    
+    <h4>User Controls</h4>
+    <ul>
+        <li>Download your data through account settings</li>
+        <li>Request deletion (excluding legally required retention)</li>
+        <li>Opt-out of non-essential processing</li>
+    </ul>
+    
+    <div class="info-box">
+        <h4>Contact Our DPO:</h4>
+        <p>For privacy concerns: <strong>dpo@vgames.run.place</strong><br>
+        Expect response within 72 hours (check spam folder)</p>
+    </div>
+    
+    <div class="page-number">Page 8</div>
+</div>
+            <!-- Cookie Policy -->
+            <div class="page" id="cookies">
+                <h2 class="chapter-title">8. Cookie Policy</h2>
+                
+                <h3 class="section-title">1. What Are Cookies</h3>
+                <p>Cookies are small text files stored on your device when you visit websites.</p>
+                
+                <h3 class="section-title">2. How We Use Cookies</h3>
+                <p>We use cookies for authentication, preferences, analytics, and advertising.</p>
+                
+                <h3 class="section-title">3. Cookie Management</h3>
+                <p>You can control cookies through your browser settings.</p>
+                
+                <h3 class="section-title">4. Third-Party Cookies</h3>
+                <p>Some third-party services may place their own cookies on your device.</p>
+                
+                <div class="page-number">Page 9</div>
+            </div>
+            
+            <!-- Safety Protocols -->
+            <div class="page" id="safety">
+                <h2 class="chapter-title">9. Safety Protocols</h2>
+                
+                <h3 class="section-title">1. Security Verification</h3>
+                <p>All game requests are routed through:</p>
+                <p><code>vgames.run.io/safety</code></p>
+                <p>This system performs real-time security checks before serving any content.</p>
+                
+                <h3 class="section-title">2. IP Protection</h3>
+                <p>We automatically block:</p>
+                <ul>
+                    <li>Spoofed IP addresses</li>
+                    <li>Known malicious networks</li>
+                    <li>Requests from restricted regions</li>
+                </ul>
+                
+                <h3 class="section-title">3. Malware Prevention</h3>
+                <p>All content is scanned for:</p>
+                <ul>
+                    <li>Malicious scripts</li>
+                    <li>Phishing attempts</li>
+                    <li>Exploit code</li>
+                </ul>
+                
+                <div class="page-number">Page 10</div>
+            </div>
+            
+            <!-- Account Management -->
+            <div class="page" id="account">
+                <h2 class="chapter-title">10. Account Management</h2>
+                
+                <h3 class="section-title">1. Banned Accounts</h3>
+                <p>If your account or IP has been banned, you may appeal by:</p>
+                <ol>
+                    <li>Sending an email to <strong>vilakazigames@gmail.com</strong></li>
+                    <li>Including your IP address (if known)</li>
+                    <li>Providing details of the issue</li>
+                </ol>
+                
+                <div class="warning-box">
+                    <p><strong>Important:</strong> Response emails from our system may appear in your <strong>spam folder</strong> due to:</p>
+                    <ul>
+                        <li>Domain restrictions</li>
+                        <li>No-reply implementations</li>
+                        <li>Strict spam filtering by some providers</li>
+                    </ul>
+                    <p>Please check your spam folder if you don't see our response within 48 hours.</p>
+                </div>
+                
+                <h3 class="section-title">2. Account Recovery</h3>
+                <p>For lost accounts, provide:</p>
+                <ul>
+                    <li>Original email used</li>
+                    <li>Approximate creation date</li>
+                    <li>Last game played (if known)</li>
+                </ul>
+                
+                <div class="page-number">Page 11</div>
+            </div>
+            
+            <!-- Back Cover -->
+            <div class="page page-cover" id="back-cover">
+                <h2 class="page-title">VGAMES STUDIO</h2>
+                <p style="margin-top: 30px;">Official Documentation</p>
+                <p style="margin-top: 100px;">© 2025 VGAMES STUDIO</p>
+                <p>All Rights Reserved</p>
+                <div class="page-number">Back Cover</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="nav-controls">
+        <button class="nav-btn" id="prev-btn" disabled><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    
+    <script>
+        // Book navigation
+        const book = document.getElementById('book');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const searchInput = document.querySelector('.search-input');
+        const searchBtn = document.querySelector('.search-btn');
+        const pages = document.querySelectorAll('.page');
+        
+        let currentPage = 0;
+        const totalPages = pages.length;
+        
+        // Initialize book
+        updateBook();
+        
+        // Navigation functions
+        function goToPage(pageIndex) {
+            if (pageIndex >= 0 && pageIndex < totalPages) {
+                currentPage = pageIndex;
+                updateBook();
+            }
+        }
+        
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                updateBook();
+            }
+        }
+        
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                updateBook();
+            }
+        }
+        
+        function updateBook() {
+            // Position each page correctly
+            pages.forEach((page, index) => {
+                if (index < currentPage) {
+                    // Pages to the left (already viewed)
+                    page.style.transform = 'rotateY(-180deg)';
+                    page.style.zIndex = totalPages - index;
+                } else if (index === currentPage) {
+                    // Current page
+                    page.style.transform = 'rotateY(0deg)';
+                    page.style.zIndex = totalPages;
+                } else {
+                    // Pages to the right (not yet viewed)
+                    page.style.transform = 'rotateY(0deg)';
+                    page.style.zIndex = totalPages - index;
+                }
+            });
+            
+            // Update button states
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+        }
+        
+        // Event listeners
+        prevBtn.addEventListener('click', prevPage);
+        nextBtn.addEventListener('click', nextPage);
+        
+        // Swipe gestures for touch devices
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                nextPage(); // Swipe left
+            }
+            if (touchEndX > touchStartX + 50) {
+                prevPage(); // Swipe right
+            }
+        }
+        
+        // Search functionality
+        searchBtn.addEventListener('click', () => {
+            searchInput.classList.toggle('active');
+            if (searchInput.classList.contains('active')) {
+                searchInput.focus();
+            } else {
+                searchInput.value = '';
+            }
+        });
+        
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const errorCode = parseInt(searchInput.value);
+                if (!isNaN(errorCode)) {
+                    if (errorCode >= 1 && errorCode <= 150) {
+                        // Determine which page to go to based on error code
+                        let targetPage;
+                        if (errorCode <= 50) targetPage = 2;
+                        else if (errorCode <= 100) targetPage = 3;
+                        else targetPage = 4;
+                        
+                        goToPage(targetPage);
+                        
+                        // Scroll to the specific error after page transition
+                        setTimeout(() => {
+                            const errorElements = document.querySelectorAll('.error-code');
+                            let targetElement = null;
+                            
+                            errorElements.forEach(el => {
+                                if (el.textContent.includes(`Error ${errorCode}:`)) {
+                                    targetElement = el.parentElement;
+                                }
+                            });
+                            
+                            if (targetElement) {
+                                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                targetElement.style.animation = 'highlight 1.5s';
+                                setTimeout(() => {
+                                    targetElement.style.animation = '';
+                                }, 1500);
+                            }
+                        }, 800);
+                    } else {
+                        alert('Please enter an error code between 1 and 150');
+                    }
+                }
+                searchInput.value = '';
+                searchInput.classList.remove('active');
+            }
+        });
+        
+        // Fallback for logo if URL fails
+        document.querySelector('.logo').addEventListener('error', function() {
+            this.src = 'https://via.placeholder.com/150?text=VGAMES+LOGO';
+        });
+        
+        // Fallback for partner logo if URL fails
+        document.querySelector('.partner-logo').addEventListener('error', function() {
+            this.src = 'https://via.placeholder.com/200x60?text=ONLINEGAMES.IO';
+        });
+    </script>
+</body>
+</html>
