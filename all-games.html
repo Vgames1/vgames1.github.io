@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Games - VGAMES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --background: #1e1e2f;
+            --text: #f5f6fa;
+            --dark: #12121a;
+            --darker: #0a0a0f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--dark);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+            image-rendering: pixelated;
+            pointer-events: none;
+        }
+
+        .logo h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 8px rgba(253, 121, 168, 0.7);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .all-games-header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--secondary);
+        }
+
+        .all-games-header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 32px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 206, 201, 0.5);
+        }
+
+        .search-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 30px;
+            background-color: var(--dark);
+            color: var(--text);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(253, 121, 168, 0.5);
+        }
+
+        .alphabet-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 206, 201, 0.3);
+        }
+
+        .alphabet-link {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .alphabet-link:hover, .alphabet-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .all-games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .game-card {
+            background-color: var(--dark);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.3);
+            border-color: var(--accent);
+        }
+
+        .game-image {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .game-info {
+            padding: 15px;
+        }
+
+        .game-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .game-description {
+            font-size: 14px;
+            color: rgba(245, 246, 250, 0.8);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .game-tag {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid var(--primary);
+        }
+
+        .play-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-button:hover {
+            background-color: var(--accent);
+            box-shadow: 0 0 15px rgba(253, 121, 168, 0.5);
+            transform: scale(1.05);
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0) 45%,
+                rgba(255, 255, 255, 0.2) 48%,
+                rgba(255, 255, 255, 0.2) 52%,
+                rgba(255, 255, 255, 0) 55%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover::before {
+            left: 100%;
+        }
+
+        .game-preview {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-preview.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .preview-content {
+            background-color: var(--dark);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: auto;
+            padding: 20px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
+            position: relative;
+        }
+
+        .close-preview {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-preview:hover {
+            transform: rotate(90deg);
+            background-color: #ff4757;
+        }
+
+        .preview-header {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .preview-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 22px;
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .preview-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid var(--primary);
+        }
+
+        .preview-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .preview-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .preview-tag {
+            background-color: rgba(0, 206, 201, 0.2);
+            color: var(--secondary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            border: 1px solid var(--secondary);
+        }
+
+        .preview-play-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        .preview-play-btn:hover {
+            background-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: var(--darker);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 2px solid var(--primary);
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: rgba(245, 246, 250, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            color: var(--text);
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px 0;
+            color: var(--accent);
+            font-size: 18px;
+            grid-column: 1 / -1;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30, 30, 47, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(108, 92, 231, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .loading-message {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            color: var(--secondary);
+            text-align: center;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .all-games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .alphabet-nav {
+                gap: 5px;
+            }
+
+            .alphabet-link {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .all-games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .preview-content {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .preview-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <img src="vgstu.png" alt="VGAMES Logo">
+                <h1>VGAMES</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="all-games.html" class="active">All Games</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="all-games-header">
+        <div class="container">
+            <h1>ALL GAMES</h1>
+            <p>Browse our complete collection of games from A to Z</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search games..." id="searchInput">
+        </div>
+
+        <div class="alphabet-nav" id="alphabetNav">
+            <!-- Alphabet links will be generated by JavaScript -->
+        </div>
+
+        <div class="all-games-grid" id="allGamesGrid">
+            <!-- Games will be loaded here -->
+        </div>
+    </main>
+
+    <div class="game-preview" id="gamePreview">
+        <div class="preview-content">
+            <button class="close-preview" id="closePreview">&times;</button>
+            <div class="preview-header">
+                <h2 class="preview-title" id="previewTitle">Game Title</h2>
+            </div>
+            <img src="" alt="Game Preview" class="preview-image" id="previewImage">
+            <p class="preview-description" id="previewDescription">Game description goes here...</p>
+            <div class="preview-tags" id="previewTags">
+                <!-- Tags will be added here -->
+            </div>
+            <button class="preview-play-btn" id="previewPlayBtn">PLAY NOW</button>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-message">LOADING GAMES...</div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">VGAMES</div>
+            <div class="copyright">© 2025 VGAMES. All rights reserved. All games are property of their respective owners.</div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">FAQ</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon">📱</a>
+                <a href="#" class="social-icon">📘</a>
+                <a href="#" class="social-icon">🐦</a>
+                <a href="#" class="social-icon">📸</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let allGames = [];
+        let filteredGames = [];
+        let currentPreviewGame = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading overlay
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Generate alphabet navigation
+            generateAlphabetNav();
+            
+            // Load games from JSON
+            fetch('http://www.vgames.run.place/game.json')
+                .then(response => response.json())
+                .then(data => {
+                    allGames = data.sort((a, b) => a.title.localeCompare(b.title));
+                    filteredGames = [...allGames];
+                    displayAllGames();
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error loading games:', error);
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                    document.getElementById('allGamesGrid').innerHTML = 
+                        '<div class="no-results">Failed to load games. Please try again later.</div>';
+                });
+
+            // Setup event listeners
+            setupEventListeners();
+        });
+
+        function generateAlphabetNav() {
+            const alphabetNav = document.getElementById('alphabetNav');
+            const alphabet = '#ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            
+            alphabet.forEach(letter => {
+                const link = document.createElement('a');
+                link.href = '#';
+                link.className = 'alphabet-link';
+                link.textContent = letter;
+                link.dataset.letter = letter;
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    filterByLetter(letter);
+                });
+                alphabetNav.appendChild(link);
+            });
+        }
+
+        function displayAllGames() {
+            const gamesGrid = document.getElementById('allGamesGrid');
+            gamesGrid.innerHTML = '';
+            
+            if (filteredGames.length === 0) {
+                gamesGrid.innerHTML = '<div class="no-results">No games found matching your search.</div>';
+                return;
+            }
+            
+            filteredGames.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.dataset.gameTitle = game.title;
+                
+                gameCard.innerHTML = `
+                    <img src="${game.image}" alt="${game.title}" class="game-image">
+                    <div class="game-info">
+                        <h4 class="game-title">${game.title}</h4>
+                        <p class="game-description">${game.description}</p>
+                        <div class="game-tags">
+                            ${game.tags.split(',').map(tag => `<span class="game-tag">${tag.trim()}</span>`).join('')}
+                        </div>
+                        <button class="play-button" data-game='${JSON.stringify(game).replace(/'/g, "\\'")}'>PLAY NOW</button>
+                    </div>
+                `;
+                
+                // Add click event for preview
+                gameCard.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('play-button')) {
+                        showGamePreview(game);
+                    }
+                });
+                
+                gamesGrid.appendChild(gameCard);
+            });
+            
+            // Update active letter in alphabet nav
+            updateActiveLetter();
+        }
+
+        function filterByLetter(letter) {
+            if (letter === '#') {
+                // Filter for games that start with a number or symbol
+                filteredGames = allGames.filter(game => {
+                    const firstChar = game.title.charAt(0).toUpperCase();
+                    return !/[A-Z]/.test(firstChar);
+                });
+            } else {
+                filteredGames = allGames.filter(game => 
+                    game.title.charAt(0).toUpperCase() === letter
+                );
+            }
+            
+            displayAllGames();
+            scrollToGamesGrid();
+        }
+
+        function scrollToGamesGrid() {
+            document.getElementById('allGamesGrid').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        function updateActiveLetter() {
+            const alphabetLinks = document.querySelectorAll('.alphabet-link');
+            alphabetLinks.forEach(link => link.classList.remove('active'));
+            
+            if (filteredGames.length > 0) {
+                const firstLetter = filteredGames[0].title.charAt(0).toUpperCase();
+                const matchingLink = document.querySelector(`.alphabet-link[data-letter="${firstLetter}"]`);
+                if (matchingLink) {
+                    matchingLink.classList.add('active');
+                } else {
+                    // For numbers/symbols
+                    document.querySelector('.alphabet-link[data-letter="#"]').classList.add('active');
+                }
+            }
+        }
+
+        function showGamePreview(game) {
+            currentPreviewGame = game;
+            
+            document.getElementById('previewTitle').textContent = game.title;
+            document.getElementById('previewImage').src = game.image;
+            document.getElementById('previewDescription').textContent = game.description;
+            
+            // Clear and add tags
+            const tagsContainer = document.getElementById('previewTags');
+            tagsContainer.innerHTML = '';
+            game.tags.split(',').forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'preview-tag';
+                tagElement.textContent = tag.trim();
+                tagsContainer.appendChild(tagElement);
+            });
+            
+            document.getElementById('gamePreview').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                
+                if (searchTerm.length === 0) {
+                    filteredGames = [...allGames];
+                } else {
+                    filteredGames = allGames.filter(game => 
+                        game.title.toLowerCase().includes(searchTerm) || 
+                        game.description.toLowerCase().includes(searchTerm) ||
+                        game.tags.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                displayAllGames();
+            });
+            
+            // Close preview
+            document.getElementById('closePreview').addEventListener('click', function() {
+                document.getElementById('gamePreview').classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Play button in preview
+            document.getElementById('previewPlayBtn').addEventListener('click', function() {
+                if (currentPreviewGame) {
+                    window.location.href = `index.html?game=${encodeURIComponent(currentPreviewGame.title)}`;
+                }
+            });
+            
+            // Play buttons in game cards
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('play-button')) {
+                    const gameData = JSON.parse(e.target.dataset.game);
+                    window.location.href = `index.html?game=${encodeURIComponent(gameData.title)}`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
