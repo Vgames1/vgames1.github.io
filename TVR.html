@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The VGAMES Regulations (TVR)</title>
+    <title>The VGAMES Regulations (TVR) v2.2</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #6a35ff;
-            --secondary: #ff3366;
-            --accent: #00cc99;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --dark: #1e1e2f;
+            --darker: #12121a;
+            --light: #f5f6fa;
+            --text: #f5f6fa;
+            --background: #1e1e2f;
         }
         
         * {
@@ -21,9 +24,9 @@
         }
         
         body {
-            font-family: 'Georgia', serif;
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background);
+            color: var(--text);
             overflow-x: hidden;
             height: 100vh;
             display: flex;
@@ -54,9 +57,10 @@
             height: 100%;
             top: 0;
             left: 0;
-            background: white;
+            background: var(--darker);
             padding: 30px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--primary);
             border-radius: 5px;
             overflow-y: auto;
             transform-origin: left center;
@@ -73,35 +77,42 @@
             align-items: center;
             text-align: center;
             z-index: 10;
+            border: none;
         }
         
         .logo {
             width: 150px;
             height: auto;
             margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
         }
         
         .partner-logo {
             width: 200px;
             height: auto;
             margin: 20px 0;
+            filter: drop-shadow(0 0 10px rgba(0, 206, 201, 0.5));
         }
         
         .page-title {
+            font-family: 'Press Start 2P', cursive;
             font-size: 2.8rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: var(--text);
         }
         
         .page-subtitle {
             font-size: 1.5rem;
             margin-bottom: 30px;
             font-weight: 300;
+            color: var(--text);
         }
         
         .page-author {
             font-size: 1.2rem;
             font-style: italic;
+            color: var(--text);
         }
         
         .page-number {
@@ -109,11 +120,12 @@
             bottom: 20px;
             right: 30px;
             font-size: 0.9rem;
-            color: #666;
+            color: var(--secondary);
         }
         
         .chapter-title {
             color: var(--primary);
+            font-family: 'Press Start 2P', cursive;
             font-size: 1.8rem;
             margin-bottom: 20px;
             padding-bottom: 10px;
@@ -124,6 +136,7 @@
             color: var(--secondary);
             font-size: 1.4rem;
             margin: 25px 0 15px;
+            font-weight: bold;
         }
         
         .error-item {
@@ -163,14 +176,16 @@
         }
         
         .nav-btn:hover {
-            background: var(--secondary);
+            background: var(--accent);
             transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(253, 121, 168, 0.5);
         }
         
         .nav-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            background: var(--dark);
         }
         
         .search-container {
@@ -193,6 +208,8 @@
             width: 0;
             opacity: 0;
             transition: all 0.3s;
+            background: var(--darker);
+            color: var(--text);
         }
         
         .search-input.active {
@@ -211,21 +228,71 @@
         }
         
         .search-btn:hover {
-            background: var(--secondary);
+            background: var(--accent);
         }
         
         .warning-box {
-            background-color: #fff3cd;
+            background-color: rgba(255, 193, 7, 0.1);
             border-left: 4px solid #ffc107;
             padding: 15px;
             margin: 20px 0;
+            color: var(--text);
         }
         
         .info-box {
-            background-color: #e7f5ff;
+            background-color: rgba(34, 139, 230, 0.1);
             border-left: 4px solid #228be6;
             padding: 15px;
             margin: 20px 0;
+            color: var(--text);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid var(--primary);
+        }
+        
+        th {
+            background-color: rgba(108, 92, 231, 0.2);
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(108, 92, 231, 0.05);
+        }
+        
+        a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        
+        code {
+            background-color: rgba(108, 92, 231, 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Roboto Mono', monospace;
+            color: var(--primary);
+        }
+        
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin-bottom: 8px;
         }
         
         @media (max-width: 768px) {
@@ -244,6 +311,10 @@
             .partner-logo {
                 width: 150px;
             }
+            
+            .nav-controls {
+                bottom: 15px;
+            }
         }
         
         @keyframes highlight {
@@ -251,9 +322,31 @@
             50% { background-color: rgba(106, 53, 255, 0.2); }
             100% { background-color: transparent; }
         }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px var(--primary); }
+            50% { box-shadow: 0 0 20px var(--accent); }
+            100% { box-shadow: 0 0 5px var(--primary); }
+        }
+        
+        .version-badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--accent);
+            color: var(--darker);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1000;
+            animation: glow 2s infinite;
+        }
     </style>
 </head>
 <body>
+    <div class="version-badge">v2.2 - April 5, 2025</div>
+    
     <div class="search-container">
         <div class="search-box">
             <input type="number" class="search-input" placeholder="Error code..." min="1" max="150">
@@ -267,7 +360,7 @@
             <div class="page page-cover" id="cover">
                 <img src="http://www.vgames.run.place/vgstu.png" alt="VGAMES STUDIO Logo" class="logo" onerror="this.src='https://via.placeholder.com/150?text=VGAMES+LOGO'">
                 <h1 class="page-title">The VGAMES Regulations</h1>
-                <h2 class="page-subtitle">(TVR) - Version 2.1</h2>
+                <h2 class="page-subtitle">(TVR) - Version 2.2</h2>
                 <p class="page-author">By VGAMES STUDIO</p>
                 <div class="page-number">Cover</div>
             </div>
@@ -492,120 +585,121 @@
                 <div class="page-number">Page 7</div>
             </div>
             
- <!-- Privacy Policy -->
-<div class="page" id="privacy">
-    <h2 class="chapter-title">7. Privacy Policy</h2>
-    
-    <div class="info-box">
-        <p><strong>Last Updated:</strong> April 3, 2025</p>
-        <p>This Privacy Policy explains how VGAMES STUDIO collects, uses, and protects your information in compliance with global data protection regulations.</p>
-    </div>
-    
-    <h3 class="section-title">1. Information Collection</h3>
-    <p>We collect information through multiple channels to ensure service quality and security:</p>
-    
-    <div class="warning-box">
-        <h4>Data Minimization Principle:</h4>
-        <p>We only collect data essential for service operation and user protection.</p>
-    </div>
-    
-    <h4>Directly Provided Data</h4>
-    <ul>
-        <li><strong>Account Information:</strong> Username, encrypted password, recovery email</li>
-        <li><strong>Verification Data:</strong> Age verification (month/year only), country/region</li>
-        <li><strong>Payment Processing:</strong> Tokenized transactions through PCI-DSS compliant partners</li>
-    </ul>
-    
-    <h4>Automatically Collected Data</h4>
-    <ul>
-        <li><strong>Device Fingerprint:</strong> Hardware hash (non-PII), OS version, browser type</li>
-        <li><strong>Network Data:</strong> IP address (anonymized after 30 days), connection type</li>
-        <li><strong>Security Signals:</strong> Request timestamps, TLS handshake metadata</li>
-    </ul>
-    
-    <h4>Third-Party Data</h4>
-    <ul>
-        <li><strong>OnlineGames.io:</strong> Game-specific analytics (fully anonymized)</li>
-        <li><strong>Safety Partners:</strong> Malware threat intelligence feeds</li>
-    </ul>
-    
-    <h3 class="section-title">2. Data Usage</h3>
-    <p>Your information enables these critical functions:</p>
-    
-    <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
-        <tr style="background-color: #f5f5f5;">
-            <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Purpose</th>
-            <th style="padding: 10px; text-align: left; border: 1px solid #ddd;">Legal Basis</th>
-        </tr>
-        <tr>
-            <td style="padding: 10px; border: 1px solid #ddd;">Service delivery and maintenance</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">Contractual necessity</td>
-        </tr>
-        <tr style="background-color: #f5f5f5;">
-            <td style="padding: 10px; border: 1px solid #ddd;">Security threat prevention</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">Legitimate interest</td>
-        </tr>
-        <tr>
-            <td style="padding: 10px; border: 1px solid #ddd;">Regional content compliance</td>
-            <td style="padding: 10px; border: 1px solid #ddd;">Legal obligation</td>
-        </tr>
-    </table>
-    
-    <h3 class="section-title">3. Data Sharing</h3>
-    <p>We implement strict data sharing protocols:</p>
-    
-    <div class="warning-box">
-        <h4>No Sale of Personal Data:</h4>
-        <p>VGAMES STUDIO does not and will never sell user data to third parties.</p>
-    </div>
-    
-    <h4>Essential Service Providers</h4>
-    <ul>
-        <li><strong>Hosting Partners:</strong> Github,AWS, Google Cloud (encrypted data only)</li>
-        <li><strong>Payment Processors:</strong> PayPal (tokenized transactions)</li>
-        <li><strong>Security Vendors:</strong> Cloudflare, Captcha  (threat intelligence)</li>
-    </ul>
-    
-    <h4>Legal Requirements</h4>
-    <p>We may disclose information when legally compelled to:</p>
-    <ul>
-        <li>Court orders or subpoenas</li>
-        <li>Law enforcement requests (with proper jurisdiction)</li>
-        <li>Regulatory investigations</li>
-    </ul>
-    
-    <h3 class="section-title">4. Data Protection</h3>
-    <p>Our security framework includes:</p>
-    
-    <h4>Technical Measures</h4>
-    <ul>
-        <li>End-to-end encryption (AES-256)</li>
-        <li>Annual penetration testing</li>
-        <li>Hardware Security Modules (HSMs) for key management</li>
-    </ul>
-    
-    <h4>Organizational Measures</h4>
-    <ul>
-        <li>Employee privacy training (bi-annual)</li>
-        <li>Data Protection Officer oversight</li>
-        <li>Vendor security audits</li>
-    </ul>
-    
-    <h4>User Controls</h4>
-    <ul>
-        <li>Download your data through account settings</li>
-        <li>Request deletion (excluding legally required retention)</li>
-        <li>Opt-out of non-essential processing</li>
-    </ul>
-    
-    <div class="info-box">
-        <h4>Contact Our DPO:</h4>
-        <p>For privacy concerns: <strong>dpo@vgames.run.place</strong><br>
-        Expect response within 72 hours (check spam folder)</p>
-    </div>
-    
-    <div class="page-number">Page 8</div>
-</div>
+            <!-- Privacy Policy -->
+            <div class="page" id="privacy">
+                <h2 class="chapter-title">7. Privacy Policy</h2>
+                
+                <div class="info-box">
+                    <p><strong>Last Updated:</strong> April 5, 2025</p>
+                    <p>This Privacy Policy explains how VGAMES STUDIO collects, uses, and protects your information in compliance with global data protection regulations.</p>
+                </div>
+                
+                <h3 class="section-title">1. Information Collection</h3>
+                <p>We collect information through multiple channels to ensure service quality and security:</p>
+                
+                <div class="warning-box">
+                    <h4>Data Minimization Principle:</h4>
+                    <p>We only collect data essential for service operation and user protection.</p>
+                </div>
+                
+                <h4>Directly Provided Data</h4>
+                <ul>
+                    <li><strong>Account Information:</strong> Username, encrypted password, recovery email</li>
+                    <li><strong>Verification Data:</strong> Age verification (month/year only), country/region</li>
+                    <li><strong>Payment Processing:</strong> Tokenized transactions through PCI-DSS compliant partners</li>
+                </ul>
+                
+                <h4>Automatically Collected Data</h4>
+                <ul>
+                    <li><strong>Device Fingerprint:</strong> Hardware hash (non-PII), OS version, browser type</li>
+                    <li><strong>Network Data:</strong> IP address (anonymized after 30 days), connection type</li>
+                    <li><strong>Security Signals:</strong> Request timestamps, TLS handshake metadata</li>
+                </ul>
+                
+                <h4>Third-Party Data</h4>
+                <ul>
+                    <li><strong>OnlineGames.io:</strong> Game-specific analytics (fully anonymized)</li>
+                    <li><strong>Safety Partners:</strong> Malware threat intelligence feeds</li>
+                </ul>
+                
+                <h3 class="section-title">2. Data Usage</h3>
+                <p>Your information enables these critical functions:</p>
+                
+                <table>
+                    <tr>
+                        <th>Purpose</th>
+                        <th>Legal Basis</th>
+                    </tr>
+                    <tr>
+                        <td>Service delivery and maintenance</td>
+                        <td>Contractual necessity</td>
+                    </tr>
+                    <tr>
+                        <td>Security threat prevention</td>
+                        <td>Legitimate interest</td>
+                    </tr>
+                    <tr>
+                        <td>Regional content compliance</td>
+                        <td>Legal obligation</td>
+                    </tr>
+                </table>
+                
+                <h3 class="section-title">3. Data Sharing</h3>
+                <p>We implement strict data sharing protocols:</p>
+                
+                <div class="warning-box">
+                    <h4>No Sale of Personal Data:</h4>
+                    <p>VGAMES STUDIO does not and will never sell user data to third parties.</p>
+                </div>
+                
+                <h4>Essential Service Providers</h4>
+                <ul>
+                    <li><strong>Hosting Partners:</strong> Github, AWS, Google Cloud (encrypted data only)</li>
+                    <li><strong>Payment Processors:</strong> PayPal (tokenized transactions)</li>
+                    <li><strong>Security Vendors:</strong> Cloudflare, Captcha (threat intelligence)</li>
+                </ul>
+                
+                <h4>Legal Requirements</h4>
+                <p>We may disclose information when legally compelled to:</p>
+                <ul>
+                    <li>Court orders or subpoenas</li>
+                    <li>Law enforcement requests (with proper jurisdiction)</li>
+                    <li>Regulatory investigations</li>
+                </ul>
+                
+                <h3 class="section-title">4. Data Protection</h3>
+                <p>Our security framework includes:</p>
+                
+                <h4>Technical Measures</h4>
+                <ul>
+                    <li>End-to-end encryption (AES-256)</li>
+                    <li>Annual penetration testing</li>
+                    <li>Hardware Security Modules (HSMs) for key management</li>
+                </ul>
+                
+                <h4>Organizational Measures</h4>
+                <ul>
+                    <li>Employee privacy training (bi-annual)</li>
+                    <li>Data Protection Officer oversight</li>
+                    <li>Vendor security audits</li>
+                </ul>
+                
+                <h4>User Controls</h4>
+                <ul>
+                    <li>Download your data through account settings</li>
+                    <li>Request deletion (excluding legally required retention)</li>
+                    <li>Opt-out of non-essential processing</li>
+                </ul>
+                
+                <div class="info-box">
+                    <h4>Contact Our DPO:</h4>
+                    <p>For privacy concerns: <strong>dpo@vgames.run.place</strong><br>
+                    Expect response within 72 hours (check spam folder)</p>
+                </div>
+                
+                <div class="page-number">Page 8</div>
+            </div>
+            
             <!-- Cookie Policy -->
             <div class="page" id="cookies">
                 <h2 class="chapter-title">8. Cookie Policy</h2>
