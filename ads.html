@@ -4,6 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RETRO ARCADE - ADS</title>
+    <!-- Preconnect to ad networks for faster loading -->
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://script.adquake.com">
+    
+    <!-- Google AdSense with backup loader -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6973513004509305"
+     crossorigin="anonymous"></script>
+    <script>
+    // Backup Google AdSense loader
+    function loadGoogleAds() {
+        if(!window.adsbygoogle) {
+            var script = document.createElement('script');
+            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6973513004509305';
+            script.crossOrigin = 'anonymous';
+            script.async = true;
+            document.head.appendChild(script);
+        }
+    }
+    </script>
+    
     <style>
         @font-face {
             font-family: '2pstart';
@@ -48,6 +68,18 @@
             padding: 15px;
             border: 2px solid #0ff;
             background-color: rgba(0, 10, 20, 0.7);
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .ad-fallback {
+            display: none;
+            text-align: center;
+            color: #ff0;
+            font-size: 1.1em;
         }
         
         .ad-label {
@@ -98,6 +130,24 @@
             pointer-events: none;
             z-index: 100;
         }
+        
+        /* Retro ad styling */
+        ins.adsbygoogle, #adquake-unit-1, #adquake-unit-3 {
+            background-color: #111 !important;
+            border: 1px solid #0f0 !important;
+            display: block !important;
+            margin: 0 auto !important;
+            min-width: 300px !important;
+            min-height: 250px !important;
+        }
+        
+        /* Force show ads even if blocked */
+        ins.adsbygoogle[data-ad-status="unfilled"],
+        ins.adsbygoogle:empty,
+        #adquake-unit-1:empty,
+        #adquake-unit-3:empty {
+            background: #111 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="250" viewBox="0 0 300 250"><text x="150" y="125" font-family="2pstart" font-size="20" fill="%230f0" text-anchor="middle">RETRO ARCADE AD</text></svg>') no-repeat center !important;
+        }
     </style>
 </head>
 <body>
@@ -116,18 +166,50 @@
             <div class="ad-label">ADVERTISEMENT:</div>
             <!-- AdQuake Ad Unit 1 -->
             <div id="adquake-unit-1"></div>
+            <div class="ad-fallback" id="fallback-1">
+                <p>Check out our sponsor: <a href="https://example.com/retro-games" style="color:#0ff">RetroGameZone</a></p>
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='100' viewBox='0 0 300 100'><rect width='300' height='100' fill='%23111' stroke='%230f0'/><text x='150' y='50' font-family='2pstart' font-size='16' fill='%230f0' text-anchor='middle'>PLAY RETRO GAMES NOW</text></svg>" alt="Fallback Ad">
+            </div>
         </div>
         
         <div class="ad-container">
             <div class="ad-label">SPONSORED CONTENT:</div>
-            <!-- AdQuake Ad Unit 2 -->
-            <div id="adquake-unit-2"></div>
+            <!-- Google AdSense Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-6973513004509305"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <div class="ad-fallback" id="fallback-2">
+                <p>Sponsored by: <a href="https://example.com/arcade-fun" style="color:#0ff">ArcadeFunZone</a></p>
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'><rect width='300' height='250' fill='%23111' stroke='%23f0f'/><text x='150' y='125' font-family='2pstart' font-size='20' fill='%23f0f' text-anchor='middle'>YOUR AD HERE</text></svg>" alt="Fallback Ad">
+            </div>
         </div>
         
         <div class="ad-container">
             <div class="ad-label">GAME PROMOTION:</div>
             <!-- AdQuake Ad Unit 3 -->
             <div id="adquake-unit-3"></div>
+            <div class="ad-fallback" id="fallback-3">
+                <p>New game release: <a href="https://example.com/new-game" style="color:#ff0">Pixel Warriors 2023</a></p>
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='100' viewBox='0 0 300 100'><rect width='300' height='100' fill='%23111' stroke='%23ff0'/><text x='150' y='50' font-family='2pstart' font-size='16' fill='%23ff0' text-anchor='middle'>PRE-ORDER NOW</text></svg>" alt="Fallback Ad">
+            </div>
+        </div>
+        
+        <div class="ad-container">
+            <div class="ad-label">CLASSIC GAME ADS:</div>
+            <!-- Google AdSense Unit -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-6973513004509305"
+                 data-ad-slot="0987654321"
+                 data-ad-format="rectangle"
+                 data-full-width-responsive="true"></ins>
+            <div class="ad-fallback" id="fallback-4">
+                <p>Classic games at: <a href="https://example.com/classic-games" style="color:#0f0">RetroClassics.com</a></p>
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='250' viewBox='0 0 300 250'><rect width='300' height='250' fill='%23111' stroke='%230ff'/><text x='150' y='125' font-family='2pstart' font-size='20' fill='%230ff' text-anchor='middle'>CLASSIC GAME ADS</text></svg>" alt="Fallback Ad">
+            </div>
         </div>
         
         <footer>
@@ -135,30 +217,132 @@
         </footer>
     </div>
 
-    <!-- AdQuake Scripts -->
+    <!-- AdQuake Scripts with multiple fallback methods -->
     <script type="text/javascript">
-        (function(a,b,c,d,e,f,g){
-            a[c]=a[c]||function(){
-                (a[c].q=a[c].q||[]).push(arguments)
-            };
-            f=b.createElement(d);
-            f.async=1;
-            f.setAttribute("adquake-key",e);
-            f.src="https://script.adquake.com/js/adquake.js";
-            g=b.getElementsByTagName(d)[0];
-            g.parentNode.insertBefore(f,g);
-        })(window,document,"adquake","script","keGvJEAIm0KW93XkQdnhbA==");
+        // Function to check if an element is empty or has no visible content
+        function isAdEmpty(element) {
+            if(!element) return true;
+            if(element.innerHTML.trim() === '') return true;
+            if(element.offsetHeight === 0) return true;
+            return false;
+        }
         
-        // Initialize ads after script loads
-        window.addEventListener('load', function() {
-            if(window.adquake) {
-                adquake('create', 'unit-1', { slot: 'adquake-unit-1', format: 'banner' });
-                adquake('create', 'unit-2', { slot: 'adquake-unit-2', format: 'rectangle' });
-                adquake('create', 'unit-3', { slot: 'adquake-unit-3', format: 'skyscraper' });
+        // Function to show fallback ads
+        function showFallback(fallbackId) {
+            var fallback = document.getElementById(fallbackId);
+            if(fallback) fallback.style.display = 'block';
+        }
+        
+        // Load AdQuake with multiple fallbacks
+        function loadAdQuake() {
+            try {
+                (function(a,b,c,d,e,f,g){
+                    a[c]=a[c]||function(){
+                        (a[c].q=a[c].q||[]).push(arguments)
+                    };
+                    f=b.createElement(d);
+                    f.async=1;
+                    f.setAttribute("adquake-key",e);
+                    f.src="https://script.adquake.com/js/adquake.js";
+                    f.onerror = function() {
+                        showFallback('fallback-1');
+                        showFallback('fallback-3');
+                    };
+                    g=b.getElementsByTagName(d)[0];
+                    g.parentNode.insertBefore(f,g);
+                })(window,document,"adquake","script","keGvJEAIm0KW93XkQdnhbA==");
+                
+                // Direct script fallback
+                var backupScript = document.createElement('script');
+                backupScript.src = 'https://script.adquake.com/js/adquake.js';
+                backupScript.setAttribute('adquake-key', 'keGvJEAIm0KW93XkQdnhbA==');
+                backupScript.async = true;
+                backupScript.onerror = function() {
+                    showFallback('fallback-1');
+                    showFallback('fallback-3');
+                };
+                document.head.appendChild(backupScript);
+            } catch(e) {
+                showFallback('fallback-1');
+                showFallback('fallback-3');
             }
+        }
+        
+        // Initialize all ads
+        function initializeAds() {
+            // Initialize Google AdSense
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                loadGoogleAds();
+            } catch(e) {
+                console.error('Google AdSense failed:', e);
+            }
+            
+            // Initialize AdQuake
+            loadAdQuake();
+            
+            // Check for blocked ads periodically
+            var adCheckInterval = setInterval(function() {
+                // Check Google AdSense ads
+                var googleAds = document.querySelectorAll('ins.adsbygoogle');
+                googleAds.forEach(function(ad, index) {
+                    if(isAdEmpty(ad)) {
+                        showFallback('fallback-' + (index + 2));
+                    }
+                });
+                
+                // Check AdQuake ads
+                var adquake1 = document.getElementById('adquake-unit-1');
+                var adquake3 = document.getElementById('adquake-unit-3');
+                
+                if(isAdEmpty(adquake1)) showFallback('fallback-1');
+                if(isAdEmpty(adquake3)) showFallback('fallback-3');
+            }, 2000);
+            
+            // Final fallback check after 5 seconds
+            setTimeout(function() {
+                var googleAds = document.querySelectorAll('ins.adsbygoogle');
+                googleAds.forEach(function(ad, index) {
+                    if(isAdEmpty(ad)) {
+                        showFallback('fallback-' + (index + 2));
+                    }
+                });
+                
+                var adquake1 = document.getElementById('adquake-unit-1');
+                var adquake3 = document.getElementById('adquake-unit-3');
+                
+                if(isAdEmpty(adquake1)) showFallback('fallback-1');
+                if(isAdEmpty(adquake3)) showFallback('fallback-3');
+                
+                clearInterval(adCheckInterval);
+            }, 5000);
+        }
+        
+        // Start loading ads when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // First try to initialize ads normally
+            initializeAds();
+            
+            // Backup initialization in case of errors
+            setTimeout(initializeAds, 1000);
+        });
+        
+        // Final attempt if all else fails
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var anyAdsShown = document.querySelectorAll('ins.adsbygoogle:not(:empty), #adquake-unit-1:not(:empty), #adquake-unit-3:not(:empty)').length > 0;
+                if(!anyAdsShown) {
+                    // Show all fallbacks as last resort
+                    for(var i = 1; i <= 4; i++) {
+                        showFallback('fallback-' + i);
+                    }
+                }
+            }, 3000);
         });
     </script>
     
-    <script async src="https://script.adquake.com/js/adquake.js" adquake-key="keGvJEAIm0KW93XkQdnhbA=="></script>
+    <!-- Direct AdQuake script as final backup -->
+    <script async src="https://script.adquake.com/js/adquake.js" adquake-key="keGvJEAIm0KW93XkQdnhbA==" 
+    onerror="document.getElementById('fallback-1').style.display='block';document.getElementById('fallback-3').style.display='block';"></script>
 </body>
 </html>
