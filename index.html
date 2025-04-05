@@ -159,6 +159,22 @@
             margin-bottom: 20px;
         }
 
+        .view-all {
+            background-color: var(--darker);
+            color: var(--text);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary);
+        }
+
+        .view-all:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
         /* Game Grid */
         .game-grid {
             display: grid;
@@ -417,6 +433,53 @@
             animation: shake 0.5s ease;
         }
 
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--dark);
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            border: 2px solid var(--primary);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal h2 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .modal p {
+            margin-bottom: 15px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -448,6 +511,11 @@
             .logo h1 {
                 font-size: 18px;
             }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -464,7 +532,7 @@
                     <li><a href="#" class="shake">Popular</a></li>
                     <li><a href="#" class="shake">New Releases</a></li>
                     <li><a href="#" class="shake">Categories</a></li>
-                    <li><a href="#" class="shake">About</a></li>
+                    <li><a href="http://www.vgames.run.place/TVR" class="shake">About</a></li>
                 </ul>
             </nav>
         </div>
@@ -500,10 +568,10 @@
             <div class="footer-logo">VGAMES</div>
             <div class="copyright">© 2023 VGAMES. All rights reserved. All games are property of their respective owners.</div>
             <div class="footer-links">
-                <a href="#" class="shake">Privacy Policy</a>
-                <a href="#" class="shake">Terms of Service</a>
-                <a href="#" class="shake">Contact Us</a>
-                <a href="#" class="shake">FAQ</a>
+                <a href="#" id="terms-link" class="shake">Terms of Service</a>
+                <a href="#" id="privacy-link" class="shake">Privacy Policy</a>
+                <a href="#" id="copyright-link" class="shake">Copyright Info</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">About Us</a>
             </div>
             <div class="social-icons">
                 <a href="#" class="social-icon shake">📱</a>
@@ -514,35 +582,107 @@
         </div>
     </footer>
 
+    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-message">ENJOY YOUR GAME!</div>
     </div>
 
+    <!-- Modal for Terms/Privacy -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div id="modalContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Load games from games.json
+        // Game data URL
+        const GAMES_JSON_URL = 'http://www.vgames.run.place/game.json';
+        
+        // Modal content
+        const MODAL_CONTENT = {
+            terms: `
+                <h2>Terms of Service</h2>
+                <p>By using VGAMES, you agree to these terms:</p>
+                <ol>
+                    <li>You must be at least 13 years old to use this service</li>
+                    <li>All games are property of their respective owners</li>
+                    <li>VGAMES is not responsible for any content on external game sites</li>
+                    <li>We reserve the right to modify these terms at any time</li>
+                </ol>
+                <p>For complete terms, please visit our <a href="http://www.vgames.run.place/TVR" target="_blank">About page</a>.</p>
+            `,
+            privacy: `
+                <h2>Privacy Policy</h2>
+                <p>VGAMES respects your privacy:</p>
+                <ol>
+                    <li>We don't collect personal information unless voluntarily provided</li>
+                    <li>We may use cookies for analytics and functionality</li>
+                    <li>Third-party partners may have their own policies</li>
+                    <li>We implement security measures to protect your data</li>
+                </ol>
+                <p>For complete privacy policy, please visit our <a href="http://www.vgames.run.place/TVR" target="_blank">About page</a>.</p>
+            `,
+            copyright: `
+                <h2>Copyright Information</h2>
+                <p>All content on VGAMES:</p>
+                <ol>
+                    <li>VGAMES platform © 2023 VGAMES Team</li>
+                    <li>All games are property of their respective copyright holders</li>
+                    <li>Images and logos used with permission or under fair use</li>
+                    <li>Unauthorized reproduction is prohibited</li>
+                </ol>
+                <p>For DMCA requests, please contact us through our <a href="http://www.vgames.run.place/TVR" target="_blank">About page</a>.</p>
+            `
+        };
+
+        // DOM elements
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const gameCategoriesContainer = document.getElementById('game-categories');
+        const infoModal = document.getElementById('infoModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+        
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('games.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Shuffle the games array
-                    const shuffledGames = shuffleArray(data.games);
-                    
-                    // Categorize games by tags
-                    const categorizedGames = categorizeGamesByTag(shuffledGames);
-                    
-                    // Display games by category
-                    displayGamesByCategory(categorizedGames);
-                    
-                    // Set up event listeners for play buttons
-                    setupPlayButtons();
-                })
-                .catch(error => {
-                    console.error('Error loading games:', error);
-                    document.getElementById('game-categories').innerHTML = 
-                        '<p style="color: var(--accent)">Failed to load games. Please try again later.</p>';
-                });
+            // Load games
+            loadGames();
+            
+            // Set up modal events
+            setupModalEvents();
+            
+            // Set up navigation events
+            setupNavigation();
         });
+
+        // Load games from JSON
+        async function loadGames() {
+            try {
+                const response = await fetch(GAMES_JSON_URL);
+                if (!response.ok) throw new Error('Network response was not ok');
+                
+                const data = await response.json();
+                
+                // Shuffle the games array
+                const shuffledGames = shuffleArray(data.games);
+                
+                // Categorize games by tags
+                const categorizedGames = categorizeGamesByTag(shuffledGames);
+                
+                // Display games by category
+                displayGamesByCategory(categorizedGames);
+                
+                // Set up event listeners for play buttons
+                setupPlayButtons();
+            } catch (error) {
+                console.error('Error loading games:', error);
+                gameCategoriesContainer.innerHTML = 
+                    '<p style="color: var(--accent)">Failed to load games. Please try again later.</p>';
+            }
+        }
 
         // Fisher-Yates shuffle algorithm
         function shuffleArray(array) {
@@ -584,7 +724,7 @@
 
         // Display games organized by category
         function displayGamesByCategory(categorizedGames) {
-            const gameCategoriesContainer = document.getElementById('game-categories');
+            gameCategoriesContainer.innerHTML = '';
             
             for (const [tag, games] of Object.entries(categorizedGames)) {
                 const categoryElement = document.createElement('div');
@@ -607,7 +747,7 @@
                 const gameGrid = document.createElement('div');
                 gameGrid.className = 'game-grid';
                 
-                
+                // Limit to 6 games per category for better UX
                 const gamesToShow = games.slice(0, 6);
                 
                 gamesToShow.forEach(game => {
@@ -615,7 +755,7 @@
                     gameCard.className = 'game-card';
                     
                     gameCard.innerHTML = `
-                        <img src="${game.image}" alt="${game.name}" class="game-image">
+                        <img src="${game.image}" alt="${game.name}" class="game-image" onerror="this.src='https://via.placeholder.com/300x150?text=Game+Image'">
                         <div class="game-info">
                             <h4 class="game-title">${game.name}</h4>
                             <p class="game-description">${game.description}</p>
@@ -635,24 +775,77 @@
             }
         }
 
-        
+        // Set up event listeners for play buttons
         function setupPlayButtons() {
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('play-button')) {
                     const gameUrl = e.target.getAttribute('data-url');
-                    showLoadingScreen(gameUrl);
+                    if (gameUrl) {
+                        showLoadingScreen(gameUrl);
+                    }
                 }
             });
         }
 
-       
+        // Show loading screen and redirect to game
         function showLoadingScreen(gameUrl) {
-            const loadingOverlay = document.getElementById('loadingOverlay');
             loadingOverlay.classList.add('active');
             
             setTimeout(() => {
                 window.location.href = gameUrl;
             }, 2000);
+        }
+
+        // Set up modal events
+        function setupModalEvents() {
+            // Terms link
+            document.getElementById('terms-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal('terms');
+            });
+            
+            // Privacy link
+            document.getElementById('privacy-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal('privacy');
+            });
+            
+            // Copyright link
+            document.getElementById('copyright-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal('copyright');
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                infoModal.style.display = 'none';
+            });
+            
+            // Close when clicking outside modal
+            window.addEventListener('click', function(e) {
+                if (e.target === infoModal) {
+                    infoModal.style.display = 'none';
+                }
+            });
+        }
+
+        // Show modal with specific content
+        function showModal(contentType) {
+            modalContent.innerHTML = MODAL_CONTENT[contentType] || '';
+            infoModal.style.display = 'flex';
+        }
+
+        // Set up navigation events
+        function setupNavigation() {
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
         }
     </script>
 </body>
