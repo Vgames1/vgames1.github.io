@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-CJXTLGW9B3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-CJXTLGW9B3');
-
-  </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJXTLGW9B3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CJXTLGW9B3');
+    </script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,6 +69,8 @@
             height: 50px;
             margin-right: 15px;
             image-rendering: pixelated;
+            pointer-events: none;
+            user-select: none;
         }
 
         .logo h1 {
@@ -478,6 +477,168 @@
             animation: shake 0.5s ease;
         }
 
+        /* Preview styles */
+        .preview-container {
+            position: fixed;
+            z-index: 999;
+            background-color: var(--dark);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .preview-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .preview-description {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .preview-link {
+            color: var(--secondary);
+            word-break: break-all;
+        }
+
+        /* All Games section */
+        .all-games-container {
+            display: none;
+            margin-bottom: 40px;
+        }
+
+        .all-games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .all-games-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-to-home {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-to-home:hover {
+            background-color: var(--accent);
+        }
+
+        /* Custom alert */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--dark);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            z-index: 9999;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            display: none;
+        }
+
+        .custom-alert-content {
+            margin-bottom: 20px;
+        }
+
+        .custom-alert-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .custom-alert-message {
+            margin-bottom: 20px;
+        }
+
+        .custom-alert-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .custom-alert-btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .custom-alert-confirm {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .custom-alert-cancel {
+            background-color: var(--dark);
+            color: var(--text);
+            border: 1px solid var(--text);
+        }
+
+        /* Notification permission */
+        .notification-permission {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--dark);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 350px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .notification-permission p {
+            margin-bottom: 15px;
+        }
+
+        .notification-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .notification-btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .notification-allow {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .notification-deny {
+            background-color: var(--dark);
+            color: var(--text);
+            border: 1px solid var(--text);
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -508,26 +669,29 @@
             .logo h1 {
                 font-size: 18px;
             }
+            
+            .all-games-grid {
+                grid-template-columns: 1fr;
+            }
         }
-
-        
     </style>
 </head>
 
 <body>
     <header>
         <div class="container header-content">
-            <div class="logo" onclick="window.location.href='/'">
+            <div class="logo" id="logo">
                 <img src="vgstu.png" alt="VGAMES Logo">
                 <h1>VGAMES</h1>
             </div>
             <nav>
                 <ul>
-                    <li><a href="/" class="shake">Home</a></li>
-                    <li><a href="#" class="shake">Popular</a></li>
-                    <li><a href="#" class="shake">New Releases</a></li>
-                    <li><a href="#" class="shake">Categories</a></li>
-                    <li><a href="http://www.vgames.run.place/TVR" class="shake">About</a></li>
+                    <li><a href="#" class="shake home-link">Home</a></li>
+                    <li><a href="#" class="shake popular-link">Popular</a></li>
+                    <li><a href="#" class="shake new-releases-link">New Releases</a></li>
+                    <li><a href="#" class="shake categories-link">Categories</a></li>
+                    <li><a href="#" class="shake all-games-link">All Games</a></li>
+                    <li><a href="http://www.vgames.run.place/TVR" class="shake about-link">About</a></li>
                 </ul>
             </nav>
         </div>
@@ -545,12 +709,20 @@
             <h3>GAME COLLECTION</h3>
             <div id="game-categories"></div>
         </div>
+        
+        <div class="all-games-container" id="allGamesContainer">
+            <div class="all-games-header">
+                <h3 class="shake">ALL GAMES (A-Z)</h3>
+                <button class="back-to-home shake">Back to Home</button>
+            </div>
+            <div class="all-games-grid" id="allGamesGrid"></div>
+        </div>
     </main>
 
     <section class="partner">
         <div class="container">
             <h3>IN PARTNERSHIP WITH</h3>
-            <a href="https://www.onlinegames.io" target="_blank">
+            <a href="https://www.onlinegames.io" target="_blank" id="partnerLink">
                 <img src="https://www.onlinegames.io/media/website/online-games-io.png" alt="OnlineGames.io">
             </a>
         </div>
@@ -575,6 +747,34 @@
         </div>
     </footer>
 
+    <!-- Preview container -->
+    <div class="preview-container" id="previewContainer">
+        <div class="preview-title" id="previewTitle"></div>
+        <div class="preview-description" id="previewDescription"></div>
+        <div class="preview-link" id="previewLink"></div>
+    </div>
+
+    <!-- Custom alert -->
+    <div class="custom-alert" id="customAlert">
+        <div class="custom-alert-content">
+            <div class="custom-alert-title" id="alertTitle">Alert</div>
+            <div class="custom-alert-message" id="alertMessage"></div>
+        </div>
+        <div class="custom-alert-buttons">
+            <button class="custom-alert-btn custom-alert-cancel" id="alertCancel">Cancel</button>
+            <button class="custom-alert-btn custom-alert-confirm" id="alertConfirm">OK</button>
+        </div>
+    </div>
+
+    <!-- Notification permission -->
+    <div class="notification-permission" id="notificationPermission">
+        <p>Would you like to receive notifications about new games and updates?</p>
+        <div class="notification-buttons">
+            <button class="notification-btn notification-deny" id="denyNotification">No Thanks</button>
+            <button class="notification-btn notification-allow" id="allowNotification">Allow</button>
+        </div>
+    </div>
+
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-message">ENJOY YOUR GAME!</div>
@@ -597,8 +797,131 @@
 
     <script>
         let allGames = [];
+        let notificationTimeout;
+        let previewTimeout;
+        const allowedIPs = ['127.0.0.1', '::1']; // Add your allowed IPs here
+        
+        // Intercept native alerts
+        window.alert = function(message) {
+            showCustomAlert('Alert', message);
+            return false;
+        };
+        
+        // Check IP address
+        function checkIP() {
+            // In a real implementation, you would check the user's IP against your allowed list
+            // This is just a placeholder for the concept
+            return true;
+        }
+        
+        // Custom alert function
+        function showCustomAlert(title, message, callback) {
+            const alert = document.getElementById('customAlert');
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').textContent = message;
+            alert.style.display = 'block';
+            
+            return new Promise((resolve) => {
+                document.getElementById('alertConfirm').onclick = function() {
+                    alert.style.display = 'none';
+                    resolve(true);
+                    if (callback) callback(true);
+                };
+                
+                document.getElementById('alertCancel').onclick = function() {
+                    alert.style.display = 'none';
+                    resolve(false);
+                    if (callback) callback(false);
+                };
+            });
+        }
+        
+        // Show link preview
+        function showPreview(event, element, gameData) {
+            clearTimeout(previewTimeout);
+            
+            const preview = document.getElementById('previewContainer');
+            document.getElementById('previewTitle').textContent = gameData.title;
+            document.getElementById('previewDescription').textContent = gameData.description;
+            document.getElementById('previewLink').textContent = gameData.embed;
+            
+            preview.style.display = 'block';
+            preview.style.left = `${event.pageX + 15}px`;
+            preview.style.top = `${event.pageY + 15}px`;
+            
+            // Adjust position if it goes off screen
+            const rect = preview.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                preview.style.left = `${event.pageX - rect.width - 15}px`;
+            }
+            if (rect.bottom > window.innerHeight) {
+                preview.style.top = `${event.pageY - rect.height - 15}px`;
+            }
+        }
+        
+        function hidePreview() {
+            previewTimeout = setTimeout(() => {
+                document.getElementById('previewContainer').style.display = 'none';
+            }, 300);
+        }
+        
+        // Notification functions
+        function showNotificationPermission() {
+            if (Notification.permission === 'default') {
+                notificationTimeout = setTimeout(() => {
+                    document.getElementById('notificationPermission').style.display = 'block';
+                }, 60 * 60 * 1000); // Show after 1 hour of inactivity
+            }
+        }
+        
+        function setupNotificationListeners() {
+            document.getElementById('allowNotification').addEventListener('click', () => {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        showCustomAlert('Success', 'You will now receive notifications about new games and updates!');
+                    }
+                });
+                document.getElementById('notificationPermission').style.display = 'none';
+                clearTimeout(notificationTimeout);
+            });
+            
+            document.getElementById('denyNotification').addEventListener('click', () => {
+                document.getElementById('notificationPermission').style.display = 'none';
+                clearTimeout(notificationTimeout);
+            });
+        }
+        
+        // Send notification (example)
+        function sendNotification() {
+            if (Notification.permission === 'granted') {
+                new Notification('VGAMES Update', {
+                    body: 'Check out our new games!',
+                    icon: 'vgstu.png'
+                });
+            }
+        }
+        
+        // Track user activity
+        function trackActivity() {
+            clearTimeout(notificationTimeout);
+            showNotificationPermission();
+        }
         
         document.addEventListener('DOMContentLoaded', function() {
+            if (!checkIP()) {
+                showCustomAlert('Access Denied', 'Your IP address is not authorized to access this site.');
+                return;
+            }
+            
+            // Setup event listeners for tracking activity
+            document.addEventListener('mousemove', trackActivity);
+            document.addEventListener('keydown', trackActivity);
+            document.addEventListener('click', trackActivity);
+            
+            // Setup notification listeners
+            setupNotificationListeners();
+            
+            // Load games
             fetch('http://www.vgames.run.place/game.json')
                 .then(response => response.json())
                 .then(data => {
@@ -608,12 +931,63 @@
                     displayGamesByCategory(categorizedGames);
                     setupEventListeners();
                     handleRouting();
+                    
+                    // Show notification permission after load
+                    showNotificationPermission();
                 })
                 .catch(error => {
                     console.error('Error loading games:', error);
+                    showCustomAlert('Error', 'Failed to load games. Please try again later.');
                     document.getElementById('game-categories').innerHTML = 
                         '<p style="color: var(--accent)">Failed to load games. Please try again later.</p>';
                 });
+            
+            // Logo click redirect to home
+            document.getElementById('logo').addEventListener('click', function() {
+                document.getElementById('allGamesContainer').style.display = 'none';
+                document.querySelector('.categories').style.display = 'block';
+                window.history.pushState(null, '', '/');
+            });
+            
+            // All Games link
+            document.querySelector('.all-games-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.categories').style.display = 'none';
+                document.getElementById('allGamesContainer').style.display = 'block';
+                displayAllGames();
+                window.history.pushState(null, '', '/all-games');
+            });
+            
+            // Back to home button
+            document.querySelector('.back-to-home').addEventListener('click', function() {
+                document.getElementById('allGamesContainer').style.display = 'none';
+                document.querySelector('.categories').style.display = 'block';
+                window.history.pushState(null, '', '/');
+            });
+            
+            // Home link
+            document.querySelector('.home-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('allGamesContainer').style.display = 'none';
+                document.querySelector('.categories').style.display = 'block';
+                window.history.pushState(null, '', '/');
+            });
+            
+            // Partner link preview
+            document.getElementById('partnerLink').addEventListener('mouseenter', function(e) {
+                showPreview(e, this, {
+                    title: 'OnlineGames.io',
+                    description: 'Our partner website with thousands of free online games',
+                    embed: 'https://www.onlinegames.io'
+                });
+            });
+            
+            document.getElementById('partnerLink').addEventListener('mouseleave', hidePreview);
+            
+            // Preview container events
+            const preview = document.getElementById('previewContainer');
+            preview.addEventListener('mouseenter', () => clearTimeout(previewTimeout));
+            preview.addEventListener('mouseleave', hidePreview);
         });
 
         function shuffleArray(array) {
@@ -653,7 +1027,42 @@
 
         function displayGamesByCategory(categorizedGames) {
             const gameCategoriesContainer = document.getElementById('game-categories');
+            gameCategoriesContainer.innerHTML = '';
             
+            // Show 50 random games on home
+            const allGamesShuffled = shuffleArray(allGames);
+            const randomGames = allGamesShuffled.slice(0, 50);
+            
+            const randomCategoryElement = document.createElement('div');
+            randomCategoryElement.className = 'category';
+            
+            const randomCategoryHeader = document.createElement('div');
+            randomCategoryHeader.className = 'category-header';
+            
+            const randomCategoryTitle = document.createElement('h3');
+            randomCategoryTitle.textContent = 'FEATURED GAMES';
+            randomCategoryTitle.className = 'shake';
+            
+            const randomGameCount = document.createElement('span');
+            randomGameCount.textContent = `${randomGames.length} Games`;
+            randomGameCount.style.color = 'var(--secondary)';
+            
+            randomCategoryHeader.appendChild(randomCategoryTitle);
+            randomCategoryHeader.appendChild(randomGameCount);
+            
+            const randomGameGrid = document.createElement('div');
+            randomGameGrid.className = 'game-grid';
+            
+            randomGames.forEach(game => {
+                const gameCard = createGameCard(game);
+                randomGameGrid.appendChild(gameCard);
+            });
+            
+            randomCategoryElement.appendChild(randomCategoryHeader);
+            randomCategoryElement.appendChild(randomGameGrid);
+            gameCategoriesContainer.appendChild(randomCategoryElement);
+            
+            // Show other categories
             for (const [tag, games] of Object.entries(categorizedGames)) {
                 const categoryElement = document.createElement('div');
                 categoryElement.className = 'category';
@@ -678,22 +1087,7 @@
                 const gamesToShow = games.slice(0, 6);
                 
                 gamesToShow.forEach(game => {
-                    const gameCard = document.createElement('div');
-                    gameCard.className = 'game-card';
-                    gameCard.dataset.gameTitle = game.title;
-                    
-                    gameCard.innerHTML = `
-                        <img src="${game.image}" alt="${game.title}" class="game-image">
-                        <div class="game-info">
-                            <h4 class="game-title">${game.title}</h4>
-                            <p class="game-description">${game.description}</p>
-                            <div class="game-tags">
-                                ${game.tags.split(',').map(tag => `<span class="game-tag">${tag.trim()}</span>`).join('')}
-                            </div>
-                            <button class="play-button" data-game='${JSON.stringify(game).replace(/'/g, "\\'")}'>PLAY NOW</button>
-                        </div>
-                    `;
-                    
+                    const gameCard = createGameCard(game);
                     gameGrid.appendChild(gameCard);
                 });
                 
@@ -701,6 +1095,46 @@
                 categoryElement.appendChild(gameGrid);
                 gameCategoriesContainer.appendChild(categoryElement);
             }
+        }
+        
+        function createGameCard(game) {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.dataset.gameTitle = game.title;
+            
+            gameCard.innerHTML = `
+                <img src="${game.image}" alt="${game.title}" class="game-image">
+                <div class="game-info">
+                    <h4 class="game-title">${game.title}</h4>
+                    <p class="game-description">${game.description}</p>
+                    <div class="game-tags">
+                        ${game.tags.split(',').map(tag => `<span class="game-tag">${tag.trim()}</span>`).join('')}
+                    </div>
+                    <button class="play-button" data-game='${JSON.stringify(game).replace(/'/g, "\\'")}'>PLAY NOW</button>
+                </div>
+            `;
+            
+            // Add preview functionality
+            gameCard.addEventListener('mouseenter', function(e) {
+                showPreview(e, this, game);
+            });
+            
+            gameCard.addEventListener('mouseleave', hidePreview);
+            
+            return gameCard;
+        }
+        
+        function displayAllGames() {
+            const allGamesGrid = document.getElementById('allGamesGrid');
+            allGamesGrid.innerHTML = '';
+            
+            // Sort games A-Z
+            const sortedGames = [...allGames].sort((a, b) => a.title.localeCompare(b.title));
+            
+            sortedGames.forEach(game => {
+                const gameCard = createGameCard(game);
+                allGamesGrid.appendChild(gameCard);
+            });
         }
 
         function setupEventListeners() {
@@ -755,7 +1189,7 @@
             const gameFrame = document.getElementById('gameFrame');
             if (!document.fullscreenElement) {
                 gameFrame.requestFullscreen().catch(err => {
-                    alert(`Error attempting to enable fullscreen: ${err.message}`);
+                    showCustomAlert('Error', `Failed to enter fullscreen: ${err.message}`);
                 });
             } else {
                 document.exitFullscreen();
@@ -781,27 +1215,33 @@
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                alert('Game link copied to clipboard!');
+                showCustomAlert('Success', 'Game link copied to clipboard!');
             }
         }
 
         function handleRouting() {
             const params = new URLSearchParams(window.location.search);
             const gameTitle = params.get('game');
+            const path = window.location.pathname;
             
             if (gameTitle) {
                 const gameData = getGameByTitle(decodeURIComponent(gameTitle));
                 if (gameData) {
                     openGame(gameData);
                 }
+            } else if (path.includes('all-games')) {
+                document.querySelector('.categories').style.display = 'none';
+                document.getElementById('allGamesContainer').style.display = 'block';
+                displayAllGames();
             } else {
+                document.getElementById('allGamesContainer').style.display = 'none';
+                document.querySelector('.categories').style.display = 'block';
                 closeGame();
             }
         }
     </script>
 
     <script type="text/javascript">(function(a,b,c,d,e,f,g){a[c]=a[c]||function(){(a[c].q=a[c].q||[]).push(arguments)};f=b.createElement(d);f.async=1;f.setAttribute("adquake-key",e);f.src="https://script.adquake.com/js/adquake.js";g=b.getElementsByTagName(d)[0];g.parentNode.insertBefore(f,g);})(window,document,"adquake","script","keGvJEAIm0KW93XkQdnhbA==");</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6973513004509305"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6973513004509305" crossorigin="anonymous"></script>
 </body>
 </html>
