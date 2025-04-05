@@ -37,7 +37,6 @@
             padding: 0 20px;
         }
 
-        /* Header Styles */
         header {
             background-color: var(--dark);
             padding: 20px 0;
@@ -54,6 +53,7 @@
         .logo {
             display: flex;
             align-items: center;
+            cursor: pointer;
         }
 
         .logo img {
@@ -69,7 +69,6 @@
             text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
         }
 
-        /* Navigation */
         nav ul {
             display: flex;
             list-style: none;
@@ -110,7 +109,6 @@
             width: 100%;
         }
 
-        /* Main Content */
         .hero {
             text-align: center;
             padding: 60px 0;
@@ -133,7 +131,6 @@
             font-size: 18px;
         }
 
-        /* Game Categories */
         .categories {
             margin-bottom: 40px;
         }
@@ -159,23 +156,6 @@
             margin-bottom: 20px;
         }
 
-        .view-all {
-            background-color: var(--darker);
-            color: var(--text);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid var(--primary);
-        }
-
-        .view-all:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        /* Game Grid */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -190,6 +170,7 @@
             transition: all 0.3s ease;
             position: relative;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
         }
 
         .game-card:hover {
@@ -290,7 +271,6 @@
             left: 100%;
         }
 
-        /* Partner Section */
         .partner {
             text-align: center;
             padding: 40px 0;
@@ -317,7 +297,6 @@
             filter: drop-shadow(0 0 15px rgba(253, 121, 168, 0.7));
         }
 
-        /* Footer */
         footer {
             background-color: var(--darker);
             padding: 30px 0;
@@ -376,7 +355,62 @@
             transform: translateY(-3px);
         }
 
-        /* Loading Animation */
+        .game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--darker);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .game-title-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .game-title-bar img {
+            height: 30px;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .game-control-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .game-control-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .game-frame {
+            flex: 1;
+            border: none;
+            background-color: black;
+        }
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -422,7 +456,6 @@
             }
         }
 
-        /* Animations */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
@@ -433,54 +466,6 @@
             animation: shake 0.5s ease;
         }
 
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: var(--dark);
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 600px;
-            width: 90%;
-            border: 2px solid var(--primary);
-            position: relative;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .modal h2 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-family: 'Press Start 2P', cursive;
-        }
-
-        .modal p {
-            margin-bottom: 15px;
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -511,24 +496,19 @@
             .logo h1 {
                 font-size: 18px;
             }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 10px;
-            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container header-content">
-            <div class="logo">
+            <div class="logo" onclick="window.location.href='/'">
                 <img src="vgstu.png" alt="VGAMES Logo">
                 <h1>VGAMES</h1>
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" class="shake">Home</a></li>
+                    <li><a href="/" class="shake">Home</a></li>
                     <li><a href="#" class="shake">Popular</a></li>
                     <li><a href="#" class="shake">New Releases</a></li>
                     <li><a href="#" class="shake">Categories</a></li>
@@ -548,9 +528,7 @@
     <main class="container">
         <div class="categories">
             <h3>GAME COLLECTION</h3>
-            <div id="game-categories">
-                <!-- Game categories will be loaded here -->
-            </div>
+            <div id="game-categories"></div>
         </div>
     </main>
 
@@ -568,10 +546,10 @@
             <div class="footer-logo">VGAMES</div>
             <div class="copyright">© 2023 VGAMES. All rights reserved. All games are property of their respective owners.</div>
             <div class="footer-links">
-                <a href="#" id="terms-link" class="shake">Terms of Service</a>
-                <a href="#" id="privacy-link" class="shake">Privacy Policy</a>
-                <a href="#" id="copyright-link" class="shake">Copyright Info</a>
-                <a href="http://www.vgames.run.place/TVR" class="shake">About Us</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Privacy Policy</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Terms of Service</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Contact Us</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">FAQ</a>
             </div>
             <div class="social-icons">
                 <a href="#" class="social-icon shake">📱</a>
@@ -582,109 +560,47 @@
         </div>
     </footer>
 
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-message">ENJOY YOUR GAME!</div>
     </div>
 
-    <!-- Modal for Terms/Privacy -->
-    <div class="modal" id="infoModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeModal">&times;</button>
-            <div id="modalContent">
-                <!-- Content will be loaded here -->
+    <div class="game-container" id="gameContainer">
+        <div class="game-header">
+            <div class="game-title-bar">
+                <img src="vgstu.png" alt="VGAMES">
+                <span id="currentGameTitle"></span>
+            </div>
+            <div class="game-controls">
+                <button class="game-control-btn" id="shareGameBtn">Share</button>
+                <button class="game-control-btn" id="fullscreenBtn">Fullscreen</button>
+                <button class="game-control-btn" id="closeGameBtn">Close</button>
             </div>
         </div>
+        <iframe class="game-frame" id="gameFrame" allowfullscreen></iframe>
     </div>
 
     <script>
-        // Game data URL
-        const GAMES_JSON_URL = 'http://www.vgames.run.place/game.json';
+        let allGames = [];
         
-        // Modal content
-        const MODAL_CONTENT = {
-            terms: `
-                <h2>Terms of Service</h2>
-                <p>By using VGAMES, you agree to these terms:</p>
-                <ol>
-                    <li>You must be at least 13 years old to use this service</li>
-                    <li>All games are property of their respective owners</li>
-                    <li>VGAMES is not responsible for any content on external game sites</li>
-                    <li>We reserve the right to modify these terms at any time</li>
-                </ol>
-                <p>For complete terms, please visit our <a href="http://www.vgames.run.place/TVR" target="_blank">About page</a>.</p>
-            `,
-            privacy: `
-                <h2>Privacy Policy</h2>
-                <p>VGAMES respects your privacy:</p>
-                <ol>
-                    <li>We don't collect personal information unless voluntarily provided</li>
-                    <li>We may use cookies for analytics and functionality</li>
-                    <li>Third-party partners may have their own policies</li>
-                    <li>We implement security measures to protect your data</li>
-                </ol>
-                <p>For complete privacy policy, please visit our <a href="http://www.vgames.run.place/TVR" target="_blank">About page</a>.</p>
-            `,
-            copyright: `
-                <h2>Copyright Information</h2>
-                <p>All content on VGAMES:</p>
-                <ol>
-                    <li>VGAMES platform © 2023 VGAMES Team</li>
-                    <li>All games are property of their respective copyright holders</li>
-                    <li>Images and logos used with permission or under fair use</li>
-                    <li>Unauthorized reproduction is prohibited</li>
-                </ol>
-                <p>For DMCA requests, please contact us through our <a href="http://www.vgames.run.place/TVR" target="_blank">About page</a>.</p>
-            `
-        };
-
-        // DOM elements
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const gameCategoriesContainer = document.getElementById('game-categories');
-        const infoModal = document.getElementById('infoModal');
-        const modalContent = document.getElementById('modalContent');
-        const closeModal = document.getElementById('closeModal');
-        
-        // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            // Load games
-            loadGames();
-            
-            // Set up modal events
-            setupModalEvents();
-            
-            // Set up navigation events
-            setupNavigation();
+            fetch('http://www.vgames.run.place/game.json')
+                .then(response => response.json())
+                .then(data => {
+                    allGames = data;
+                    const shuffledGames = shuffleArray(data);
+                    const categorizedGames = categorizeGamesByTag(shuffledGames);
+                    displayGamesByCategory(categorizedGames);
+                    setupEventListeners();
+                    handleRouting();
+                })
+                .catch(error => {
+                    console.error('Error loading games:', error);
+                    document.getElementById('game-categories').innerHTML = 
+                        '<p style="color: var(--accent)">Failed to load games. Please try again later.</p>';
+                });
         });
 
-        // Load games from JSON
-        async function loadGames() {
-            try {
-                const response = await fetch(GAMES_JSON_URL);
-                if (!response.ok) throw new Error('Network response was not ok');
-                
-                const data = await response.json();
-                
-                // Shuffle the games array
-                const shuffledGames = shuffleArray(data.games);
-                
-                // Categorize games by tags
-                const categorizedGames = categorizeGamesByTag(shuffledGames);
-                
-                // Display games by category
-                displayGamesByCategory(categorizedGames);
-                
-                // Set up event listeners for play buttons
-                setupPlayButtons();
-            } catch (error) {
-                console.error('Error loading games:', error);
-                gameCategoriesContainer.innerHTML = 
-                    '<p style="color: var(--accent)">Failed to load games. Please try again later.</p>';
-            }
-        }
-
-        // Fisher-Yates shuffle algorithm
         function shuffleArray(array) {
             const newArray = [...array];
             for (let i = newArray.length - 1; i > 0; i--) {
@@ -694,13 +610,13 @@
             return newArray;
         }
 
-        // Categorize games by their tags
         function categorizeGamesByTag(games) {
             const tagMap = {};
             
-            // Count tag occurrences
             games.forEach(game => {
-                game.tags.forEach(tag => {
+                const tags = game.tags.split(',');
+                tags.forEach(tag => {
+                    tag = tag.trim();
                     if (!tagMap[tag]) {
                         tagMap[tag] = [];
                     }
@@ -708,12 +624,10 @@
                 });
             });
             
-            // Convert to array and sort by number of games (descending)
             const sortedTags = Object.keys(tagMap).sort((a, b) => {
                 return tagMap[b].length - tagMap[a].length;
             });
             
-            // Create categorized object with sorted tags
             const categorized = {};
             sortedTags.forEach(tag => {
                 categorized[tag] = tagMap[tag];
@@ -722,9 +636,8 @@
             return categorized;
         }
 
-        // Display games organized by category
         function displayGamesByCategory(categorizedGames) {
-            gameCategoriesContainer.innerHTML = '';
+            const gameCategoriesContainer = document.getElementById('game-categories');
             
             for (const [tag, games] of Object.entries(categorizedGames)) {
                 const categoryElement = document.createElement('div');
@@ -747,22 +660,22 @@
                 const gameGrid = document.createElement('div');
                 gameGrid.className = 'game-grid';
                 
-                // Limit to 6 games per category for better UX
                 const gamesToShow = games.slice(0, 6);
                 
                 gamesToShow.forEach(game => {
                     const gameCard = document.createElement('div');
                     gameCard.className = 'game-card';
+                    gameCard.dataset.gameTitle = game.title;
                     
                     gameCard.innerHTML = `
-                        <img src="${game.image}" alt="${game.name}" class="game-image" onerror="this.src='https://via.placeholder.com/300x150?text=Game+Image'">
+                        <img src="${game.image}" alt="${game.title}" class="game-image">
                         <div class="game-info">
-                            <h4 class="game-title">${game.name}</h4>
+                            <h4 class="game-title">${game.title}</h4>
                             <p class="game-description">${game.description}</p>
                             <div class="game-tags">
-                                ${game.tags.map(tag => `<span class="game-tag">${tag}</span>`).join('')}
+                                ${game.tags.split(',').map(tag => `<span class="game-tag">${tag.trim()}</span>`).join('')}
                             </div>
-                            <button class="play-button" data-url="${game.url}">PLAY NOW</button>
+                            <button class="play-button" data-game='${JSON.stringify(game).replace(/'/g, "\\'")}'>PLAY NOW</button>
                         </div>
                     `;
                     
@@ -775,77 +688,100 @@
             }
         }
 
-        // Set up event listeners for play buttons
-        function setupPlayButtons() {
+        function setupEventListeners() {
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('play-button')) {
-                    const gameUrl = e.target.getAttribute('data-url');
-                    if (gameUrl) {
-                        showLoadingScreen(gameUrl);
+                    const gameData = JSON.parse(e.target.dataset.game);
+                    openGame(gameData);
+                    window.history.pushState({gameTitle: gameData.title}, '', `/?game=${encodeURIComponent(gameData.title)}`);
+                }
+                
+                const gameCard = e.target.closest('.game-card');
+                if (gameCard) {
+                    const gameTitle = gameCard.dataset.gameTitle;
+                    const gameData = getGameByTitle(gameTitle);
+                    if (gameData) {
+                        openGame(gameData);
+                        window.history.pushState({gameTitle: gameData.title}, '', `/?game=${encodeURIComponent(gameData.title)}`);
                     }
                 }
             });
+
+            document.getElementById('closeGameBtn').addEventListener('click', closeGame);
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+            document.getElementById('shareGameBtn').addEventListener('click', shareGame);
+            window.addEventListener('popstate', handleRouting);
         }
 
-        // Show loading screen and redirect to game
-        function showLoadingScreen(gameUrl) {
-            loadingOverlay.classList.add('active');
+        function getGameByTitle(title) {
+            return allGames.find(game => game.title === title);
+        }
+
+        function openGame(gameData) {
+            document.getElementById('loadingOverlay').classList.add('active');
             
             setTimeout(() => {
-                window.location.href = gameUrl;
-            }, 2000);
+                document.getElementById('currentGameTitle').textContent = gameData.title;
+                document.getElementById('gameFrame').src = gameData.embed;
+                document.getElementById('gameContainer').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                document.getElementById('loadingOverlay').classList.remove('active');
+            }, 1500);
         }
 
-        // Set up modal events
-        function setupModalEvents() {
-            // Terms link
-            document.getElementById('terms-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showModal('terms');
-            });
-            
-            // Privacy link
-            document.getElementById('privacy-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showModal('privacy');
-            });
-            
-            // Copyright link
-            document.getElementById('copyright-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                showModal('copyright');
-            });
-            
-            // Close modal
-            closeModal.addEventListener('click', function() {
-                infoModal.style.display = 'none';
-            });
-            
-            // Close when clicking outside modal
-            window.addEventListener('click', function(e) {
-                if (e.target === infoModal) {
-                    infoModal.style.display = 'none';
-                }
-            });
+        function closeGame() {
+            document.getElementById('gameFrame').src = '';
+            document.getElementById('gameContainer').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            window.history.pushState(null, '', '/');
         }
 
-        // Show modal with specific content
-        function showModal(contentType) {
-            modalContent.innerHTML = MODAL_CONTENT[contentType] || '';
-            infoModal.style.display = 'flex';
-        }
-
-        // Set up navigation events
-        function setupNavigation() {
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+        function toggleFullscreen() {
+            const gameFrame = document.getElementById('gameFrame');
+            if (!document.fullscreenElement) {
+                gameFrame.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable fullscreen: ${err.message}`);
                 });
-            });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function shareGame() {
+            const gameTitle = document.getElementById('currentGameTitle').textContent;
+            const gameUrl = document.getElementById('gameFrame').src;
+            const shareText = `Check out ${gameTitle} on VGAMES!`;
+            const shareUrl = `${window.location.origin}?game=${encodeURIComponent(gameTitle)}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: gameTitle,
+                    text: shareText,
+                    url: shareUrl
+                }).catch(console.error);
+            } else {
+                const tempInput = document.createElement('input');
+                tempInput.value = shareUrl;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Game link copied to clipboard!');
+            }
+        }
+
+        function handleRouting() {
+            const params = new URLSearchParams(window.location.search);
+            const gameTitle = params.get('game');
+            
+            if (gameTitle) {
+                const gameData = getGameByTitle(decodeURIComponent(gameTitle));
+                if (gameData) {
+                    openGame(gameData);
+                }
+            } else {
+                closeGame();
+            }
         }
     </script>
 </body>
