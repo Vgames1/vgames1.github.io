@@ -1,5 +1,26 @@
 [
   {
+    "title": "Nova Clicker",
+    "embed": "https://cloud.onlinegames.io/games/2024/construct/314/nova-clicker/index-og.html",
+    "image": "https://www.onlinegames.io/media/posts/981/responsive/Nova-Clicker-xs.jpg",
+    "tags": "1-player,2d,clicker,crazy,free,funny,html5,idle,mobile,mouse",
+    "description": "Nova Clicker is an online idle game which starts you off with a single, smiley Nova, its name is FreezeNova.  A simple tap or click on FreezeNova produces your first handful of stars.  But don't be fooled, this clicker game quickly grows beyond basic tapping.  Soon, you'll be managing an entire universe of quirky characters and powerful upgrades, all designed to make you the ultimate star tycoon."
+  },
+  {
+    "title": "Fast Food Rush",
+    "embed": "https://cloud.onlinegames.io/games/2025/unity/fast-food-rush/index-og.html",
+    "image": "https://www.onlinegames.io/media/posts/979/responsive/fast-food-rush-xs.jpg",
+    "tags": "1-player,3d,cooking,free,mouse,restaurant,simulator,strategy,tycoon",
+    "description": "You're at Burger King, sinking your teeth into a juicy cheeseburger and finishing it off in about 15 minutes flat.  But just this once, before you head out, pause and take a quick look around.  Employees are rushing nonstop, flipping sizzling patties, taking orders at the counter, pouring ice-cold drinks, and wiping down tables.  At this point, running your own burger joint might seem pretty appealing, at least to some people."
+  },
+  {
+    "title": "Cookie Clicker Pro",
+    "embed": "https://cloud.onlinegames.io/games/2025/unity/cookie-clicker-pro/index-og.html",
+    "image": "https://www.onlinegames.io/media/posts/971/responsive/Cookie-Clicker-Pro-Game-xs.jpg",
+    "tags": "1-player,2d,clicker,cooking,cute,free,fun,funny,idle,mouse,unity",
+    "description": "Love cookies?  Want to create the biggest cookie empire the internet has ever seen?  Then Cookie Clicker Pro is exactly your game!  It's a simple, addictively fun incremental game, packed with sweet strategies."
+  },
+  {
     "title": "Survival Island",
     "embed": "https://cloud.onlinegames.io/games/2024/unity2/survival-island/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/970/responsive/Survival-Island-xs.jpg",
@@ -17,7 +38,7 @@
     "title": "Nuts and Bolts Puzzle",
     "embed": "https://cloud.onlinegames.io/games/2025/unity/nuts-and-bolts-puzzle/index-og.html",
     "image": "https://www.onlinegames.io/media/posts/965/responsive/nuts-and-bolts-puzzle-xs.jpg",
-    "tags": "1-player,2d,arcade,brain,cozy,free,fun,logic,puzzle",
+    "tags": "1-player,2d,arcade,brain,cozy,free,fun,logic,organizing,puzzle",
     "description": "Ever gotten lost in a maze of planks and screws when trying to build an IKEA shelf?  Well, Nuts and Bolts Puzzle is like the opposite of that!  Instead of frantically trying to assemble stuff, you’re gleefully taking everything apart and the best part is: no confusing instructions required.  In this fun online game on OnlineGames."
   },
   {
