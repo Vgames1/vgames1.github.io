@@ -479,3 +479,198 @@
     </script>
 </body>
 </html>
+<!-- Legal Footer Widget -->
+<style>
+    /* Legal Widget Styles */
+    body.has-legal-widget {
+        padding-bottom: 180px; /* Adjust based on widget height */
+    }
+    
+    .legal-widget-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #12121a;
+        border-top: 2px solid #fd79a8;
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+        z-index: 1000;
+        transform: translateY(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .legal-widget-container.collapsed {
+        transform: translateY(calc(100% - 40px));
+    }
+    
+    .legal-widget-header {
+        background-color: #0a0a0f;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+    
+    .legal-widget-title {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 12px;
+        color: #fd79a8;
+        margin: 0;
+    }
+    
+    .legal-widget-toggle {
+        background: none;
+        border: none;
+        color: #00cec9;
+        font-size: 20px;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    
+    .legal-widget-container.collapsed .legal-widget-toggle {
+        transform: rotate(180deg);
+    }
+    
+    .legal-widget-content {
+        padding: 15px 20px;
+        font-size: 14px;
+        line-height: 1.5;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .legal-widget-content p {
+        margin-bottom: 10px;
+    }
+    
+    .legal-widget-content a {
+        color: #00cec9;
+        text-decoration: none;
+        word-break: break-all;
+    }
+    
+    .legal-widget-content a:hover {
+        text-decoration: underline;
+    }
+    
+    .legal-widget-buttons {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 20px 15px;
+        gap: 10px;
+    }
+    
+    .legal-widget-btn {
+        padding: 8px 15px;
+        border-radius: 4px;
+        font-family: 'Roboto Mono', monospace;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .legal-widget-btn.accept {
+        background-color: #6c5ce7;
+        color: white;
+        border: none;
+    }
+    
+    .legal-widget-btn.accept:hover {
+        background-color: #fd79a8;
+    }
+    
+    .legal-widget-btn.more-info {
+        background-color: transparent;
+        color: #00cec9;
+        border: 1px solid #00cec9;
+    }
+    
+    .legal-widget-btn.more-info:hover {
+        background-color: rgba(0, 206, 201, 0.1);
+    }
+    
+    @media (max-width: 768px) {
+        body.has-legal-widget {
+            padding-bottom: 160px;
+        }
+        
+        .legal-widget-content {
+            max-height: 200px;
+        }
+        
+        .legal-widget-title {
+            font-size: 10px;
+        }
+        
+        .legal-widget-content {
+            font-size: 13px;
+        }
+        
+        .legal-widget-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="legal-widget-container" id="legalWidget">
+    <div class="legal-widget-header" onclick="toggleLegalWidget()">
+        <h3 class="legal-widget-title">LEGAL NOTICE</h3>
+        <button class="legal-widget-toggle">▼</button>
+    </div>
+    <div class="legal-widget-content">
+        <p>By playing games on this site, you agree to:</p>
+        <ol>
+            <li>OnlineGames.io's <a href="https://www.onlinegames.io/about/" target="_blank">Terms and Conditions</a> and <a href="https://www.onlinegames.io/privacy-policy/" target="_blank">Privacy Policy</a></li>
+            <li>Our comprehensive <a href="http://www.vgames.run.place/TVR" target="_blank">TVR Book</a> containing:
+                <ul>
+                    <li>Terms and Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>Help Information</li>
+                    <li>Cookie Policy</li>
+                    <li>Error Definitions</li>
+                    <li>And other important legal documents</li>
+                </ul>
+            </li>
+        </ol>
+        <p><strong>Please take time to review these documents carefully before playing.</strong></p>
+        <p>Your continued use of this site constitutes acceptance of all these policies.</p>
+    </div>
+    <div class="legal-widget-buttons">
+        <button class="legal-widget-btn more-info" onclick="window.open('http://www.vgames.run.place/TVR', '_blank')">READ FULL DOCUMENTS</button>
+        <button class="legal-widget-btn accept" onclick="acceptLegalTerms()">I UNDERSTAND</button>
+    </div>
+</div>
+
+<script>
+    // Add widget space to body
+    document.body.classList.add('has-legal-widget');
+    
+    // Check if user already accepted terms
+    if(localStorage.getItem('legalTermsAccepted')) {
+        document.getElementById('legalWidget').classList.add('collapsed');
+    }
+    
+    // Toggle widget visibility
+    function toggleLegalWidget() {
+        document.getElementById('legalWidget').classList.toggle('collapsed');
+    }
+    
+    // Accept terms function
+    function acceptLegalTerms() {
+        localStorage.setItem('legalTermsAccepted', 'true');
+        document.getElementById('legalWidget').classList.add('collapsed');
+        
+        // Optional: Send event to analytics
+        if(typeof gtag !== 'undefined') {
+            gtag('event', 'legal_terms_accepted');
+        }
+    }
+    
+    // Auto-collapse if accepted
+    window.addEventListener('load', function() {
+        if(localStorage.getItem('legalTermsAccepted')) {
+            document.getElementById('legalWidget').classList.add('collapsed');
+        }
+    });
+</script>
