@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJXTLGW9B3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CJXTLGW9B3');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGAMES - Popular Games</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --background: #1e1e2f;
+            --text: #f5f6fa;
+            --dark: #12121a;
+            --darker: #0a0a0f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--dark);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+            image-rendering: pixelated;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .logo h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 8px rgba(253, 121, 168, 0.7);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(to right, var(--darker), var(--background));
+            border-bottom: 1px solid var(--secondary);
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(0, 206, 201, 0.5);
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+        }
+
+        .categories {
+            margin-bottom: 40px;
+        }
+
+        .categories h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background-color: var(--dark);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.3);
+            border-color: var(--accent);
+        }
+
+        .game-image {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .game-info {
+            padding: 15px;
+        }
+
+        .game-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .game-description {
+            font-size: 14px;
+            color: rgba(245, 246, 250, 0.8);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .game-tag {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid var(--primary);
+        }
+
+        .play-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-family: 'Roboto Mono', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-button:hover {
+            background-color: var(--accent);
+            box-shadow: 0 0 15px rgba(253, 121, 168, 0.5);
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .popular-badge::before {
+            content: '★';
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .trending-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--secondary);
+            color: var(--dark);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .trending-badge::before {
+            content: '↑';
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .popular-section {
+            margin-bottom: 40px;
+        }
+
+        .popular-section h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .trending-section h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+            display: inline-block;
+        }
+
+        /* Include all other styles from your index.html */
+        /* ... (footer styles, game container styles, etc.) ... */
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo" id="logo">
+                <img src="vgstu.png" alt="VGAMES Logo">
+                <h1>VGAMES</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="shake home-link">Home</a></li>
+                    <li><a href="popular.html" class="shake popular-link">Popular</a></li>
+                    <li><a href="#" class="shake new-releases-link">New Releases</a></li>
+                    <li><a href="categories.html" class="shake categories-link">Categories</a></li>
+                    <li><a href="#" class="shake all-games-link">All Games</a></li>
+                    <li><a href="http://www.vgames.run.place/TVR" class="shake about-link">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2 class="shake">POPULAR GAMES</h2>
+            <p>Check out the most played and highest rated games on VGAMES. These are the community favorites!</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="popular-section">
+            <h3>TOP RATED GAMES</h3>
+            <div class="game-grid" id="top-rated-games"></div>
+        </div>
+
+        <div class="trending-section">
+            <h3>TRENDING NOW</h3>
+            <div class="game-grid" id="trending-games"></div>
+        </div>
+
+        <div class="popular-section">
+            <h3>MOST PLAYED</h3>
+            <div class="game-grid" id="most-played-games"></div>
+        </div>
+    </main>
+
+    <section class="partner">
+        <div class="container">
+            <h3>IN PARTNERSHIP WITH</h3>
+            <a href="https://www.onlinegames.io" target="_blank" id="partnerLink">
+                <img src="https://www.onlinegames.io/media/website/online-games-io.png" alt="OnlineGames.io">
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">VGAMES</div>
+            <div class="copyright">© 2025 VGAMES. All rights reserved. All games are property of their respective owners.</div>
+            <div class="footer-links">
+                <a href="http://www.vgames.run.place/TVR" class="shake">Privacy Policy</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Terms of Service</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Contact Us</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">FAQ</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon shake">📱</a>
+                <a href="#" class="social-icon shake">📘</a>
+                <a href="#" class="social-icon shake">🐦</a>
+                <a href="#" class="social-icon shake">📸</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-message">LOADING POPULAR GAMES...</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show loading overlay
+            document.getElementById('loadingOverlay').classList.add('active');
+            
+            // Load games data
+            fetch('http://www.vgames.run.place/game.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loading overlay
+                    document.getElementById('loadingOverlay').classList.remove('active');
+                    
+                    // Process games data
+                    const games = data.map(game => {
+                        // Add random popularity metrics if they don't exist
+                        if (!game.rating) game.rating = Math.random() * 5;
+                        if (!game.playCount) game.playCount = Math.floor(Math.random() * 10000);
+                        if (!game.trendingScore) game.trendingScore = Math.random();
+                        return game;
+                    });
+                    
+                    // Sort by rating (top rated)
+                    const topRated = [...games].sort((a, b) => b.rating - a.rating).slice(0, 6);
+                    
+                    // Sort by trending score
+                    const trending = [...games].sort((a, b) => b.trendingScore - a.trendingScore).slice(0, 6);
+                    
+                    // Sort by play count (most played)
+                    const mostPlayed = [...games].sort((a, b) => b.playCount - a.playCount).slice(0, 6);
+                    
+                    // Display the games
+                    displayGames(topRated, 'top-rated-games', 'popular-badge', 'Top Rated');
+                    displayGames(trending, 'trending-games', 'trending-badge', 'Trending');
+                    displayGames(mostPlayed, 'most-played-games', 'popular-badge', 'Popular');
+                })
+                .catch(error => {
+                    console.error('Error loading games:', error);
+                    document.getElementById('loadingOverlay').classList.remove('active');
+                    document.getElementById('top-rated-games').innerHTML = 
+                        '<p style="color: var(--accent)">Failed to load popular games. Please try again later.</p>';
+                });
+        });
+
+        function displayGames(games, containerId, badgeClass, badgeText) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <div class="${badgeClass}">${badgeText}</div>
+                    <img src="${game.image}" alt="${game.title}" class="game-image">
+                    <div class="game-info">
+                        <h4 class="game-title">${game.title}</h4>
+                        <p class="game-description">${game.description}</p>
+                        <div class="game-tags">
+                            ${game.tags.split(',').map(tag => `<span class="game-tag">${tag.trim()}</span>`).join('')}
+                        </div>
+                        <button class="play-button" data-game='${JSON.stringify(game).replace(/'/g, "\\'")}'>PLAY NOW</button>
+                    </div>
+                `;
+                
+                // Add click event to play button
+                const playButton = gameCard.querySelector('.play-button');
+                playButton.addEventListener('click', function() {
+                    const gameData = JSON.parse(playButton.dataset.game);
+                    openGame(gameData);
+                });
+                
+                container.appendChild(gameCard);
+            });
+        }
+
+        function openGame(gameData) {
+            // In a real implementation, this would open the game
+            // For now, we'll just show an alert
+            alert(`Opening game: ${gameData.title}\nRating: ${gameData.rating.toFixed(1)}/5\nPlays: ${gameData.playCount}`);
+        }
+    </script>
+</body>
+</html>
