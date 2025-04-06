@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJXTLGW9B3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-CJXTLGW9B3');
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGAMES - Game Categories</title>
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --background: #1e1e2f;
+            --text: #f5f6fa;
+            --dark: #12121a;
+            --darker: #0a0a0f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--dark);
+            padding: 20px 0;
+            border-bottom: 2px solid var(--primary);
+            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+            image-rendering: pixelated;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .logo h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 8px rgba(253, 121, 168, 0.7);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            background: linear-gradient(to right, var(--darker), var(--background));
+            border-bottom: 1px solid var(--secondary);
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(0, 206, 201, 0.5);
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background-color: var(--dark);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.3);
+            border-color: var(--accent);
+        }
+
+        .category-image {
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .category-info {
+            padding: 20px;
+        }
+
+        .category-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .category-count {
+            font-size: 14px;
+            color: var(--secondary);
+        }
+
+        footer {
+            background-color: var(--darker);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 2px solid var(--primary);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .copyright {
+            font-size: 14px;
+            color: rgba(245, 246, 250, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icon {
+            color: var(--text);
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 0 10px 10px;
+            }
+
+            .hero h2 {
+                font-size: 24px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo h1 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo" id="logo" onclick="window.location.href='index.html'">
+                <img src="vgstu.png" alt="VGAMES Logo">
+                <h1>VGAMES</h1>
+            </div>
+            <nav>
+                <ul>
+                     <li><a href="http://www.vgames.run.place" class="shake home-link">Home</a></li>
+                    <li><a href="http://www.vgames.run.place/popular" class="shake popular-link">Popular</a></li>
+                    <li><a href="http://www.vgames.run.place/releases" class="shake new-releases-link">New Releases</a></li>
+                    <li><a href="http://www.vgames.run.place/categories" class="shake categories-link">Categories</a></li>
+                    <li><a href="http://www.vgames.run.place/all-games" class="shake all-games-link">All Games</a></li>
+                    <li><a href="http://www.vgames.run.place/about" class="shake about-link">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2 class="shake">GAME CATEGORIES</h2>
+            <p>Browse our extensive collection of games organized by category. Find your favorite genres and discover new ones!</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="category-grid" id="categoryGrid"></div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">VGAMES</div>
+            <div class="copyright">© 2025 VGAMES. All rights reserved. All games are property of their respective owners.</div>
+            <div class="footer-links">
+                <a href="http://www.vgames.run.place/TVR" class="shake">Privacy Policy</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Terms of Service</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">Contact Us</a>
+                <a href="http://www.vgames.run.place/TVR" class="shake">FAQ</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon shake">📱</a>
+                <a href="#" class="social-icon shake">📘</a>
+                <a href="#" class="social-icon shake">🐦</a>
+                <a href="#" class="social-icon shake">📸</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('game.json')
+                .then(response => response.json())
+                .then(data => {
+                    const categories = getCategoriesFromGames(data);
+                    displayCategories(categories);
+                })
+                .catch(error => {
+                    console.error('Error loading game data:', error);
+                    document.getElementById('categoryGrid').innerHTML = 
+                        '<p style="color: var(--accent); text-align: center;">Failed to load categories. Please try again later.</p>';
+                });
+        });
+
+        
+        function getCategoriesFromGames(games) {
+            const categoryMap = {};
+            
+            games.forEach(game => {
+                const tags = game.tags.split(',');
+                tags.forEach(tag => {
+                    tag = tag.trim();
+                    if (!categoryMap[tag]) {
+                        categoryMap[tag] = 0;
+                    }
+                    categoryMap[tag]++;
+                });
+            });
+            
+           
+            return Object.entries(categoryMap)
+                .map(([name, count]) => ({ name, count }))
+                .sort((a, b) => b.count - a.count);
+        }
+
+        
+        function displayCategories(categories) {
+            const grid = document.getElementById('categoryGrid');
+            grid.innerHTML = '';
+            
+            categories.forEach(category => {
+                const card = document.createElement('a');
+                card.className = 'category-card shake';
+                card.href = `index.html?category=${encodeURIComponent(category.name)}`;
+                
+              
+                const randomImage = getRandomCategoryImage(category.name);
+                
+                card.innerHTML = `
+                    <img src="${randomImage}" alt="${category.name}" class="category-image">
+                    <div class="category-info">
+                        <h3 class="category-title">${category.name.toUpperCase()}</h3>
+                        <p class="category-count">${category.count} Games</p>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        
+        function getRandomCategoryImage(categoryName) {
+            
+            const colors = [
+                '6c5ce7', '00cec9', 'fd79a8', 'a29bfe', '55efc4', 
+                '74b9ff', 'ffeaa7', 'fab1a0', 'e17055', '0984e3'
+            ];
+            const color = colors[categoryName.length % colors.length];
+            return `https://via.placeholder.com/600x400/${color}/ffffff?text=${encodeURIComponent(categoryName)}`;
+        }
+    </script>
+</body>
+</html>
