@@ -686,12 +686,12 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="http://www.vgames.run.place" class="shake home-link">Home</a></li>
-                    <li><a href="http://www.vgames.run.place/popular" class="shake popular-link">Popular</a></li>
-                    <li><a href="http://www.vgames.run.place/releases" class="shake new-releases-link">New Releases</a></li>
-                    <li><a href="http://www.vgames.run.place/categories" class="shake categories-link">Categories</a></li>
-                    <li><a href="http://www.vgames.run.place/all-games" class="shake all-games-link">All Games</a></li>
-                    <li><a href="http://www.vgames.run.place/about" class="shake about-link">About</a></li>
+                    <li><a href="https://www.vgames.run.place" class="shake home-link">Home</a></li>
+                    <li><a href="https://www.vgames.run.place/popular" class="shake popular-link">Popular</a></li>
+                    <li><a href="https://www.vgames.run.place/releases" class="shake new-releases-link">New Releases</a></li>
+                    <li><a href="https://www.vgames.run.place/categories" class="shake categories-link">Categories</a></li>
+                    <li><a href="https://www.vgames.run.place/all-games" class="shake all-games-link">All Games</a></li>
+                    <li><a href="https://www.vgames.run.place/about" class="shake about-link">About</a></li>
                 </ul>
             </nav>
         </div>
@@ -733,10 +733,10 @@
             <div class="footer-logo">VGAMES</div>
             <div class="copyright">© 2025 VGAMES. All rights reserved. All games are property of their respective owners.</div>
             <div class="footer-links">
-                <a href="http://www.vgames.run.place/TVR" class="shake">Privacy Policy</a>
-                <a href="http://www.vgames.run.place/TVR" class="shake">Terms of Service</a>
-                <a href="http://www.vgames.run.place/TVR" class="shake">Contact Us</a>
-                <a href="http://www.vgames.run.place/TVR" class="shake">FAQ</a>
+                <a href="https://www.vgames.run.place/TVR" class="shake">Privacy Policy</a>
+                <a href="https://www.vgames.run.place/TVR" class="shake">Terms of Service</a>
+                <a href="https://www.vgames.run.place/TVR" class="shake">Contact Us</a>
+                <a href="https://www.vgames.run.place/TVR" class="shake">FAQ</a>
             </div>
             <div class="social-icons">
                 <a href="#" class="social-icon shake">📱</a>
@@ -799,18 +799,16 @@
         let allGames = [];
         let notificationTimeout;
         let previewTimeout;
-        const allowedIPs = ['127.0.0.1', '::1']; // Add your allowed IPs here
+        const allowedIPs = ['127.0.0.1', '::1']; 
         
-        // Intercept native alerts
+       
         window.alert = function(message) {
             showCustomAlert('Alert', message);
             return false;
         };
         
-        // Check IP address
+       
         function checkIP() {
-            // In a real implementation, you would check the user's IP against your allowed list
-            // This is just a placeholder for the concept
             return true;
         }
         
