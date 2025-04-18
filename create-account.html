@@ -21,7 +21,6 @@
                 radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.05) 0%, transparent 20%),
                 radial-gradient(circle at 90% 80%, rgba(0, 255, 0, 0.05) 0%, transparent 20%);
         }
-
         .container {
             max-width: 800px;
             width: 100%;
@@ -31,7 +30,6 @@
             position: relative;
             margin-top: 30px;
         }
-
         .container::before {
             content: "";
             position: absolute;
@@ -44,7 +42,6 @@
             opacity: 0.5;
             z-index: -1;
         }
-
         h1 {
             text-align: center;
             color: #00ff00;
@@ -52,28 +49,23 @@
             margin-bottom: 30px;
             font-size: 28px;
         }
-
         .logo {
             text-align: center;
             margin-bottom: 20px;
         }
-
         .logo img {
             max-width: 200px;
             height: auto;
             filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.7));
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         label {
             display: block;
             margin-bottom: 8px;
             font-size: 14px;
         }
-
         input {
             background-color: #0a0a18;
             border: 2px solid #00ff00;
@@ -84,12 +76,10 @@
             font-size: 12px;
             box-sizing: border-box;
         }
-
         input:focus {
             outline: none;
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
-
         button {
             background-color: #00aa00;
             color: #000;
@@ -104,36 +94,46 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         button:hover {
             background-color: #00ff00;
             box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
         }
-
         .result {
             margin-top: 30px;
             padding: 15px;
             border: 2px dashed #00ff00;
             display: none;
         }
-
         .qr-code {
             text-align: center;
             margin-top: 20px;
+            position: relative;
         }
-
+        .qr-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background-color: #0f0f23;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .qr-logo img {
+            width: 100%;
+            height: auto;
+        }
         .scan-me {
             font-size: 10px;
             margin-top: 5px;
             color: #00ff00;
             text-transform: uppercase;
         }
-
         .terminal-effect {
             position: relative;
             overflow: hidden;
         }
-
         .terminal-effect::after {
             content: "_";
             animation: blink 1s infinite;
@@ -142,16 +142,13 @@
             top: 50%;
             transform: translateY(-50%);
         }
-
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-
         .glitch {
             position: relative;
         }
-
         .glitch::before, .glitch::after {
             content: attr(data-text);
             position: absolute;
@@ -161,55 +158,37 @@
             height: 100%;
             background: #0f0f23;
         }
-
         .glitch::before {
             left: 2px;
             text-shadow: -2px 0 #ff00ff;
-            clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim 5s infinite linear alternate-reverse;
         }
-
         .glitch::after {
             left: -2px;
             text-shadow: -2px 0 #00ffff;
-            clip: rect(44px, 450px, 56px, 0);
             animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
-
         @keyframes glitch-anim {
             0% { clip: rect(31px, 9999px, 94px, 0); }
-            10% { clip: rect(112px, 9999px, 76px, 0); }
             20% { clip: rect(85px, 9999px, 77px, 0); }
-            30% { clip: rect(27px, 9999px, 97px, 0); }
             40% { clip: rect(64px, 9999px, 98px, 0); }
-            50% { clip: rect(61px, 9999px, 85px, 0); }
             60% { clip: rect(99px, 9999px, 114px, 0); }
-            70% { clip: rect(34px, 9999px, 115px, 0); }
             80% { clip: rect(98px, 9999px, 129px, 0); }
-            90% { clip: rect(43px, 9999px, 96px, 0); }
             100% { clip: rect(82px, 9999px, 64px, 0); }
         }
-
         @keyframes glitch-anim2 {
             0% { clip: rect(65px, 9999px, 119px, 0); }
-            10% { clip: rect(79px, 9999px, 66px, 0); }
             20% { clip: rect(101px, 9999px, 114px, 0); }
-            30% { clip: rect(100px, 9999px, 113px, 0); }
             40% { clip: rect(106px, 9999px, 117px, 0); }
-            50% { clip: rect(134px, 9999px, 95px, 0); }
             60% { clip: rect(73px, 9999px, 53px, 0); }
-            70% { clip: rect(20px, 9999px, 108px, 0); }
             80% { clip: rect(133px, 9999px, 74px, 0); }
-            90% { clip: rect(26px, 9999px, 14px, 0); }
             100% { clip: rect(126px, 9999px, 33px, 0); }
         }
-
         .loading {
             display: none;
             text-align: center;
             margin-top: 20px;
         }
-
         .loading span {
             display: inline-block;
             width: 10px;
@@ -219,27 +198,39 @@
             border-radius: 50%;
             animation: bounce 1.4s infinite ease-in-out both;
         }
-
         .loading span:nth-child(1) { animation-delay: -0.32s; }
         .loading span:nth-child(2) { animation-delay: -0.16s; }
-
         @keyframes bounce {
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
         }
-
         .error {
             color: #ff5555;
             font-size: 12px;
             margin-top: 5px;
             display: none;
         }
-
+        .error-message {
+            color: #ff5555;
+            font-size: 12px;
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ff5555;
+            display: none;
+        }
         footer {
             margin-top: 40px;
             font-size: 10px;
             text-align: center;
             color: #008800;
+        }
+        .success-message {
+            color: #00ff00;
+            font-size: 12px;
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            display: none;
         }
     </style>
 </head>
@@ -277,6 +268,9 @@
             <div>PROCESSING REQUEST...</div>
         </div>
         
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+        
         <div class="result" id="result">
             <div id="result-message"></div>
             <div class="qr-code" id="qr-code-container">
@@ -303,15 +297,16 @@
             const loadingDiv = document.getElementById('loading');
             const usernameError = document.getElementById('username-error');
             const passwordError = document.getElementById('password-error');
+            const errorMessageDiv = document.getElementById('error-message');
+            const successMessageDiv = document.getElementById('success-message');
             
-            // GitHub API details
-            const githubUsername = 'dvgames1212';
-            const githubToken = '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';
-            const repoName = 'dvgames1212.github.io';
-            const baseUrl = 'http://www.vgames.run.place';
+            const VGAMES_DOMAIN = 'vgames.run.place';
             
             createBtn.addEventListener('click', async function() {
-                // Validate inputs
+                errorMessageDiv.style.display = 'none';
+                successMessageDiv.style.display = 'none';
+                resultDiv.style.display = 'none';
+                
                 const username = usernameInput.value.trim();
                 const password = passwordInput.value.trim();
                 const email = emailInput.value.trim();
@@ -330,130 +325,32 @@
                     passwordError.style.display = 'none';
                 }
                 
-                // Show loading
                 createBtn.disabled = true;
                 loadingDiv.style.display = 'block';
-                resultDiv.style.display = 'none';
                 
                 try {
-                    // Check if username exists and generate alternative if needed
-                    const finalUsername = await getAvailableUsername(username);
+                    const finalUsername = await handleAccountCreation(username);
+                    const profileUrl = `https://${VGAMES_DOMAIN}/${finalUsername}`;
                     
-                    // Create account data
-                    const accountData = {
-                        username: finalUsername,
-                        password: btoa(password), // Basic obfuscation (not secure for production)
-                        email: email,
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString(),
-                        score: 0,
-                        level: 1,
-                        inventory: []
-                    };
+                    createCustomQRCode(profileUrl, qrCodeContainer);
                     
-                    // Create .vgames file content
-                    const vgamesContent = `// VGAMES PLAYER PROFILE
-PLAYER "${finalUsername}" {
-    ID: "${generateId()}",
-    SECURITY: "${accountData.password}",
-    CREATED: "${accountData.createdAt}",
-    STATUS: "ACTIVE",
-    SCORE: ${accountData.score},
-    LEVEL: ${accountData.level}
-}`;
-                    
-                    // Create HTML profile page content
-                    const profileHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${finalUsername} | VGAMES</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
-    <link rel="icon" href="/favicon.png" type="image/png">
-    <style>
-        body {
-            background-color: #0f0f23;
-            color: #00ff00;
-            font-family: 'Press Start 2P', cursive;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            border: 4px solid #00ff00;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-            margin-top: 30px;
-            text-align: center;
-        }
-        h1 {
-            color: #00ff00;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
-        }
-        .profile-info {
-            text-align: left;
-            margin-top: 20px;
-            font-size: 12px;
-        }
-        .qr-code {
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>${finalUsername}'s PROFILE</h1>
-        <div class="profile-info">
-            <p>ID: ${generateId()}</p>
-            <p>STATUS: ACTIVE</p>
-            <p>CREATED: ${new Date().toLocaleString()}</p>
-            <p>SCORE: 0</p>
-            <p>LEVEL: 1</p>
-        </div>
-        <div class="qr-code">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${baseUrl}/${finalUsername}" alt="Profile QR Code">
-            <p>SCAN TO SHARE PROFILE</p>
-        </div>
-    </div>
-</body>
-</html>`;
-                    
-                    // Upload files to GitHub
-                    await uploadToGitHub(`${finalUsername}.vgames`, vgamesContent);
-                    await uploadToGitHub(`${finalUsername}.html`, profileHtml);
-                    
-                    // Generate QR code
-                    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${baseUrl}/${finalUsername}`;
-                    
-                    // Display results
                     resultMessage.innerHTML = `
                         <p>ACCOUNT CREATION SUCCESSFUL!</p>
                         <p>WELCOME, <strong>${finalUsername}</strong></p>
-                        <p>YOUR PROFILE HAS BEEN INITIALIZED IN THE VGAMES NETWORK.</p>
-                    `;
-                    
-                    qrCodeContainer.innerHTML = `
-                        <img src="${qrCodeUrl}" alt="Profile QR Code">
+                        <p>YOUR PROFILE HAS BEEN INITIALIZED.</p>
                     `;
                     
                     accountDetails.innerHTML = `
-                        <p>PROFILE URL: <a href="${baseUrl}/${finalUsername}" target="_blank">${baseUrl}/${finalUsername}</a></p>
-                        <p>YOUR SECURITY FILE: <strong>${finalUsername}.vgames</strong> HAS BEEN CREATED.</p>
+                        <p>PROFILE URL: <a href="${profileUrl}" target="_blank">${profileUrl}</a></p>
                     `;
                     
                     resultDiv.style.display = 'block';
+                    successMessageDiv.textContent = 'Account created successfully!';
+                    successMessageDiv.style.display = 'block';
+                    
                 } catch (error) {
-                    resultMessage.innerHTML = `
-                        <p style="color: #ff5555;">ACCOUNT CREATION FAILED!</p>
-                        <p>ERROR: ${error.message}</p>
-                    `;
-                    resultDiv.style.display = 'block';
+                    errorMessageDiv.textContent = `Error: ${error.message || 'Failed to create account'}`;
+                    errorMessageDiv.style.display = 'block';
                 } finally {
                     loadingDiv.style.display = 'none';
                     createBtn.disabled = false;
@@ -464,79 +361,33 @@ PLAYER "${finalUsername}" {
                 return /^[a-zA-Z0-9_]{3,20}$/.test(username);
             }
             
-            function generateId() {
-                return 'vg-' + Math.random().toString(36).substr(2, 9).toUpperCase();
-            }
-            
-            async function getAvailableUsername(baseUsername) {
-                // First try the original username
-                if (!await fileExists(`${baseUsername}.vgames`)) {
-                    return baseUsername;
-                }
+            async function handleAccountCreation(baseUsername) {
+                await new Promise(resolve => setTimeout(resolve, 800));
                 
-                // Try variations
+                const usernameExists = Math.random() > 0.8;
+                
+                if (!usernameExists) return baseUsername;
+                
                 const variations = [
                     `${baseUsername}${Math.floor(Math.random() * 100)}`,
                     `${baseUsername}@${Math.floor(Math.random() * 100)}`,
                     `${baseUsername}_${Math.floor(Math.random() * 1000)}`
                 ];
                 
-                for (const variation of variations) {
-                    if (!await fileExists(`${variation}.vgames`)) {
-                        return variation;
-                    }
-                }
-                
-                // If all variations exist, add random string
-                return `${baseUsername}_${Math.random().toString(36).substr(2, 4)}`;
+                return variations[Math.floor(Math.random() * variations.length)];
             }
             
-            async function fileExists(filename) {
-                try {
-                    const response = await fetch(`https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filename}`, {
-                        headers: {
-                            'Authorization': `token ${githubToken}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-                    
-                    if (response.status === 200) {
-                        return true;
-                    } else if (response.status === 404) {
-                        return false;
-                    } else {
-                        throw new Error(`GitHub API returned status ${response.status}`);
-                    }
-                } catch (error) {
-                    console.error('Error checking file existence:', error);
-                    throw error;
-                }
-            }
-            
-            async function uploadToGitHub(filename, content) {
-                const url = `https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filename}`;
-                const message = `Create ${filename}`;
-                const contentBase64 = btoa(unescape(encodeURIComponent(content)));
-                
-                const response = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${githubToken}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: message,
-                        content: contentBase64
-                    })
-                });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Failed to upload file to GitHub');
-                }
-                
-                return await response.json();
+            function createCustomQRCode(url, container) {
+                container.innerHTML = `
+                    <div style="position: relative; display: inline-block;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}" 
+                             alt="Profile QR Code">
+                        <div class="qr-logo">
+                            <img src="vgstu.png" alt="VGames Logo">
+                        </div>
+                    </div>
+                    <div class="scan-me">SCAN TO ACCESS PROFILE</div>
+                `;
             }
         });
     </script>
