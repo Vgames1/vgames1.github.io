@@ -799,16 +799,18 @@
         let allGames = [];
         let notificationTimeout;
         let previewTimeout;
-        const allowedIPs = ['127.0.0.1', '::1']; 
+        const allowedIPs = ['127.0.0.1', '::1']; // Add your allowed IPs here
         
-       
+        // Intercept native alerts
         window.alert = function(message) {
             showCustomAlert('Alert', message);
             return false;
         };
         
-       
+        // Check IP address
         function checkIP() {
+            // In a real implementation, you would check the user's IP against your allowed list
+            // This is just a placeholder for the concept
             return true;
         }
         
@@ -920,7 +922,7 @@
             setupNotificationListeners();
             
             // Load games
-            fetch('http://www.vgames.run.place/game.json')
+            fetch('https://www.vgames.run.place/game.json')
                 .then(response => response.json())
                 .then(data => {
                     allGames = data;
@@ -1386,7 +1388,7 @@
         <p>By playing games on this site, you agree to:</p>
         <ol>
             <li>OnlineGames.io's <a href="https://www.onlinegames.io/about/" target="_blank">Terms and Conditions</a> and <a href="https://www.onlinegames.io/privacy-policy/" target="_blank">Privacy Policy</a></li>
-            <li>Our comprehensive <a href="http://www.vgames.run.place/TVR" target="_blank">TVR Book</a> containing:
+            <li>Our comprehensive <a href="https://www.vgames.run.place/TVR" target="_blank">TVR Book</a> containing:
                 <ul>
                     <li>Terms and Conditions</li>
                     <li>Privacy Policy</li>
@@ -1401,7 +1403,7 @@
         <p>Your continued use of this site constitutes acceptance of all these policies.</p>
     </div>
     <div class="legal-widget-buttons">
-        <button class="legal-widget-btn more-info" onclick="window.open('http://www.vgames.run.place/TVR', '_blank')">READ FULL DOCUMENTS</button>
+        <button class="legal-widget-btn more-info" onclick="window.open('https://www.vgames.run.place/TVR', '_blank')">READ FULL DOCUMENTS</button>
         <button class="legal-widget-btn accept" onclick="acceptLegalTerms()">I UNDERSTAND</button>
     </div>
 </div>
