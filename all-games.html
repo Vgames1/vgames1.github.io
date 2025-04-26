@@ -642,7 +642,7 @@
             generateAlphabetNav();
             
             // Load games from JSON
-            fetch('http://www.vgames.run.place/game.json')
+            fetch('https://www.onlinegames.io/media/plugins/genGames/embed.json')
                 .then(response => response.json())
                 .then(data => {
                     allGames = data.sort((a, b) => a.title.localeCompare(b.title));
