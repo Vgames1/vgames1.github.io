@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VGAMES Search - 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --dark: #1e1e2f;
+            --darker: #12121a;
+            --text: #f5f6fa;
+            --background: #1e1e2f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--background);
+            color: var(--text);
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+
+        .logo h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: var(--text);
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background-color: var(--primary);
+            color: var(--text);
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--primary);
+            background: var(--darker);
+            color: var(--text);
+            font-size: 16px;
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #searchInput:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(253, 121, 168, 0.5);
+        }
+
+        #searchSuggestions {
+            position: absolute;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            background: var(--darker);
+            border: 1px solid var(--primary);
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            z-index: 100;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(108, 92, 231, 0.2);
+            color: var(--accent);
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .game-card {
+            background: var(--darker);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--primary);
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(108, 92, 231, 0.3);
+            border-color: var(--accent);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--primary);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .game-info {
+            padding: 15px;
+        }
+
+        .game-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .game-description {
+            font-size: 14px;
+            color: rgba(245, 246, 250, 0.8);
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .game-tag {
+            background-color: rgba(108, 92, 231, 0.2);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            border: 1px solid var(--primary);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(108, 92, 231, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: var(--accent);
+            text-align: center;
+            margin: 30px 0;
+            display: none;
+        }
+
+        .no-results {
+            text-align: center;
+            margin: 30px 0;
+            color: var(--secondary);
+            display: none;
+        }
+
+        .year-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--darker);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(253, 121, 168, 0.5);
+        }
+
+        .studio-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: var(--darker);
+            border-radius: 8px;
+            border: 1px solid var(--primary);
+        }
+
+        .studio-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .studio-logo {
+            height: 80px;
+            margin-right: 20px;
+            border-radius: 8px;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .studio-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .studio-description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .studio-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .studio-link {
+            color: var(--secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .studio-link:hover {
+            text-decoration: underline;
+        }
+
+        .upcoming-films {
+            margin-top: 40px;
+        }
+
+        .film-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--darker);
+        }
+
+        .film-slider::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .film-slider::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        .film-slider::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 20px;
+        }
+
+        .film-slide {
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .film-poster {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .film-title {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .canva-preview {
+            margin-top: 30px;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .canva-preview iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .logo {
+                margin-bottom: 20px;
+            }
+
+            .nav-menu {
+                margin-top: 20px;
+                justify-content: center;
+            }
+
+            .results-container {
+                grid-template-columns: 1fr;
+            }
+
+            .studio-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .studio-logo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="year-badge">2025</div>
+    
+    <header>
+        <div class="logo">
+            <img src="vgstu.png" alt="VGAMES Logo">
+            <h1>VGAMES SEARCH</h1>
+        </div>
+        <div class="nav-menu">
+            <a href="https://thundafund.africa/campaign/0A94C65131967170B684" target="_blank">Support Our Films</a>
+            <a href="https://vuyani.my.canva.site/movies" target="_blank">Our Portfolio</a>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for games by name, tag, or description..." autocomplete="off">
+        <div id="searchSuggestions"></div>
+    </div>
+
+    <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Searching VGAMES database...</p>
+    </div>
+
+    <div class="error-message">
+        <p>Failed to connect to search service. Please try again later.</p>
+    </div>
+
+    <div class="no-results">
+        <p>No games found matching your search.</p>
+    </div>
+
+    <div class="results-container" id="resultsContainer">
+        <!-- Results will be inserted here -->
+    </div>
+
+    <div class="studio-section">
+        <div class="studio-header">
+            <img src="vilakazi.std.png" alt="Vilakazi Studio" class="studio-logo">
+            <h2 class="studio-title">VILAKAZI STUDIO</h2>
+        </div>
+        
+        <div class="studio-description">
+            <p>Hello world,</p>
+            <p>We're a young team of passionate filmmakers from South Africa with a story that needs to be told – and we need you to help us tell it.</p>
+            <p>Our film, THE GAME KILLERS, is a gritty, suspense-filled thriller about ambition, betrayal, and the dark side of competition. It follows a group of teenagers who enter a cutthroat game show where the prize is life-changing – R1 million (about $55,000). But these teens aren't playing fair. They drug, blackmail, and even kill to stay ahead. They call themselves the GK – Game Kings, but the world starts calling them something else: The Game Killers.</p>
+            <p>It's bold. It's intense. And it's a story that mirrors the pressure many young people face around the world today – chasing success by any means necessary.</p>
+            <p>We're creating this film not just to entertain, but to spotlight young talent, grow our local film industry, and prove that powerful stories can come from anywhere – especially Africa.</p>
+            <p>But here's the truth: we can't do it alone.</p>
+            <p>We're working on a tight, low-budget production, and every single dollar counts – even just $1 from you could help us pay for equipment, actors, crew, locations, and editing.</p>
+            <p>This is more than a movie. It's a dream. It's a voice for young South Africans. It's a platform for change, and a chance to show the world what we're capable of.</p>
+            <p>🎬 Be a part of something big. Be a part of history.</p>
+            <p>Whether you donate $1 or $100, you're helping bring a powerful story to life and giving young African creatives a chance to shine on the world stage.</p>
+            <p>Please donate what you can, share with friends, and follow our journey. Together, let's bring THE GAME KILLERS to life.</p>
+            <p>#GameKillersMovie #SupportAfricanFilm #IndieFilm #SupportCreatives #MakeMoviesMatter</p>
+        </div>
+        
+        <div class="studio-links">
+            <a href="https://facebook.com/groups/1238425061187688/" class="studio-link" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/vuyanisiyandavilakazi" class="studio-link" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/channel/UCCp9qhV_0dKZ7ctjX2iXEwg" class="studio-link" target="_blank">YouTube</a>
+            <a href="https://www.youtube.com/@vilakazistudio" class="studio-link" target="_blank">YouTube Studio</a>
+        </div>
+        
+        <div class="upcoming-films">
+            <h3>Our Upcoming Films</h3>
+            <div class="film-slider">
+                <div class="film-slide">
+                    <img src="thegamek.png" alt="THE GAME KILLERS" class="film-poster">
+                    <div class="film-title">THE GAME KILLERS</div>
+                </div>
+                <div class="film-slide">
+                    <img src="jj.png" alt="JUSTICE" class="film-poster">
+                    <div class="film-title">JUSTICE</div>
+                </div>
+                <div class="film-slide">
+                    <img src="thegamekings.png" alt="THE GAME KINGS" class="film-poster">
+                    <div class="film-title">THE GAME KINGS</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="canva-preview">
+        <iframe src="https://vuyani.my.canva.site/movies" title="Vilakazi Studio Portfolio"></iframe>
+    </div>
+
+    <script>
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const loadingElement = document.querySelector('.loading');
+        const errorElement = document.querySelector('.error-message');
+        const noResultsElement = document.querySelector('.no-results');
+
+        let gameDatabase = [];
+
+        // Prevent image downloading
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // Fetch games from your JSON file
+        async function loadGameDatabase() {
+            try {
+                loadingElement.style.display = 'block';
+                const response = await fetch('http://www.vgames.run.place/game.json');
+                if (!response.ok) throw new Error('Failed to load games');
+                const data = await response.json();
+                gameDatabase = data.games || [];
+                showAllGames();
+            } catch (error) {
+                console.error('Error loading game data:', error);
+                errorElement.style.display = 'block';
+            } finally {
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        // Search function
+        function searchGames(query) {
+            if (!query) {
+                showAllGames();
+                return;
+            }
+
+            loadingElement.style.display = 'block';
+            errorElement.style.display = 'none';
+            noResultsElement.style.display = 'none';
+            resultsContainer.innerHTML = '';
+
+            setTimeout(() => {
+                try {
+                    const normalizedQuery = query.toLowerCase();
+                    
+                    // Search in title, description, and tags
+                    const results = gameDatabase.filter(game => 
+                        game.title.toLowerCase().includes(normalizedQuery) ||
+                        game.description.toLowerCase().includes(normalizedQuery) ||
+                        game.tags.toLowerCase().includes(normalizedQuery)
+                    );
+
+                    displayResults(results);
+                } catch (error) {
+                    console.error('Search error:', error);
+                    loadingElement.style.display = 'none';
+                    resultsContainer.innerHTML = '';
+                    errorElement.style.display = 'block';
+                }
+            }, 300);
+        }
+
+        // Show all games (initial state)
+        function showAllGames() {
+            loadingElement.style.display = 'none';
+            errorElement.style.display = 'none';
+            noResultsElement.style.display = 'none';
+            displayResults(gameDatabase.slice(0, 12)); // Show first 12 games by default
+        }
+
+        // Display results
+        function displayResults(results) {
+            loadingElement.style.display = 'none';
+
+            if (results.length === 0) {
+                noResultsElement.style.display = 'block';
+                return;
+            }
+
+            resultsContainer.innerHTML = '';
+            
+            results.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                
+                // Create URL-friendly game name
+                const gameUrlName = encodeURIComponent(game.title.replace(/\s+/g, ' ').trim());
+                
+                card.innerHTML = `
+                    <img src="${game.image || 'https://via.placeholder.com/300x200?text=VGAMES'}" 
+                         alt="${game.title}" 
+                         class="game-image" 
+                         onerror="this.src='https://via.placeholder.com/300x200?text=VGAMES'">
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        <p class="game-description">${game.description || 'No description available'}</p>
+                        <div class="game-tags">
+                            ${game.tags ? game.tags.split(',').map(tag => `<span class="game-tag">${tag.trim()}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                `;
+                
+                // Add click handler to redirect to game URL
+                card.addEventListener('click', () => {
+                    window.location.href = `http://www.vgames.run.place/?game=${gameUrlName}`;
+                });
+                
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        // Predictive search suggestions
+        function showSuggestions(query) {
+            if (!query) {
+                searchSuggestions.style.display = 'none';
+                return;
+            }
+
+            const normalizedQuery = query.toLowerCase();
+            const suggestions = gameDatabase
+                .filter(game => 
+                    game.title.toLowerCase().includes(normalizedQuery) ||
+                    game.tags.toLowerCase().includes(normalizedQuery)
+                )
+                .slice(0, 5)
+                .map(game => game.title);
+
+            if (suggestions.length === 0) {
+                searchSuggestions.style.display = 'none';
+                return;
+            }
+
+            searchSuggestions.innerHTML = '';
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = suggestion;
+                item.addEventListener('click', () => {
+                    searchInput.value = suggestion;
+                    searchGames(suggestion);
+                    searchSuggestions.style.display = 'none';
+                });
+                searchSuggestions.appendChild(item);
+            });
+
+            searchSuggestions.style.display = 'block';
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim();
+            showSuggestions(query);
+        });
+
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchSuggestions.style.display = 'none';
+                const query = searchInput.value.trim();
+                searchGames(query);
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                searchSuggestions.style.display = 'none';
+            }
+        });
+
+        // Initialize
+        loadGameDatabase();
+    </script>
+</body>
+</html>
