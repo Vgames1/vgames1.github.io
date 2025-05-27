@@ -72,7 +72,7 @@
 
         .nav-menu a:hover {
             background-color: var(--primary);
-            color: var(--text);
+            color: var(--darker);
         }
 
         .search-container {
@@ -153,6 +153,7 @@
             border-bottom: 2px solid var(--primary);
             pointer-events: none;
             user-select: none;
+            -webkit-user-drag: none;
         }
 
         .game-info {
@@ -240,12 +241,14 @@
             box-shadow: 0 0 10px rgba(253, 121, 168, 0.5);
         }
 
+        /* Vilakazi Studio Section */
         .studio-section {
             margin: 40px 0;
             padding: 30px;
             background: var(--darker);
             border-radius: 8px;
             border: 1px solid var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .studio-header {
@@ -255,17 +258,20 @@
         }
 
         .studio-logo {
+            width: 80px;
             height: 80px;
+            object-fit: contain;
             margin-right: 20px;
             border-radius: 8px;
             pointer-events: none;
             user-select: none;
+            -webkit-user-drag: none;
         }
 
         .studio-title {
             font-family: 'Press Start 2P', cursive;
-            font-size: 24px;
-            color: var(--primary);
+            font-size: 20px;
+            color: var(--secondary);
         }
 
         .studio-description {
@@ -281,73 +287,120 @@
         }
 
         .studio-link {
-            color: var(--secondary);
+            display: inline-block;
+            padding: 8px 15px;
+            background: var(--primary);
+            color: var(--text);
             text-decoration: none;
-            display: flex;
-            align-items: center;
+            border-radius: 4px;
+            transition: all 0.3s;
         }
 
         .studio-link:hover {
-            text-decoration: underline;
+            background: var(--accent);
+            transform: translateY(-2px);
         }
 
-        .upcoming-films {
-            margin-top: 40px;
+        /* Upcoming Films Slider */
+        .films-slider {
+            margin: 40px 0;
         }
 
-        .film-slider {
+        .slider-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slider-container {
             display: flex;
-            gap: 20px;
             overflow-x: auto;
-            padding: 20px 0;
+            gap: 20px;
+            padding: 10px 0;
             scrollbar-width: thin;
             scrollbar-color: var(--primary) var(--darker);
         }
 
-        .film-slider::-webkit-scrollbar {
+        .slider-container::-webkit-scrollbar {
             height: 8px;
         }
 
-        .film-slider::-webkit-scrollbar-track {
+        .slider-container::-webkit-scrollbar-track {
             background: var(--darker);
         }
 
-        .film-slider::-webkit-scrollbar-thumb {
+        .slider-container::-webkit-scrollbar-thumb {
             background-color: var(--primary);
-            border-radius: 20px;
+            border-radius: 4px;
         }
 
         .film-slide {
-            min-width: 250px;
+            flex: 0 0 auto;
+            width: 250px;
             text-align: center;
         }
 
-        .film-poster {
+        .film-image {
             width: 100%;
-            height: 350px;
+            height: 150px;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid var(--primary);
+            margin-bottom: 10px;
             pointer-events: none;
             user-select: none;
+            -webkit-user-drag: none;
         }
 
         .film-title {
-            margin-top: 10px;
             font-weight: bold;
+            color: var(--text);
         }
 
-        .canva-preview {
-            margin-top: 30px;
+        /* Link Preview */
+        .link-preview {
+            margin: 40px 0;
             border: 1px solid var(--primary);
             border-radius: 8px;
             overflow: hidden;
         }
 
-        .canva-preview iframe {
+        .link-preview-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .link-preview-image {
             width: 100%;
-            height: 500px;
-            border: none;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .link-preview-content {
+            padding: 20px;
+            background: var(--darker);
+        }
+
+        .link-preview-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .link-preview-description {
+            margin-bottom: 15px;
+            color: rgba(245, 246, 250, 0.8);
+        }
+
+        .link-preview-url {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
         }
 
         @media (max-width: 768px) {
@@ -390,8 +443,7 @@
             <h1>VGAMES SEARCH</h1>
         </div>
         <div class="nav-menu">
-            <a href="https://thundafund.africa/campaign/0A94C65131967170B684" target="_blank">Support Our Films</a>
-            <a href="https://vuyani.my.canva.site/movies" target="_blank">Our Portfolio</a>
+            <a href="https://thundafund.africa/campaign/0A94C65131967170B684" target="_blank">Donate</a>
         </div>
     </header>
 
@@ -413,16 +465,12 @@
         <p>No games found matching your search.</p>
     </div>
 
-    <div class="results-container" id="resultsContainer">
-        <!-- Results will be inserted here -->
-    </div>
-
+    <!-- Vilakazi Studio Section -->
     <div class="studio-section">
         <div class="studio-header">
-            <img src="vilakazi.std.png" alt="Vilakazi Studio" class="studio-logo">
+            <img src="vilakazi.std.png" alt="Vilakazi Studio Logo" class="studio-logo">
             <h2 class="studio-title">VILAKAZI STUDIO</h2>
         </div>
-        
         <div class="studio-description">
             <p>Hello world,</p>
             <p>We're a young team of passionate filmmakers from South Africa with a story that needs to be told – and we need you to help us tell it.</p>
@@ -437,35 +485,47 @@
             <p>Please donate what you can, share with friends, and follow our journey. Together, let's bring THE GAME KILLERS to life.</p>
             <p>#GameKillersMovie #SupportAfricanFilm #IndieFilm #SupportCreatives #MakeMoviesMatter</p>
         </div>
-        
         <div class="studio-links">
             <a href="https://facebook.com/groups/1238425061187688/" class="studio-link" target="_blank">Facebook</a>
             <a href="https://www.instagram.com/vuyanisiyandavilakazi" class="studio-link" target="_blank">Instagram</a>
             <a href="https://www.youtube.com/channel/UCCp9qhV_0dKZ7ctjX2iXEwg" class="studio-link" target="_blank">YouTube</a>
             <a href="https://www.youtube.com/@vilakazistudio" class="studio-link" target="_blank">YouTube Studio</a>
         </div>
-        
-        <div class="upcoming-films">
-            <h3>Our Upcoming Films</h3>
-            <div class="film-slider">
-                <div class="film-slide">
-                    <img src="thegamek.png" alt="THE GAME KILLERS" class="film-poster">
-                    <div class="film-title">THE GAME KILLERS</div>
-                </div>
-                <div class="film-slide">
-                    <img src="jj.png" alt="JUSTICE" class="film-poster">
-                    <div class="film-title">JUSTICE</div>
-                </div>
-                <div class="film-slide">
-                    <img src="thegamekings.png" alt="THE GAME KINGS" class="film-poster">
-                    <div class="film-title">THE GAME KINGS</div>
-                </div>
+    </div>
+
+    <!-- Upcoming Films Slider -->
+    <div class="films-slider">
+        <h3 class="slider-title">UPCOMING FILMS</h3>
+        <div class="slider-container">
+            <div class="film-slide">
+                <img src="thegamek.png" alt="THE GAME KILLERS" class="film-image">
+                <p class="film-title">THE GAME KILLERS</p>
+            </div>
+            <div class="film-slide">
+                <img src="jj.png" alt="JUSTICE" class="film-image">
+                <p class="film-title">JUSTICE</p>
+            </div>
+            <div class="film-slide">
+                <img src="thegamekings.png" alt="THE GAME KINGS" class="film-image">
+                <p class="film-title">THE GAME KINGS</p>
             </div>
         </div>
     </div>
 
-    <div class="canva-preview">
-        <iframe src="https://vuyani.my.canva.site/movies" title="Vilakazi Studio Portfolio"></iframe>
+    <!-- Canva Site Link Preview -->
+    <div class="link-preview">
+        <div class="link-preview-container">
+            <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Movies" class="link-preview-image">
+            <div class="link-preview-content">
+                <h3 class="link-preview-title">Vilakazi Studio Movies</h3>
+                <p class="link-preview-description">Explore our collection of films and upcoming projects at Vilakazi Studio.</p>
+                <a href="https://vuyani.my.canva.site/movies" class="studio-link" target="_blank">Visit Site</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-container" id="resultsContainer">
+        <!-- Results will be inserted here -->
     </div>
 
     <script>
@@ -479,16 +539,27 @@
 
         let gameDatabase = [];
 
-        // Prevent image downloading
+        // Prevent image download
         document.addEventListener('contextmenu', function(e) {
             if (e.target.tagName === 'IMG') {
                 e.preventDefault();
             }
         });
 
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
+        // Prevent opening images in new tab
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Control' || e.key === 'Meta') {
+                document.querySelectorAll('img').forEach(img => {
+                    img.style.pointerEvents = 'none';
+                });
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (e.key === 'Control' || e.key === 'Meta') {
+                document.querySelectorAll('img').forEach(img => {
+                    img.style.pointerEvents = 'auto';
+                });
             }
         });
 
