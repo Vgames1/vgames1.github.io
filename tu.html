@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .thank-you {
+      animation: fadeInDown 1.5s ease-out;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1rem;
+      background-color: #fff;
+      color: #00bcd4;
+      text-decoration: none;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      animation: bounce 2s infinite;
+    }
+
+    a.button:hover {
+      background-color: #e0f7fa;
+      transform: scale(1.05);
+    }
+
+    .timer {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .logo {
+      margin-top: 40px;
+      animation: fadeInUp 2s ease-in-out;
+    }
+
+    .logo img {
+      width: 120px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .studio-name {
+      font-size: 1rem;
+      opacity: 0.8;
+      letter-spacing: 2px;
+    }
+
+    @keyframes fadeInDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+  <script>
+    let seconds = 30;
+    const timer = () => {
+      if (seconds > 0) {
+        document.getElementById('countdown').innerText = seconds;
+        seconds--;
+        setTimeout(timer, 1000);
+      } else {
+        window.location.href = "https://vgames.run.place";
+      }
+    };
+    window.onload = timer;
+  </script>
+</head>
+<body>
+  <div class="thank-you">
+    <h1>Thank You! 🎉</h1>
+    <p>Your job application has been received.</p>
+    <p>While you wait for a response, enjoy a game!</p>
+    <a href="https://vgames.run.place" class="button">🎮 Play Our Games</a>
+    <div class="timer">You’ll be redirected in <span id="countdown">30</span> seconds...</div>
+  </div>
+
+  <div class="logo">
+    <img src="vgstvu.png" alt="VGAMES Studio Logo" />
+    <div class="studio-name">VGAMES STUDIO</div>
+  </div>
+</body>
+</html>
