@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join VGAMES STUDIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+            --info: #0984e3;
+            --rsa-green: #007749;
+            --rsa-gold: #FFB81C;
+            --rsa-red: #DE3831;
+            --rsa-blue: #00A9E0;
+            --rsa-black: #000000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--rsa-green), var(--rsa-gold), var(--rsa-red), var(--rsa-blue), var(--rsa-black));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            color: var(--dark);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%232d3436' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+        }
+        
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .radio-option input, .checkbox-option input {
+            margin-right: 0.8rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #5649d6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .response-message {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success-message {
+            background-color: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .error-message {
+            background-color: rgba(214, 48, 49, 0.2);
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .thank-you {
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .thank-you h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .thank-you p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .rude-message {
+            background-color: rgba(253, 203, 110, 0.3);
+            color: #b8860b;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--warning);
+            font-style: italic;
+        }
+        
+        .nice-message {
+            background-color: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--success);
+        }
+        
+        .rsa-flag-colors {
+            height: 5px;
+            background: linear-gradient(to right, var(--rsa-green) 20%, var(--rsa-gold) 20% 40%, var(--rsa-red) 40% 60%, var(--rsa-blue) 60% 80%, var(--rsa-black) 80%);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="rsa-flag-colors"></div>
+            <div class="logo">VGAMES STUDIO</div>
+            <div class="tagline">Join our creative team and help build amazing apps!</div>
+        </div>
+        
+        <div id="applicationForm">
+            <div class="form-container">
+                <form action="https://formsubmit.co/vuyaniphila86@gmail.com" method="POST" id="jobApplicationForm">
+                    <input type="hidden" name="_subject" value="New Job Application from VGAMES Website">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://yourwebsite.com/thank-you.html">
+                    <input type="hidden" name="_captcha" value="false">
+                    
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" name="Full Name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="Email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone" class="form-control" placeholder="+27 XX XXX XXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country" class="form-label">Country</label>
+                        <select id="country" name="Country" class="form-control" required>
+                            <option value="" disabled selected>Select your country</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="United States">United States</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="province" class="form-label">Province/State</label>
+                        <select id="province" name="Province/State" class="form-control" required>
+                            <option value="" disabled selected>Select your province/state</option>
+                            <option value="Eastern Cape">Eastern Cape</option>
+                            <option value="Free State">Free State</option>
+                            <option value="Gauteng">Gauteng</option>
+                            <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                            <option value="Limpopo">Limpopo</option>
+                            <option value="Mpumalanga">Mpumalanga</option>
+                            <option value="North West">North West</option>
+                            <option value="Northern Cape">Northern Cape</option>
+                            <option value="Western Cape">Western Cape</option>
+                            <option value="Other">Other/Not Listed</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">What type of work are you interested in?</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="Job Interest[]" value="Game Development"> Game Development
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="Job Interest[]" value="Web Development"> Web Development
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="Job Interest[]" value="Mobile App Development"> Mobile App Development
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="Job Interest[]" value="UI/UX Design"> UI/UX Design
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="Job Interest[]" value="Quality Assurance"> Quality Assurance
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="Job Interest[]" value="Project Management"> Project Management
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Are you looking for:</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="Job Type" value="Paid Position" required> Paid Position
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="Job Type" value="Volunteer Position"> Volunteer Position
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="volunteerMessage" class="nice-message hidden">
+                        <strong>Thank you for your generosity!</strong> We truly appreciate people like you who are willing to contribute their time and skills to help us create amazing apps. Our team will review your application shortly.
+                    </div>
+                    
+                    <div id="paidMessage" class="rude-message hidden">
+                        <strong>Oh, you want to get paid?</strong> How original. Well, we'll look at your application, but don't get your hopes up. Everyone wants to get paid these days. Maybe try proving your worth first?
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="experience" class="form-label">Tell us about your experience</label>
+                        <textarea id="experience" name="Experience" class="form-control" rows="4" placeholder="Include any relevant experience, skills, or projects..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="portfolio" class="form-label">Portfolio or GitHub Link (optional)</label>
+                        <input type="url" id="portfolio" name="Portfolio" class="form-control" placeholder="https://">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block">Submit Application</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const jobTypeRadios = document.querySelectorAll('input[name="Job Type"]');
+            const volunteerMessage = document.getElementById('volunteerMessage');
+            const paidMessage = document.getElementById('paidMessage');
+            const countrySelect = document.getElementById('country');
+            const provinceSelect = document.getElementById('province');
+            
+            // Show appropriate message based on job type selection
+            jobTypeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'Volunteer Position') {
+                        volunteerMessage.classList.remove('hidden');
+                        paidMessage.classList.add('hidden');
+                    } else if (this.value === 'Paid Position') {
+                        paidMessage.classList.remove('hidden');
+                        volunteerMessage.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Handle country change to show appropriate regions
+            countrySelect.addEventListener('change', function() {
+                if (this.value !== 'South Africa') {
+                    provinceSelect.innerHTML = `
+                        <option value="" disabled selected>Select your state/province</option>
+                        <option value="Alabama">Alabama</option>
+                        <option value="Alaska">Alaska</option>
+                        <option value="Arizona">Arizona</option>
+                        <!-- Add more states/provinces as needed -->
+                        <option value="Other">Other/Not Listed</option>
+                    `;
+                } else {
+                    // Restore RSA provinces
+                    provinceSelect.innerHTML = `
+                        <option value="" disabled selected>Select your province</option>
+                        <option value="Eastern Cape">Eastern Cape</option>
+                        <option value="Free State">Free State</option>
+                        <option value="Gauteng">Gauteng</option>
+                        <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                        <option value="Limpopo">Limpopo</option>
+                        <option value="Mpumalanga">Mpumalanga</option>
+                        <option value="North West">North West</option>
+                        <option value="Northern Cape">Northern Cape</option>
+                        <option value="Western Cape">Western Cape</option>
+                    `;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
