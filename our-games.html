@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Games - Amazing Games</title>
+    <link rel="icon" href="assets/images/favicon.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/our-games.css">
+</head>
+<body class="vgames-theme">
+    <header>
+        <div class="container header-content">
+            <div class="logo" id="logo">
+                <img src="assets/images/vgstu.png" alt="VGAMES Logo">
+                <h1>OUR GAMES</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="home-link">Home</a></li>
+                    <li><a href="https://www.vgames.run.place/movie" class="movies-link">Movies</a></li>
+                    <li><a href="https://www.vgames.run.place/jobs.html" class="jobs-link">Jobs</a></li>
+                    <li><a href="jobs.html" class="volunteer-link">Volunteer</a></li>
+                    <li><a href="https://thundafund.africa/campaign/0A94C65131967170B684" class="donate-link">Donate</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h2>OUR ORIGINAL GAMES</h2>
+            <p>Experience our exclusive collection of original games created by our talented developers.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="categories" id="our-games">
+            <h3>OUR GAME COLLECTION</h3>
+            <div id="vgames-container" class="vgames-grid"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">AMAZING GAMES</div>
+            <div class="copyright">© 2025 AMAZING GAMES. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="https://www.vgames.run.place/TVR" target="_blank">Privacy Policy</a>
+                <a href="https://www.vgames.run.place/TVR" target="_blank">Terms of Service</a>
+                <a href="https://www.vgames.run.place/TVR" target="_blank">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-message">LOADING GAME...</div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/games.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVGames();
+        });
+
+        function loadVGames() {
+            fetch('vgames.json')
+                .then(response => response.json())
+                .then(data => {
+                    displayVGames(data);
+                })
+                .catch(error => {
+                    console.error('Error loading vgames:', error);
+                    document.getElementById('vgames-container').innerHTML = 
+                        '<p style="color: var(--vgames-red)">Failed to load our games. Please try again later.</p>';
+                });
+        }
+
+        function displayVGames(games) {
+            const container = document.getElementById('vgames-container');
+            container.innerHTML = '';
+            
+            const gameCount = games.length;
+            let columns = 1;
+            if (gameCount >= 3) columns = 3;
+            else if (gameCount === 2) columns = 2;
+            
+            container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+            
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'vgame-card';
+                
+                const isComingSoon = game.tags.includes('coming soon');
+                
+                gameCard.innerHTML = `
+                    <img src="assets/images/${game.image}" alt="${game.title}" class="vgame-image">
+                    <div class="vgame-info">
+                        <h4 class="vgame-title">${game.title}</h4>
+                        <p class="vgame-description">${game.description}</p>
+                        <div class="vgame-tags">
+                            ${game.tags.split(',').map(tag => `<span class="vgame-tag">${tag.trim()}</span>`).join('')}
+                        </div>
+                        ${isComingSoon ? 
+                            `<button class="vgame-button coming-soon" disabled>COMING SOON</button>` : 
+                            `<a href="https://vgames.run.place/${game.slug}" class="vgame-button">PLAY NOW</a>`}
+                    </div>
+                `;
+                
+                container.appendChild(gameCard);
+            });
+        }
+    </script>
+</body>
+</html>
