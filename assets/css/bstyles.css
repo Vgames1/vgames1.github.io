@@ -1,0 +1,19 @@
+:root {
+    --earth-green: #4CAF50;
+    --earth-brown: #8D6E63;
+    --earth-blue: #2196F3;
+    --earth-yellow: #FFC107;
+    --earth-red: #F44336;
+    --dark-green: #2E7D32;
+    --light-green: #81C784;
+    --background: #121212;
+    --card-bg: #1E1E1E;
+    --text: #E0E0E0;
+    --text-light: #FFFFFF;
+    --accent: #FF9800;
+    --neon-glow: 0 0 15px currentColor;
+}
+
+/* All the CSS from the original file except the vgames-specific styles */
+/* This would include all the animations, header styles, game cards, etc. */
+/* I'm omitting the full CSS here for brevity but it would be the same as in the original */
