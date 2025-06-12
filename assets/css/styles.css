@@ -1,19 +1,17 @@
-:root {
-    --earth-green: #4CAF50;
-    --earth-brown: #8D6E63;
-    --earth-blue: #2196F3;
-    --earth-yellow: #FFC107;
-    --earth-red: #F44336;
-    --dark-green: #2E7D32;
-    --light-green: #81C784;
-    --background: #121212;
-    --card-bg: #1E1E1E;
-    --text: #E0E0E0;
-    --text-light: #FFFFFF;
-    --accent: #FF9800;
-    --neon-glow: 0 0 15px currentColor;
-}  
-
+        :root {
+            --neon-red: #ff0055;
+            --neon-blue: #00f7ff;
+            --neon-purple: #b300ff;
+            --neon-yellow: #ffcc00;
+            --dark-bg: #0a0a14;
+            --darker-bg: #050510;
+            --card-bg: rgba(20, 20, 30, 0.7);
+            --text: rgba(255, 255, 255, 0.9);
+            --text-light: #FFFFFF;
+            --glow-effect: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 0 0 30px var(--neon-red);
+            --blue-glow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            --purple-glow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple);
+        }
         @keyframes text-glitch {
             0%, 100% { text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red); }
             25% { text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue); }
