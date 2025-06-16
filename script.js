@@ -44,20 +44,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     async function loadGames() {
         try {
-            const localResponse = await fetch('games.json');
-            const localGames = await localResponse.json();
-            
-            const externalResponse = await fetch('https://www.onlinegames.io/media/plugins/genGames/embed.json');
-            const externalGames = await externalResponse.json();
+            const [localGames, externalGames] = await Promise.all([
+                loadLocalGames(),
+                loadExternalGames()
+            ]);
             
             games = [...localGames, ...externalGames];
             
-            games.forEach(game => {
-                if (game.tags) {
-                    const tagsArray = game.tags.split(',');
-                    tagsArray.forEach(tag => allTags.add(tag.trim()));
-                }
-            });
+            games = games.filter((game, index, self) =>
+                index === self.findIndex((g) => (
+                    g.title === game.title
+                ))
+            );
+            
+            processGameTags();
             
             renderGames(games);
             renderTags();
@@ -65,6 +65,46 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error loading games:', error);
             gamesGrid.innerHTML = '<p class="error">Failed to load games. Please try again later.</p>';
         }
+    }
+    
+    async function loadLocalGames() {
+        try {
+            const response = await fetch('games.json');
+            if (!response.ok) throw new Error('Failed to load local games');
+            return await response.json();
+        } catch (error) {
+            console.error('Error loading local games:', error);
+            return [];
+        }
+    }
+    
+    async function loadExternalGames() {
+        try {
+            const response = await fetch('https://www.onlinegames.io/media/plugins/genGames/embed.json');
+            if (!response.ok) throw new Error('Failed to load external games');
+            const externalGames = await response.json();
+            
+            return externalGames.map(game => ({
+                title: game.title,
+                embed: game.embed,
+                image: game.image,
+                tags: game.tags,
+                description: game.description
+            }));
+        } catch (error) {
+            console.error('Error loading external games:', error);
+            return [];
+        }
+    }
+    
+    function processGameTags() {
+        allTags = new Set();
+        games.forEach(game => {
+            if (game.tags) {
+                const tagsArray = game.tags.split(',');
+                tagsArray.forEach(tag => allTags.add(tag.trim().toLowerCase()));
+            }
+        });
     }
     
     function renderGames(gamesToRender) {
@@ -78,8 +118,11 @@ document.addEventListener('DOMContentLoaded', function() {
         gamesToRender.forEach(game => {
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
+            
+            const imageUrl = game.image || 'https://via.placeholder.com/300x200?text=No+Image';
+            
             gameCard.innerHTML = `
-                <img src="${game.image}" alt="${game.title}">
+                <img src="${imageUrl}" alt="${game.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
                 <div class="game-card-info">
                     <h3>${game.title}</h3>
                     <p>${game.description || 'No description available.'}</p>
@@ -177,19 +220,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!game.tags) return;
         
-        const referenceTag = game.tags.split(',')[0].trim();
+        const referenceTag = game.tags.split(',')[0].trim().toLowerCase();
         
         const similar = games.filter(g => 
             g !== game && 
             g.tags && 
-            g.tags.includes(referenceTag)
-        ).slice(0, 4); // Show max 4 similar games
+            g.tags.toLowerCase().includes(referenceTag)
+        ).slice(0, 4); 
         
         similar.forEach(similarGame => {
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
+            
+            const imageUrl = similarGame.image || 'https://via.placeholder.com/300x200?text=No+Image';
+            
             gameCard.innerHTML = `
-                <img src="${similarGame.image}" alt="${similarGame.title}">
+                <img src="${imageUrl}" alt="${similarGame.title}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
                 <div class="game-card-info">
                     <h3>${similarGame.title}</h3>
                 </div>
@@ -253,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fullscreenBtn.addEventListener('click', toggleFullscreen);
     shareBtn.addEventListener('click', shareGame);
     feedbackBtn.addEventListener('click', () => {
-        window.open('https://vgames.run.place/feedback', '_blank');
+        window.open('http://vgames.run.place/feedback', '_blank');
     });
     
     introVideo.addEventListener('contextmenu', (e) => e.preventDefault());
