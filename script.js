@@ -1,180 +1,269 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Sample game data (add more games here)
-    const games = [
-        {
-            "title": "Kings io",
-            "embed": "https://cloud.onlinegames.io/games/2025/construct/208/kings-io/index-og.html",
-            "image": "https://www.onlinegames.io/media/posts/952/responsive/Kings-io-xs.jpg",
-            "tags": "2d,arena,army,battle,free,io-games,strategy,war",
-            "description": "The road to royalty is that way!  ⬆️ If you're ready to rule your own kingdom, play Kings io.  This is an exciting online strategy game where you start as a small-time ruler, determined to rise to glory by building a grand empire.  If you’re up for gathering gold, recruiting strong troops, and outsmarting enemy kings, then this free game is your perfect battlefield."
+document.addEventListener('DOMContentLoaded', function() {
+    const introVideo = document.getElementById('intro-video');
+    const introVideoContainer = document.getElementById('intro-video-container');
+    const mainContent = document.getElementById('main-content');
+    const gameDetail = document.getElementById('game-detail');
+    const gamesGrid = document.getElementById('games-grid');
+    const filterTags = document.getElementById('filter-tags');
+    const gameSearch = document.getElementById('game-search');
+    const searchBtn = document.getElementById('search-btn');
+    const backBtn = document.getElementById('back-btn');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const shareBtn = document.getElementById('share-btn');
+    const feedbackBtn = document.getElementById('feedback-btn');
+    const gameTitle = document.getElementById('game-title');
+    const gameDescription = document.getElementById('game-description');
+    const gameTags = document.getElementById('game-tags');
+    const gameEmbedContainer = document.getElementById('game-embed-container');
+    const gameVideoContainer = document.getElementById('game-video-container');
+    const gameVideo = document.getElementById('game-video');
+    const similarGamesGrid = document.querySelector('.similar-games-grid');
+    
+    let games = [];
+    let allTags = new Set();
+    let currentGame = null;
+    
+    particlesJS("particles-js", {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: "#0ff0fc" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5, random: true },
+            size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: "#0ff0fc", opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 3, direction: "none", random: true, straight: false, out_mode: "out" }
         },
-        {
-            "title": "SpartaHoppers",
-            "embed": "https://cloud.onlinegames.io/games/2025/construct/227/spartahoppers/index-og.html",
-            "image": "https://www.onlinegames.io/media/posts/949/responsive/sparta-hoppers-game-xs.jpg",
-            "tags": "2-player,2d,action,arcade,arena,combat,crazy,free,fun,physics",
-            "description": "Have you heard about Sparta before?  The ancient Roman city where warriors once clashed on grand stages.  They were the coolest guys of their era.  Only, in this online game, your gladiators can’t walk cuz they can only hop!"
-        },
-        // Add more games here
-      
-    ];
-
-    // DOM Elements
-    const gameGrid = document.getElementById('gameGrid');
-    const gamePage = document.getElementById('gamePage');
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-    const searchResults = document.getElementById('searchResults');
-
-    // Local Storage Keys
-    const LIKED_GAMES_KEY = 'likedGames';
-    const RECENTLY_PLAYED_KEY = 'recentlyPlayed';
-
-    // Load liked and recently played games from local storage
-    let likedGames = JSON.parse(localStorage.getItem(LIKED_GAMES_KEY)) || [];
-    let recentlyPlayed = JSON.parse(localStorage.getItem(RECENTLY_PLAYED_KEY)) || [];
-
-    // Validate game data
-    function validateGame(game) {
-        const requiredProps = ['title', 'embed', 'image', 'tags', 'description'];
-        return requiredProps.every(prop => game.hasOwnProperty(prop));
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" }
+            }
+        }
+    });
+    
+    async function loadGames() {
+        try {
+            const localResponse = await fetch('games.json');
+            const localGames = await localResponse.json();
+            
+            const externalResponse = await fetch('https://www.onlinegames.io/media/plugins/genGames/embed.json');
+            const externalGames = await externalResponse.json();
+            
+            games = [...localGames, ...externalGames];
+            
+            games.forEach(game => {
+                if (game.tags) {
+                    const tagsArray = game.tags.split(',');
+                    tagsArray.forEach(tag => allTags.add(tag.trim()));
+                }
+            });
+            
+            renderGames(games);
+            renderTags();
+        } catch (error) {
+            console.error('Error loading games:', error);
+            gamesGrid.innerHTML = '<p class="error">Failed to load games. Please try again later.</p>';
+        }
     }
-
-    // Filter out invalid games
-    const validGames = games.filter(validateGame);
-
-    // Render all valid games on page load
-    renderGames(validGames);
-
-    // Render games in the grid
-    function renderGames(gamesArray) {
-        gameGrid.innerHTML = '';
-        if (gamesArray.length === 0) {
-            gameGrid.innerHTML = `<div class="no-games">No games found.</div>`;
+    
+    function renderGames(gamesToRender) {
+        gamesGrid.innerHTML = '';
+        
+        if (gamesToRender.length === 0) {
+            gamesGrid.innerHTML = '<p class="no-games">No games found matching your criteria.</p>';
             return;
         }
-        gamesArray.forEach((game, index) => {
-            const tile = document.createElement('div');
-            tile.className = `game-tile ${index % 3 === 0 ? 'large' : ''}`;
-            tile.innerHTML = `
+        
+        gamesToRender.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.innerHTML = `
                 <img src="${game.image}" alt="${game.title}">
-                <p>${game.title}</p>
-            `;
-            tile.addEventListener('click', () => openGamePage(game));
-            gameGrid.appendChild(tile);
-        });
-    }
-
-    // Open game page
-    function openGamePage(game) {
-        // Update URL with game title
-        history.pushState(null, '', `?game=${encodeURIComponent(game.title)}`);
-
-        // Show loading state
-        gamePage.innerHTML = `<div class="loading">Loading...</div>`;
-        gamePage.classList.remove('hidden');
-
-        // Simulate loading delay
-        setTimeout(() => {
-            gamePage.innerHTML = `
-                <div class="game-container">
-                    <iframe id="gameFrame" src="${game.embed}" frameborder="0"></iframe>
-                    <div class="game-info">
-                        <img id="gameImage" src="${game.image}" alt="${game.title}">
-                        <p id="gameDescription">${game.description}</p>
+                <div class="game-card-info">
+                    <h3>${game.title}</h3>
+                    <p>${game.description || 'No description available.'}</p>
+                    <div class="game-card-tags">
+                        ${game.tags ? game.tags.split(',').slice(0, 3).map(tag => 
+                            `<span class="game-card-tag">${tag.trim()}</span>`
+                        ).join('') : ''}
                     </div>
                 </div>
-                <div class="game-actions">
-                    <button id="likeButton">Like</button>
-                    <button id="shareButton">Share</button>
-                    <button id="feedbackButton">Feedback</button>
-                    <button id="fullscreenButton">Fullscreen</button>
-                </div>
-                <div class="more-games">
-                    <h3>More Games</h3>
-                    <div id="moreGamesGrid" class="game-grid"></div>
+            `;
+            
+            gameCard.addEventListener('click', () => showGameDetail(game));
+            gamesGrid.appendChild(gameCard);
+        });
+    }
+    
+    function renderTags() {
+        filterTags.innerHTML = '';
+        const sortedTags = Array.from(allTags).sort();
+        
+        sortedTags.forEach(tag => {
+            const tagElement = document.createElement('span');
+            tagElement.className = 'tag';
+            tagElement.textContent = tag;
+            tagElement.addEventListener('click', () => filterByTag(tag));
+            filterTags.appendChild(tagElement);
+        });
+    }
+    
+    function filterByTag(tag) {
+        const filteredGames = games.filter(game => 
+            game.tags && game.tags.toLowerCase().includes(tag.toLowerCase())
+        );
+        renderGames(filteredGames);
+    }
+    
+    function searchGames() {
+        const query = gameSearch.value.toLowerCase();
+        
+        if (!query) {
+            renderGames(games);
+            return;
+        }
+        
+        const results = games.filter(game => 
+            game.title.toLowerCase().includes(query) || 
+            (game.description && game.description.toLowerCase().includes(query)) ||
+            (game.tags && game.tags.toLowerCase().includes(query))
+        );
+        
+        renderGames(results);
+    }
+    
+    function showGameDetail(game) {
+        currentGame = game;
+        mainContent.style.display = 'none';
+        gameDetail.style.display = 'block';
+        
+        gameTitle.textContent = game.title;
+        gameDescription.textContent = game.description || 'No description available.';
+        
+        gameTags.innerHTML = '';
+        if (game.tags) {
+            game.tags.split(',').forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'tag';
+                tagElement.textContent = tag.trim();
+                tagElement.addEventListener('click', () => {
+                    backToGames();
+                    filterByTag(tag.trim());
+                });
+                gameTags.appendChild(tagElement);
+            });
+        }
+        
+        showSimilarGames(game);
+        
+        gameVideoContainer.style.display = 'block';
+        gameEmbedContainer.style.display = 'none';
+        gameVideo.play();
+        
+        gameVideo.onended = () => {
+            gameVideoContainer.style.display = 'none';
+            gameEmbedContainer.style.display = 'block';
+            gameEmbedContainer.innerHTML = `
+                <iframe src="${game.embed}" allowfullscreen></iframe>
+            `;
+        };
+        
+        window.scrollTo(0, 0);
+    }
+    
+    function showSimilarGames(game) {
+        similarGamesGrid.innerHTML = '';
+        
+        if (!game.tags) return;
+        
+        const referenceTag = game.tags.split(',')[0].trim();
+        
+        const similar = games.filter(g => 
+            g !== game && 
+            g.tags && 
+            g.tags.includes(referenceTag)
+        ).slice(0, 4); // Show max 4 similar games
+        
+        similar.forEach(similarGame => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.innerHTML = `
+                <img src="${similarGame.image}" alt="${similarGame.title}">
+                <div class="game-card-info">
+                    <h3>${similarGame.title}</h3>
                 </div>
             `;
-
-            // Update background image
-            document.body.style.backgroundImage = `url(${game.image})`;
-
-            // Update recently played games
-            updateRecentlyPlayed(game);
-
-            // Update like button state
-            updateLikeButton(game);
-
-            // Add event listeners for buttons
-            document.getElementById('likeButton').addEventListener('click', () => toggleLike(game));
-            document.getElementById('fullscreenButton').addEventListener('click', toggleFullscreen);
-        }, 500); // Simulate loading delay
+            
+            gameCard.addEventListener('click', () => showGameDetail(similarGame));
+            similarGamesGrid.appendChild(gameCard);
+        });
     }
-
-    // Update recently played games
-    function updateRecentlyPlayed(game) {
-        recentlyPlayed = recentlyPlayed.filter(g => g.title !== game.title);
-        recentlyPlayed.unshift(game);
-        if (recentlyPlayed.length > 5) recentlyPlayed.pop();
-        localStorage.setItem(RECENTLY_PLAYED_KEY, JSON.stringify(recentlyPlayed));
+    
+    function backToGames() {
+        mainContent.style.display = 'flex';
+        gameDetail.style.display = 'none';
+        gameEmbedContainer.innerHTML = '';
     }
-
-    // Update like button state
-    function updateLikeButton(game) {
-        const likeButton = document.getElementById('likeButton');
-        if (likedGames.some(g => g.title === game.title)) {
-            likeButton.textContent = 'Liked';
-            likeButton.classList.add('liked');
-        } else {
-            likeButton.textContent = 'Like';
-            likeButton.classList.remove('liked');
-        }
-    }
-
-    // Toggle like for a game
-    function toggleLike(game) {
-        if (likedGames.some(g => g.title === game.title)) {
-            likedGames = likedGames.filter(g => g.title !== game.title);
-        } else {
-            likedGames.push(game);
-        }
-        localStorage.setItem(LIKED_GAMES_KEY, JSON.stringify(likedGames));
-        updateLikeButton(game);
-    }
-
-    // Toggle fullscreen mode
+    
     function toggleFullscreen() {
-        const iframe = document.getElementById('gameFrame');
+        const iframe = gameEmbedContainer.querySelector('iframe');
+        if (!iframe) return;
+        
         if (iframe.requestFullscreen) {
             iframe.requestFullscreen();
-        } else if (iframe.mozRequestFullScreen) { // Firefox
-            iframe.mozRequestFullScreen();
-        } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        } else if (iframe.webkitRequestFullscreen) {
             iframe.webkitRequestFullscreen();
-        } else if (iframe.msRequestFullscreen) { // IE/Edge
+        } else if (iframe.msRequestFullscreen) {
             iframe.msRequestFullscreen();
         }
     }
-
-    // Search functionality
-    searchButton.addEventListener('click', () => {
-        const query = searchInput.value.toLowerCase();
-        const foundGames = validGames.filter(game =>
-            game.title.toLowerCase().includes(query) || game.tags.toLowerCase().includes(query)
-        );
-        renderGames(foundGames);
-        searchResults.textContent = `Found ${foundGames.length} of ${validGames.length} games`;
-    });
-
-    // Handle URL changes (e.g., when user navigates back)
-    window.addEventListener('popstate', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const gameTitle = urlParams.get('game');
-        if (gameTitle) {
-            const game = validGames.find(g => g.title === decodeURIComponent(gameTitle));
-            if (game) openGamePage(game);
+    
+    function shareGame() {
+        if (navigator.share) {
+            navigator.share({
+                title: currentGame.title,
+                text: `Check out ${currentGame.title} on VGames Studio`,
+                url: window.location.href,
+            }).catch(err => {
+                console.log('Error sharing:', err);
+                fallbackShare();
+            });
         } else {
-            gamePage.classList.add('hidden');
+            fallbackShare();
         }
+    }
+    
+    function fallbackShare() {
+        const shareUrl = `https://twitter.com/intent/tweet?text=Check out ${encodeURIComponent(currentGame.title)} on VGames Studio&url=${encodeURIComponent(window.location.href)}`;
+        window.open(shareUrl, '_blank');
+    }
+    
+    introVideo.addEventListener('ended', () => {
+        introVideoContainer.style.display = 'none';
+        mainContent.style.display = 'flex';
+        loadGames();
     });
+    
+    searchBtn.addEventListener('click', searchGames);
+    gameSearch.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchGames();
+    });
+    backBtn.addEventListener('click', backToGames);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    shareBtn.addEventListener('click', shareGame);
+    feedbackBtn.addEventListener('click', () => {
+        window.open('https://vgames.run.place/feedback', '_blank');
+    });
+    
+    introVideo.addEventListener('contextmenu', (e) => e.preventDefault());
+    gameVideo.addEventListener('contextmenu', (e) => e.preventDefault());
+    
+    const logo = document.querySelector('.logo');
+    if (logo) {
+        logo.addEventListener('mouseover', () => {
+            logo.classList.add('glitch-effect');
+            setTimeout(() => logo.classList.remove('glitch-effect'), 500);
+        });
+    }
 });
