@@ -465,22 +465,45 @@
                     const songCard = document.createElement('div');
                     songCard.className = 'song-card';
                     
-                    const songDate = new Date(song.date);
-                    const today = new Date();
-                    const diffTime = Math.abs(today - songDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-                    const diffMonths = Math.floor(diffDays / 30);
-                    const diffYears = Math.floor(diffDays / 365);
-                    
-                    let ageText = '';
-                    if (diffYears > 0) {
-                        ageText = `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
-                    } else if (diffMonths > 0) {
-                        ageText = `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
-                    } else {
-                        ageText = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-                    }
-                    
+ 
+            const songDate = new Date(song.date);
+            const today = new Date();
+            const isFuture = songDate > today;
+            
+            let ageText = '';
+            if (isFuture) {
+                ageText = `Coming ${songDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+            } else {
+                let diffYears = today.getFullYear() - songDate.getFullYear();
+                if (today.getMonth() < songDate.getMonth() || 
+                    (today.getMonth() === songDate.getMonth() && today.getDate() < songDate.getDate())) {
+                    diffYears--;
+                }
+
+                let diffMonths = today.getMonth() - songDate.getMonth();
+                if (diffMonths < 0 || (diffMonths === 0 && today.getDate() < songDate.getDate())) {
+                    diffMonths += 12;
+                }
+
+                let diffDays = today.getDate() - songDate.getDate();
+                if (diffDays < 0) {
+                    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                    diffDays += lastMonth.getDate();
+                    diffMonths--;
+                }
+
+                const diffTime = Math.abs(today - songDate);
+                const totalDiffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffYears > 0) {
+                    ageText = `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+                } else if (diffMonths > 0) {
+                    ageText = `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+                } else {
+                    ageText = `${totalDiffDays} day${totalDiffDays > 1 ? 's' : ''} ago`;
+                }
+            }
+    
                     songCard.innerHTML = `
                         <img src="${song.image}" alt="${song.title}" class="song-image">
                         <div class="song-info">
