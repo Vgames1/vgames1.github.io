@@ -15,6 +15,8 @@
             --accent: #ff4d7e;
             --text: #333;
             --game-btn: #4CAF50;
+            --led-on: #00ff00;
+            --led-off: #003300;
         }
 
         * {
@@ -28,6 +30,35 @@
             background-color: var(--dark);
             color: var(--light);
             overflow-x: hidden;
+        }
+
+        /* LED Clock */
+        .led-clock {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: var(--led-on);
+            text-shadow: 0 0 5px var(--led-on);
+            z-index: 100;
+            border: 1px solid var(--led-on);
+            box-shadow: 0 0 10px var(--led-on);
+            display: flex;
+            gap: 5px;
+        }
+
+        .led-segment {
+            display: inline-block;
+            width: 12px;
+            height: 20px;
+            background-color: var(--led-on);
+            opacity: 0.8;
+            margin: 0 1px;
+            border-radius: 2px;
         }
 
         /* Intro Animation */
@@ -210,14 +241,32 @@
             margin-bottom: 5px;
         }
 
-        /* Music Grid */
+        /* Section Headers */
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            position: relative;
         }
 
+        .section-header h2 {
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 3px;
+        }
+
+        /* Grid Layouts */
         .music-grid, .posts-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -225,6 +274,7 @@
             margin-bottom: 40px;
         }
 
+        /* Cards */
         .song-card, .post-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
@@ -232,6 +282,8 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
         .song-card:hover, .post-card:hover {
@@ -239,15 +291,27 @@
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .song-image, .post-image {
+        .song-image-container, .post-image-container {
             width: 100%;
             height: 200px;
-            object-fit: contain;
             background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .song-image, .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .song-info, .post-info {
             padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .song-info h3, .post-info h3 {
@@ -268,10 +332,7 @@
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.95rem;
             margin-bottom: 15px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            flex: 1;
         }
 
         .play-btn {
@@ -286,6 +347,8 @@
             align-items: center;
             gap: 5px;
             transition: all 0.3s ease;
+            margin-top: auto;
+            width: fit-content;
         }
 
         .play-btn:hover {
@@ -301,6 +364,8 @@
             margin-bottom: 40px;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 10;
         }
 
         .contact-info h2 {
@@ -324,109 +389,6 @@
             width: 24px;
             height: 24px;
             color: var(--secondary);
-        }
-
-        /* Cookie Consent */
-        .cookie-consent {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            padding: 15px 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 100;
-            backdrop-filter: blur(5px);
-            animation: slideUp 0.5s ease-out;
-        }
-
-        .cookie-consent p {
-            font-size: 0.9rem;
-        }
-
-        .cookie-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .cookie-btn:hover {
-            background: #ff3a6d;
-        }
-
-        @keyframes slideUp {
-            from { transform: translate(-50%, 100px); opacity: 0; }
-            to { transform: translate(-50%, 0); opacity: 1; }
-        }
-
-        /* Games Popup */
-        .games-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.9);
-            padding: 30px;
-            border-radius: 15px;
-            z-index: 1000;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 0 30px rgba(110, 69, 226, 0.5);
-            display: none;
-        }
-
-        .games-popup h2 {
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .games-popup p {
-            margin-bottom: 25px;
-        }
-
-        .popup-btns {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .popup-btn {
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .accept-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-        }
-
-        .decline-btn {
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 999;
-            display: none;
         }
 
         /* Footer */
@@ -463,20 +425,20 @@
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
 
-            .cookie-consent {
-                flex-direction: column;
-                text-align: center;
-                width: 90%;
-            }
-
             .nav-buttons {
                 flex-direction: column;
                 gap: 10px;
             }
+
+            .led-clock {
+                top: 10px;
+                right: 10px;
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
         }
 
         @media (min-width: 1200px) {
-            /* TV specific styles */
             body {
                 font-size: 1.2rem;
             }
@@ -494,7 +456,7 @@
                 min-height: 400px;
             }
             
-            .song-image, .post-image {
+            .song-image-container, .post-image-container {
                 height: 250px;
             }
         }
@@ -508,6 +470,12 @@
     </style>
 </head>
 <body>
+    <!-- LED Clock -->
+    <div class="led-clock" id="ledClock">
+        <span id="time">00:00:00</span>
+        <span id="date">2025-01-01</span>
+    </div>
+
     <!-- Intro Animation -->
     <div class="intro">
         <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="intro-logo">
@@ -594,52 +562,52 @@
         <p>@VSTUDIO2025 ALL RIGHTS RESERVED</p>
     </footer>
 
-    <!-- Cookie Consent -->
-    <div class="cookie-consent" id="cookieConsent">
-        <p>We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.</p>
-        <button class="cookie-btn" id="acceptCookies">Accept</button>
-    </div>
-
-    <!-- Games Popup -->
-    <div class="overlay" id="overlay"></div>
-    <div class="games-popup" id="gamesPopup">
-        <h2>Want to play some games?</h2>
-        <p>Check out our fun interactive games while you enjoy the music!</p>
-        <div class="popup-btns">
-            <button class="popup-btn accept-btn" id="playGames">Play Games</button>
-            <button class="popup-btn decline-btn" id="declineGames">Not Now</button>
-        </div>
-    </div>
-
     <script>
+        function updateClock() {
+            const now = new Date();
+            const timeElement = document.getElementById('time');
+            const dateElement = document.getElementById('date');
+            
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+            
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            dateElement.textContent = `${year}-${month}-${day}`;
+        }
+        
+        updateClock();
+        setInterval(updateClock, 1000);
+
         fetch('music.json')
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('No music data found');
-                }
+                if (!response.ok) throw new Error('No music data found');
                 return response.json();
             })
             .then(data => {
                 const musicGrid = document.getElementById('music-grid');
                 
-                if (data && data.length > 0) {
+                if (data?.length > 0) {
                     data.sort((a, b) => new Date(b.date) - new Date(a.date));
                     
                     data.forEach(song => {
                         const songCard = document.createElement('div');
                         songCard.className = 'song-card';
                         
-                        const ageText = calculateAge(song.date);
-                        
                         songCard.innerHTML = `
-                            <img src="${song.image}" alt="${song.title}" class="song-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Cover'">
+                            <div class="song-image-container">
+                                <img src="${song.image}" alt="${song.title}" class="song-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Cover'">
+                            </div>
                             <div class="song-info">
                                 <h3>${song.title}</h3>
                                 <div class="song-meta">
                                     <span>${song.Album || 'No album'}</span>
                                     <span>${song.date || 'No date'}</span>
                                 </div>
-                                ${song.date ? `<p class="song-age">Released ${ageText}</p>` : ''}
+                                ${song.date ? `<p class="song-age">Released ${calculateAge(song.date)}</p>` : ''}
                                 <p class="song-desc">${song['Song description'] || 'No description available'}</p>
                                 ${song.Song ? `<a href="${song.Song}" target="_blank" class="play-btn">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -649,23 +617,19 @@
                                 </a>` : '<button class="play-btn" disabled>No song available</button>'}
                             </div>
                         `;
-                        
                         musicGrid.appendChild(songCard);
                     });
                 } else {
                     musicGrid.innerHTML = '<div class="empty-state">No music available at this time</div>';
                 }
             })
-            .catch(error => {
-                console.error('Error loading music data:', error);
+            .catch(() => {
                 document.getElementById('music-grid').innerHTML = '<div class="empty-state">No music available at this time</div>';
             });
 
         fetch('con.json')
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('No contact data found');
-                }
+                if (!response.ok) throw new Error('No contact data found');
                 return response.json();
             })
             .then(data => {
@@ -675,69 +639,60 @@
                     for (const [key, value] of Object.entries(data)) {
                         const contactItem = document.createElement('div');
                         contactItem.className = 'contact-item';
-                        
                         contactItem.innerHTML = `
                             <svg class="contact-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="12" y1="8" x2="12" y2="12"></line>
                                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
                             </svg>
-                            <div>
-                                <strong>${key}:</strong> ${value || 'Not provided'}
-                            </div>
+                            <div><strong>${key}:</strong> ${value || 'Not provided'}</div>
                         `;
-                        
                         contactDetails.appendChild(contactItem);
                     }
                 } else {
                     contactDetails.innerHTML = '<div class="empty-state">No contact information available</div>';
                 }
             })
-            .catch(error => {
-                console.error('Error loading contact data:', error);
+            .catch(() => {
                 document.getElementById('contactDetails').innerHTML = '<div class="empty-state">No contact information available</div>';
             });
 
         fetch('post.json')
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('No posts data found');
-                }
+                if (!response.ok) throw new Error('No posts data found');
                 return response.json();
             })
             .then(data => {
                 const postsGrid = document.getElementById('posts-grid');
                 
-                if (data && data.length > 0) {
+                if (data?.length > 0) {
                     data.sort((a, b) => new Date(b.date) - new Date(a.date));
                     
                     data.forEach(post => {
                         const postCard = document.createElement('div');
                         postCard.className = 'post-card';
                         
-                        const ageText = calculateAge(post.date);
-                        
                         postCard.innerHTML = `
-                            ${post.image ? `<img src="${post.image}" alt="${post.title || 'Post image'}" class="post-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">` : ''}
+                            <div class="post-image-container">
+                                <img src="${post.image || 'https://via.placeholder.com/300x300?text=No+Image'}" alt="${post.title || 'Post image'}" class="post-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                            </div>
                             <div class="post-info">
                                 <h3>${post.title || 'Untitled Post'}</h3>
                                 <div class="post-meta">
                                     <span>${post.author || 'Unknown author'}</span>
                                     <span>${post.date || 'No date'}</span>
                                 </div>
-                                ${post.date ? `<p class="post-age">Posted ${ageText}</p>` : ''}
+                                ${post.date ? `<p class="post-age">Posted ${calculateAge(post.date)}</p>` : ''}
                                 <p class="post-content">${post.content || 'No content available'}</p>
                             </div>
                         `;
-                        
                         postsGrid.appendChild(postCard);
                     });
                 } else {
                     postsGrid.innerHTML = '<div class="empty-state">No posts available at this time</div>';
                 }
             })
-            .catch(error => {
-                console.error('Error loading posts data:', error);
+            .catch(() => {
                 document.getElementById('posts-grid').innerHTML = '<div class="empty-state">No posts available at this time</div>';
             });
 
@@ -751,73 +706,17 @@
             const diffMonths = Math.floor(diffDays / 30);
             const diffYears = Math.floor(diffDays / 365);
             
-            if (diffYears > 0) {
-                return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
-            } else if (diffMonths > 0) {
-                return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
-            } else {
-                return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-            }
+            if (diffYears > 0) return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+            if (diffMonths > 0) return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+            return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
         }
 
-        const cookieConsent = document.getElementById('cookieConsent');
-        const acceptCookies = document.getElementById('acceptCookies');
-        
-        if (!localStorage.getItem('cookiesAccepted')) {
-            setTimeout(() => {
-                cookieConsent.style.display = 'flex';
-            }, 5000);
-        }
-        
-        acceptCookies.addEventListener('click', () => {
-            localStorage.setItem('cookiesAccepted', 'true');
-            cookieConsent.style.display = 'none';
+        document.getElementById('contactButton').addEventListener('click', () => {
+            const contactInfo = document.getElementById('contactInfo');
+            contactInfo.style.display = contactInfo.style.display === 'none' ? 'block' : 'none';
         });
 
-        const overlay = document.getElementById('overlay');
-        const gamesPopup = document.getElementById('gamesPopup');
-        const playGames = document.getElementById('playGames');
-        const declineGames = document.getElementById('declineGames');
-        
-        setTimeout(() => {
-            if (!localStorage.getItem('gamesPopupShown')) {
-                overlay.style.display = 'block';
-                gamesPopup.style.display = 'block';
-            }
-        }, 10000);
-        
-        playGames.addEventListener('click', () => {
-            localStorage.setItem('gamesPopupShown', 'true');
-            overlay.style.display = 'none';
-            gamesPopup.style.display = 'none';
-            window.location.href = 'games.html';
-        });
-        
-        declineGames.addEventListener('click', () => {
-            localStorage.setItem('gamesPopupShown', 'true');
-            overlay.style.display = 'none';
-            gamesPopup.style.display = 'none';
-        });
-        
-        overlay.addEventListener('click', () => {
-            localStorage.setItem('gamesPopupShown', 'true');
-            overlay.style.display = 'none';
-            gamesPopup.style.display = 'none';
-        });
-
-        const contactButton = document.getElementById('contactButton');
-        const contactInfo = document.getElementById('contactInfo');
-        
-        contactButton.addEventListener('click', () => {
-            if (contactInfo.style.display === 'none' || !contactInfo.style.display) {
-                contactInfo.style.display = 'block';
-            } else {
-                contactInfo.style.display = 'none';
-            }
-        });
-
-        const gameButton = document.getElementById('gameButton');
-        gameButton.addEventListener('click', () => {
+        document.getElementById('gameButton').addEventListener('click', () => {
             window.location.href = 'games.html';
         });
     </script>
