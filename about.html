@@ -3,18 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About VGAMES - VGAMES STUDIO</title>
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>About TBSV - Tyler Blake Siyanda Vuyani Vilakazi</title>
+    <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6c5ce7;
-            --secondary: #00cec9;
-            --accent: #fd79a8;
-            --background: #1e1e2f;
-            --text: #f5f6fa;
-            --dark: #12121a;
-            --darker: #0a0a0f;
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff4d7e;
+            --text: #333;
+        }
+
+        /* Force HTTPS - Hide content if insecure */
+        body:before {
+            content: "";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 9999;
+        }
+
+        body.secure:before {
+            display: none;
+        }
+
+        /* Security Warning */
+        .security-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #d32f2f;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            z-index: 10000;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .security-warning h2 {
+            margin-bottom: 15px;
+        }
+
+        .security-warning p {
+            margin-bottom: 20px;
+        }
+
+        .security-warning a {
+            color: white;
+            text-decoration: underline;
         }
 
         * {
@@ -24,822 +70,481 @@
         }
 
         body {
-            font-family: 'Roboto Mono', monospace;
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
             overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
 
-        header {
-            background-color: var(--dark);
-            padding: 20px 0;
-            border-bottom: 2px solid var(--primary);
-            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
-        }
-
-        .header-content {
+        /* Navigation */
+        .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .logo {
+        .nav-logo {
+            height: 60px;
+            transition: all 0.5s ease;
+        }
+
+        .nav-logo:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .nav-menu {
             display: flex;
-            align-items: center;
+            gap: 30px;
         }
 
-        .logo img {
-            height: 50px;
-            margin-right: 15px;
-            image-rendering: pixelated;
-        }
-
-        .logo h1 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 24px;
-            color: var(--primary);
-            text-shadow: 0 0 10px rgba(108, 92, 231, 0.7);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 20px;
-        }
-
-        nav ul li a {
-            color: var(--text);
+        .nav-link {
+            color: white;
             text-decoration: none;
-            font-weight: bold;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            font-weight: 600;
             position: relative;
-            overflow: hidden;
+            padding: 5px 0;
+            transition: all 0.3s ease;
         }
 
-        nav ul li a:hover {
-            color: var(--accent);
-            text-shadow: 0 0 8px rgba(253, 121, 168, 0.7);
-        }
-
-        nav ul li a::after {
+        .nav-link:after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--accent);
+            background: var(--accent);
             transition: width 0.3s ease;
         }
 
-        nav ul li a:hover::after {
+        .nav-link:hover:after {
             width: 100%;
         }
 
+        /* Hero Section */
         .hero {
-            text-align: center;
-            padding: 60px 0;
-            background: linear-gradient(to right, var(--darker), var(--background));
-            border-bottom: 1px solid var(--secondary);
-            margin-bottom: 40px;
-        }
-
-        .hero h2 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: var(--secondary);
-            text-shadow: 0 0 10px rgba(0, 206, 201, 0.5);
-        }
-
-        .about-content {
+            height: 100vh;
             display: flex;
-            flex-wrap: wrap;
+            align-items: center;
+            padding: 0 10%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        .hero-image {
+            position: absolute;
+            right: 10%;
+            height: 80%;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateX(50px);
+            animation: fadeInRight 1s ease-out 0.6s forwards;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 10%;
+            background: rgba(255,255,255,0.03);
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-align: center;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.9s forwards;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            margin-bottom: 60px;
         }
 
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .about-image {
-            flex: 1;
-            min-width: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .about-image img {
-            max-width: 100%;
-            border-radius: 8px;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
-        }
-
-        .social-links {
-            margin: 40px 0;
-        }
-
-        .social-card {
-            display: flex;
-            align-items: center;
-            background: var(--darker);
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: var(--text);
-        }
-
-        .social-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: var(--accent);
-        }
-
-        .social-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(108, 92, 231, 0.1);
-        }
-
-        .social-icon img {
-            width: 30px;
-            height: 30px;
-        }
-
-        .social-info h3 {
-            margin-bottom: 5px;
-            color: var(--primary);
-        }
-
-        .social-info p {
-            font-size: 14px;
-            color: rgba(245, 246, 250, 0.8);
-        }
-
-        .contact-form {
-            background: var(--darker);
+        .about-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
             padding: 30px;
-            border-radius: 8px;
-            border: 1px solid var(--primary);
-            margin: 40px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.5s ease;
         }
 
-        .contact-form h2 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 24px;
-            color: var(--primary);
+        .about-card.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .about-card:nth-child(1) { animation-delay: 1.1s; }
+        .about-card:nth-child(2) { animation-delay: 1.3s; }
+        .about-card:nth-child(3) { animation-delay: 1.5s; }
+
+        .about-card h3 {
+            font-size: 1.8rem;
             margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            background: var(--dark);
-            border: 1px solid var(--primary);
-            border-radius: 4px;
-            color: var(--text);
-            font-family: 'Roboto Mono', monospace;
-        }
-
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .submit-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .notice {
-            background: rgba(253, 121, 168, 0.1);
-            border-left: 4px solid var(--accent);
-            padding: 15px;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-
-        footer {
-            background-color: var(--darker);
-            padding: 30px 0;
-            text-align: center;
-            border-top: 2px solid var(--primary);
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .footer-logo {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 20px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .copyright {
-            font-size: 14px;
-            color: rgba(245, 246, 250, 0.7);
-            margin-bottom: 15px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .footer-links a {
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
             color: var(--accent);
         }
 
-        /* Vilakazi Studio Section Styles */
-        .vilakazi-section {
-            background: var(--darker);
-            padding: 30px;
-            border-radius: 8px;
-            border: 1px solid var(--primary);
-            margin: 40px 0;
-        }
-
-        .vilakazi-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .vilakazi-logo {
-            height: 60px;
-            margin-right: 15px;
-            pointer-events: none;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-
-        .vilakazi-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 20px;
-            color: var(--accent);
-        }
-
-        .vilakazi-story {
-            margin-bottom: 20px;
+        .about-card p {
+            margin-bottom: 15px;
             line-height: 1.6;
         }
 
-        .upcoming-films {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .film-slide {
-            position: relative;
-            width: 150px;
-            height: 200px;
-            overflow: hidden;
-            border-radius: 4px;
-            border: 1px solid var(--primary);
-        }
-
-        .film-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
-
-        .film-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px;
+        /* Stats Section */
+        .stats-section {
+            padding: 100px 10%;
             text-align: center;
-            font-size: 12px;
         }
 
-        .vilakazi-links {
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-item {
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .stat-item.visible {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px 10%;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .vilakazi-link {
-            color: var(--secondary);
-            text-decoration: none;
-            padding: 5px 10px;
-            border: 1px solid var(--secondary);
-            border-radius: 4px;
-            transition: all 0.3s;
+        .social-link {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
         }
 
-        .vilakazi-link:hover {
-            background: rgba(0, 206, 201, 0.2);
+        .social-link:hover {
+            color: var(--accent);
+            transform: translateY(-5px);
         }
 
-        .donate-btn {
-            display: inline-block;
-            background: var(--accent);
-            color: var(--darker);
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: bold;
-            text-decoration: none;
-            margin-top: 15px;
-            transition: all 0.3s;
+        .copyright {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
         }
 
-        .donate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from { 
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .hero-image {
+                position: relative;
+                right: auto;
+                margin-top: 50px;
+                height: auto;
+                width: 80%;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
+            .hero-title {
+                font-size: 3rem;
             }
 
-            nav ul {
-                margin-top: 20px;
+            .hero-subtitle {
+                font-size: 1.2rem;
             }
 
-            nav ul li {
-                margin: 0 10px;
+            .nav-menu {
+                gap: 15px;
             }
 
-            .hero h2 {
-                font-size: 24px;
-            }
-
-            .upcoming-films {
-                justify-content: center;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container header-content">
-            <div class="logo">
-                <img src="vgstu.png" alt="VGAMES Logo">
-                <h1>VGAMES</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="search.html">Search</a></li>
-                    <li><a href="about.html" class="active">About</a></li>
-                    <li><a href="https://vuyani.my.canva.site/movies" target="_blank">Our Movies</a></li>
-                    <li><a href="https://thundafund.africa/campaign/0A94C65131967170B684" target="_blank" style="color: var(--accent);">DONATE</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- Security Check - Will be removed if secure -->
+    <div class="security-warning" id="securityWarning">
+        <h2>Insecure Connection Detected</h2>
+        <p>This page requires a secure HTTPS connection to protect your privacy.</p>
+        <p>Please access this page using a secure connection: <a href="https://www.tbvs.run.place/about" id="secureLink">https://www.tbvs.run.place/about</a></p>
+    </div>
 
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <a href="https://www.tbvs.run.place">
+            <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="nav-logo">
+        </a>
+        <div class="nav-menu">
+            <a href="https://www.tbvs.run.place" class="nav-link">Home</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="https://www.tbvs.run.place#music" class="nav-link">Music</a>
+            <a href="https://www.tbvs.run.place#contact" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
-            <h2 class="shake">ABOUT VGAMES</h2>
-            <p>Your ultimate retro-futuristic gaming platform powered by VGAMES STUDIO</p>
+        <div class="hero-content">
+            <h1 class="hero-title">About TBSV</h1>
+            <p class="hero-subtitle">The story behind the music and the artist</p>
+        </div>
+        <img src="https://www.tbvs.run.place/cdn/tbsv-me.png" alt="Tyler Blake Siyanda Vuyani Vilakazi" class="hero-image">
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <h2 class="section-title">Who I Am</h2>
+        <div class="about-grid">
+            <div class="about-card" id="aboutCard1">
+                <h3>My Journey</h3>
+                <p>Born on 08 May 2007 in Daveyton, Benoni, Gauteng, South Africa, I discovered my passion for music at an early age. Growing up in a vibrant cultural environment, I was exposed to diverse musical influences that shaped my unique sound.</p>
+                <p>From school performances to professional recordings, my journey has been filled with learning experiences and creative growth.</p>
+            </div>
+            <div class="about-card" id="aboutCard2">
+                <h3>My Music</h3>
+                <p>My debut album "Tyler" released in 2025 marked the beginning of my professional career. My first single "Good to be bad" received local recognition and motivated me to pursue music more seriously.</p>
+                <p>I blend contemporary sounds with traditional African rhythms to create a unique musical experience that resonates with diverse audiences.</p>
+            </div>
+            <div class="about-card" id="aboutCard3">
+                <h3>My Vision</h3>
+                <p>I believe music has the power to unite people and tell stories that matter. My goal is to create authentic, meaningful art that inspires others and represents my heritage with pride.</p>
+                <p>Through my work, I aim to contribute to the growing African music scene while pushing creative boundaries.</p>
+            </div>
         </div>
     </section>
 
-    <main class="container">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>VGAMES STUDIO FAMILY</h2>
-                <p>VGAMES is part of the VGAMES STUDIO family, serving as the flagship gaming platform developed under the guidance of our parent company.</p>
-                
-                <p>VGAMES STUDIO is the parent company that helps the son (VGAMES) to develop and grow, providing technical infrastructure, security systems, and partnership networks to deliver the best gaming experience.</p>
-                
-                <p>Our mission is to bring high-quality gaming content to regions where mainstream platforms are unavailable or restricted, with additional security layers and localized support.</p>
-
-                <div class="social-links">
-                    <h2>STAY CONNECTED</h2>
-                    
-                    <a href="https://whatsapp.com/channel/0029VbAW6p0Au3aTBGO9xY24" class="social-card" target="_blank">
-                        <div class="social-icon">
-                            <img src="https://static.whatsapp.net/rsrc.php/yz/r/lOol7j-zq4u.svg" alt="WhatsApp">
-                        </div>
-                        <div class="social-info">
-                            <h3>WhatsApp Updates Channel</h3>
-                            <p>Get official news, updates, and announcements</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://linktr.ee/VGAMESSTUDIO" class="social-card" target="_blank">
-                        <div class="social-icon">
-                            <img src="https://linktr.ee/favicon.ico" alt="Linktree">
-                        </div>
-                        <div class="social-info">
-                            <h3>VGAMES STUDIO Linktree</h3>
-                            <p>All our official links in one place</p>
-                        </div>
-                    </a>
-                </div>
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <h2 class="section-title">By The Numbers</h2>
+        <div class="stats-grid">
+            <div class="stat-item" id="stat1">
+                <div class="stat-number" id="albumCount">1</div>
+                <div class="stat-label">Albums Released</div>
             </div>
-            
-            <div class="about-image">
-                <img src="vgb.png" alt="VGAMES Banner">
+            <div class="stat-item" id="stat2">
+                <div class="stat-number" id="songCount">10+</div>
+                <div class="stat-label">Songs Created</div>
+            </div>
+            <div class="stat-item" id="stat3">
+                <div class="stat-number" id="yearStarted">2025</div>
+                <div class="stat-label">Year Started</div>
+            </div>
+            <div class="stat-item" id="stat4">
+                <div class="stat-number" id="age">18</div>
+                <div class="stat-label">Years Young</div>
             </div>
         </div>
+    </section>
 
-        <!-- Added Vilakazi Studio Section -->
-        <div class="vilakazi-section">
-            <div class="vilakazi-header">
-                <img src="vilakazi.std.png" alt="Vilakazi Studio" class="vilakazi-logo">
-                <h2 class="vilakazi-title">VILAKAZI STUDIO</h2>
-            </div>
-            
-            <div class="vilakazi-story">
-                <p>Hello world,</p>
-                <p>We're a young team of passionate filmmakers from South Africa with a story that needs to be told – and we need you to help us tell it.</p>
-                
-                <p>Our film, THE GAME KILLERS, is a gritty, suspense-filled thriller about ambition, betrayal, and the dark side of competition. It follows a group of teenagers who enter a cutthroat game show where the prize is life-changing – R1 million (about $55,000). But these teens aren't playing fair. They drug, blackmail, and even kill to stay ahead. They call themselves the GK – Game Kings, but the world starts calling them something else: The Game Killers.</p>
-                
-                <p>It's bold. It's intense. And it's a story that mirrors the pressure many young people face around the world today – chasing success by any means necessary.</p>
-                
-                <p>We're creating this film not just to entertain, but to spotlight young talent, grow our local film industry, and prove that powerful stories can come from anywhere – especially Africa.</p>
-                
-                <p>But here's the truth: we can't do it alone.</p>
-                
-                <p>We're working on a tight, low-budget production, and every single dollar counts – even just $1 from you could help us pay for equipment, actors, crew, locations, and editing.</p>
-                <p>This is more than a movie. It's a dream. It's a voice for young South Africans. It's a platform for change, and a chance to show the world what we're capable of.</p>
-                
-                <p>🎬 Be a part of something big. Be a part of history.</p>
-                
-                <p>Whether you donate $1 or $100, you're helping bring a powerful story to life and giving young African creatives a chance to shine on the world stage.</p>
-                
-                <p>Please donate what you can, share with friends, and follow our journey. Together, let's bring THE GAME KILLERS to life.</p>
-                
-                <p>#GameKillersMovie #SupportAfricanFilm #IndieFilm #SupportCreatives #MakeMoviesMatter</p>
-            </div>
-            
-            <div class="upcoming-films">
-                <div class="film-slide">
-                    <img src="thegamek.png" alt="THE GAME KILLERS">
-                    <div class="film-title">THE GAME KILLERS</div>
-                </div>
-                <div class="film-slide">
-                    <img src="jj.png" alt="JUSTICE">
-                    <div class="film-title">JUSTICE</div>
-                </div>
-                <div class="film-slide">
-                    <img src="thegamekings.png" alt="THE GAME KINGS">
-                    <div class="film-title">THE GAME KINGS</div>
-                </div>
-            </div>
-            
-            <div class="vilakazi-links">
-                <a href="https://facebook.com/groups/1238425061187688/" class="vilakazi-link" target="_blank">Facebook</a>
-                <a href="https://www.instagram.com/vuyanisiyandavilakazi" class="vilakazi-link" target="_blank">Instagram</a>
-                <a href="https://www.youtube.com/channel/UCCp9qhV_0dKZ7ctjX2iXEwg" class="vilakazi-link" target="_blank">YouTube</a>
-                <a href="https://www.youtube.com/@vilakazistudio" class="vilakazi-link" target="_blank">YouTube Studio</a>
-            </div>
-            
-            <a href="https://thundafund.africa/campaign/0A94C65131967170B684" class="donate-btn">DONATE NOW</a>
-        </div>
-
-        <div class="contact-form">
-            <h2>CONTACT US</h2>
-            <form id="vgamesContactForm">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                
-                <button type="submit" class="submit-btn">SEND MESSAGE</button>
-            </form>
-            
-            <div class="notice">
-                <p><strong>Note:</strong> All messages are encrypted for security. You will receive feedback from <strong>feedback@vgames.run.place</strong> with a case number. Please check your spam folder if you don't see our response within 48 hours.</p>
-            </div>
-        </div>
-    </main>
-
+    <!-- Footer -->
     <footer>
-        <div class="container footer-content">
-            <div class="footer-logo">VGAMES</div>
-            <div class="copyright">© 2025 VGAMES STUDIO. All rights reserved.</div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="search.html">Search</a>
-                <a href="about.html">About</a>
-                <a href="http://www.vgames.run.place/TVR">Terms</a>
-                <a href="https://vuyani.my.canva.site/movies" target="_blank">Our Movies</a>
-            </div>
+        <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="footer-logo">
+        <p class="footer-text">Creating music that moves the soul and tells our stories</p>
+        <div class="social-links">
+            <a href="https://www.youtube.com/channel/UCCp9qhV_0dKZ7ctjX2iXEwg" class="social-link">YouTube</a>
+            <a href="https://www.tiktok.com/@tylerblakesiyandavuyani" class="social-link">TikTok</a>
+            <a href="https://www.instagram.com/tbsv.vilakazi/" class="social-link">Instagram</a>
+            <a href="https://x.com/SiyandaVuyani" class="social-link">Twitter</a>
+            <a href="https://facebook.com/groups/624590806804737" class="social-link">Facebook</a>
         </div>
+        <p class="copyright">@VSTUDIO2025 ALL RIGHTS RESERVED</p>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Encrypt and send contact form
-        document.getElementById('vgamesContactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        if (window.location.protocol !== 'https:') {
+            document.body.className = '';
+            document.getElementById('securityWarning').style.display = 'block';
+            document.getElementById('secureLink').href = 'https://' + window.location.host + window.location.pathname;
+        } else {
+            document.body.className = 'secure';
+            document.getElementById('securityWarning').style.display = 'none';
             
-            // Get form values
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value,
-                timestamp: new Date().toISOString()
-            };
-            
-            // Simple encryption (in a real app, use proper encryption)
-            const encryptedData = btoa(unescape(encodeURIComponent(JSON.stringify(formData))));
-            
-            // Create mailto link with encrypted data
-            const mailtoLink = `mailto:vilakazigames@gmail.com?subject=VGAMES Contact (Encrypted)&body=${encodeURIComponent(encryptedData)}`;
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Show confirmation
-            alert('Your message has been prepared for sending. Please check your email client to complete the submission.');
-            
-            // Reset form
-            this.reset();
-        });
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#6e45e2" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#6e45e2", "opacity": 0.4, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "repulse" },
+                        "onclick": { "enable": true, "mode": "push" }
+                    }
+                }
+            });
 
-        // Simple shake animation
-        const shakeElements = document.querySelectorAll('.shake');
-        shakeElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                el.style.animation = 'shake 0.5s';
+            function checkVisibility() {
+                const cards = document.querySelectorAll('.about-card, .stat-item');
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const isVisible = (rect.top <= window.innerHeight * 0.8);
+                    if (isVisible) card.classList.add('visible');
+                });
+            }
+
+            function fetchHomepageData() {
+                fetch('https://www.tbvs.run.place/music.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('songCount').textContent = data.length;
+                    })
+                    .catch(() => {
+                        document.getElementById('songCount').textContent = '10+';
+                    });
+            }
+
+            function calculateAge() {
+                const birthDate = new Date(2007, 5, 8); // May 8, 2007
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                document.getElementById('age').textContent = age;
+            }
+
+            window.addEventListener('load', () => {
+                checkVisibility();
+                fetchHomepageData();
+                calculateAge();
             });
-            el.addEventListener('animationend', () => {
-                el.style.animation = '';
-            });
-        });
+
+            window.addEventListener('scroll', checkVisibility);
+        }
     </script>
 </body>
 </html>
-<!-- Legal Footer Widget -->
-<style>
-    /* Legal Widget Styles */
-    body.has-legal-widget {
-        padding-bottom: 180px; /* Adjust based on widget height */
-    }
-    
-    .legal-widget-container {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #12121a;
-        border-top: 2px solid #fd79a8;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
-        z-index: 1000;
-        transform: translateY(0);
-        transition: transform 0.3s ease;
-    }
-    
-    .legal-widget-container.collapsed {
-        transform: translateY(calc(100% - 40px));
-    }
-    
-    .legal-widget-header {
-        background-color: #0a0a0f;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
-    
-    .legal-widget-title {
-        font-family: 'Press Start 2P', cursive;
-        font-size: 12px;
-        color: #fd79a8;
-        margin: 0;
-    }
-    
-    .legal-widget-toggle {
-        background: none;
-        border: none;
-        color: #00cec9;
-        font-size: 20px;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-    
-    .legal-widget-container.collapsed .legal-widget-toggle {
-        transform: rotate(180deg);
-    }
-    
-    .legal-widget-content {
-        padding: 15px 20px;
-        font-size: 14px;
-        line-height: 1.5;
-        max-height: 300px;
-        overflow-y: auto;
-    }
-    
-    .legal-widget-content p {
-        margin-bottom: 10px;
-    }
-    
-    .legal-widget-content a {
-        color: #00cec9;
-        text-decoration: none;
-        word-break: break-all;
-    }
-    
-    .legal-widget-content a:hover {
-        text-decoration: underline;
-    }
-    
-    .legal-widget-buttons {
-        display: flex;
-        justify-content: flex-end;
-        padding: 0 20px 15px;
-        gap: 10px;
-    }
-    
-    .legal-widget-btn {
-        padding: 8px 15px;
-        border-radius: 4px;
-        font-family: 'Roboto Mono', monospace;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .legal-widget-btn.accept {
-        background-color: #6c5ce7;
-        color: white;
-        border: none;
-    }
-    
-    .legal-widget-btn.accept:hover {
-        background-color: #fd79a8;
-    }
-    
-    .legal-widget-btn.more-info {
-        background-color: transparent;
-        color: #00cec9;
-        border: 1px solid #00cec9;
-    }
-    
-    .legal-widget-btn.more-info:hover {
-        background-color: rgba(0, 206, 201, 0.1);
-    }
-    
-    @media (max-width: 768px) {
-        body.has-legal-widget {
-            padding-bottom: 160px;
-        }
-        
-        .legal-widget-content {
-            max-height: 200px;
-        }
-        
-        .legal-widget-title {
-            font-size: 10px;
-        }
-        
-        .legal-widget-content {
-            font-size: 13px;
-        }
-        
-        .legal-widget-buttons {
-            flex-direction: column;
-        }
-    }
-</style>
-
-<div class="legal-widget-container" id="legalWidget">
-    <div class="legal-widget-header" onclick="toggleLegalWidget()">
-        <h3 class="legal-widget-title">LEGAL NOTICE</h3>
-        <button class="legal-widget-toggle">▼</button>
-    </div>
-    <div class="legal-widget-content">
-        <p>By playing games on this site, you agree to:</p>
-        <ol>
-            <li>OnlineGames.io's <a href="https://www.onlinegames.io/about/" target="_blank">Terms and Conditions</a> and <a href="https://www.onlinegames.io/privacy-policy/" target="_blank">Privacy Policy</a></li>
-            <li>Our comprehensive <a href="http://www.vgames.run.place/TVR" target="_blank">TVR Book</a> containing:
-                <ul>
-                    <li>Terms and Conditions</li>
-                    <li>Privacy Policy</li>
-                    <li>Help Information</li>
-                    <li>Cookie Policy</li>
-                    <li>Error Definitions</li>
-                    <li>And other important legal documents</li>
-                </ul>
-            </li>
-        </ol>
-        <p><strong>Please take time to review these documents carefully before playing.</strong></p>
-        <p>Your continued use of this site constitutes acceptance of all these policies.</p>
-    </div>
-    <div class="legal-widget-buttons">
-        <button class="legal-widget-btn more-info" onclick="window.open('http://www.vgames.run.place/TVR', '_blank')">READ FULL DOCUMENTS</button>
-        <button class="legal-widget-btn accept" onclick="acceptLegalTerms()">I UNDERSTAND</button>
-    </div>
-</div>
-
-<script>
-   
-    document.body.classList.add('has-legal-widget');
-    
-   
-    if(localStorage.getItem('legalTermsAccepted')) {
-        document.getElementById('legalWidget').classList.add('collapsed');
-    }
-    
-    
-    function toggleLegalWidget() {
-        document.getElementById('legalWidget').classList.toggle('collapsed');
-    }
-    
-    function acceptLegalTerms() {
-        localStorage.setItem('legalTermsAccepted', 'true');
-        document.getElementById('legalWidget').classList.add('collapsed');
-        
-      
-        if(typeof gtag !== 'undefined') {
-            gtag('event', 'legal_terms_accepted');
-        }
-    }
-    
-   
-    window.addEventListener('load', function() {
-        if(localStorage.getItem('legalTermsAccepted')) {
-            document.getElementById('legalWidget').classList.add('collapsed');
-        }
-    });
-</script>
