@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - TBSV</title>
+    <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e45e2;
+            --secondary: #88d3ce;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #ff4d7e;
+            --text: #333;
+        }
+
+        /* Force HTTPS - Hide content if insecure */
+        body:before {
+            content: "";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 9999;
+        }
+
+        body.secure:before {
+            display: none;
+        }
+
+        /* Security Warning */
+        .security-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #d32f2f;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            z-index: 10000;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        .security-warning h2 {
+            margin-bottom: 15px;
+        }
+
+        .security-warning p {
+            margin-bottom: 20px;
+        }
+
+        .security-warning a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-logo {
+            height: 60px;
+            transition: all 0.5s ease;
+        }
+
+        .nav-logo:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 120px auto 50px;
+            padding: 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            color: var(--light);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 77, 126, 0.2);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23f8f9fa' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+        }
+
+        .radio-group, .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .radio-option, .checkbox-option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--light);
+        }
+
+        .radio-option input, .checkbox-option input {
+            margin-right: 0.8rem;
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 77, 126, 0.3);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* Messages */
+        .response-message {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(0, 184, 148, 0.2);
+            color: #00b894;
+            border-left: 4px solid #00b894;
+        }
+
+        .error-message {
+            background-color: rgba(214, 48, 49, 0.2);
+            color: #d63031;
+            border-left: 4px solid #d63031;
+        }
+
+        .thank-you {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+
+        .thank-you h2 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .thank-you p {
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        /* Rating Stars */
+        .rating-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .rating-star {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .rating-star:hover,
+        .rating-star.active {
+            color: var(--accent);
+            transform: scale(1.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 100px;
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .nav-menu {
+                gap: 15px;
+            }
+            
+            .nav-logo {
+                height: 50px;
+            }
+            
+            .rating-star {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Security Check - Will be removed if secure -->
+    <div class="security-warning" id="securityWarning">
+        <h2>Insecure Connection Detected</h2>
+        <p>This page requires a secure HTTPS connection to protect your privacy.</p>
+        <p>Please access this page using a secure connection: <a href="https://www.tbvs.run.place/feedback" id="secureLink">https://www.tbvs.run.place/feedback</a></p>
+    </div>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <a href="https://www.tbvs.run.place">
+            <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="nav-logo">
+        </a>
+        <div class="nav-menu">
+            <a href="https://www.tbvs.run.place" class="nav-link">Home</a>
+            <a href="https://www.tbvs.run.place/about" class="nav-link">About</a>
+            <a href="https://www.tbvs.run.place#music" class="nav-link">Music</a>
+            <a href="https://www.tbvs.run.place#contact" class="nav-link">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="header">
+            <div class="logo">TBSV</div>
+            <div class="tagline">We value your feedback about our music</div>
+        </div>
+        
+        <div id="feedbackForm">
+            <div class="form-container">
+                <form action="https://formsubmit.co/vuyaniphila86@gmail.com" method="POST" id="feedbackSubmissionForm">
+                    <input type="hidden" name="_subject" value="New Feedback from TBSV Website">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://www.tbvs.run.place/tu.html">
+                    <input type="hidden" name="_captcha" value="false">
+                    
+                    <div class="form-group">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" id="fullName" name="Full Name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="Email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone" class="form-control" placeholder="+27 XX XXX XXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country" class="form-label">Country</label>
+                        <select id="country" name="Country" class="form-control" required>
+                            <option value="" disabled selected>Select your country</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="United States">United States</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="province" class="form-label">Province/State</label>
+                        <select id="province" name="Province/State" class="form-control" required>
+                            <option value="" disabled selected>Select your province/state</option>
+                            <option value="Eastern Cape">Eastern Cape</option>
+                            <option value="Free State">Free State</option>
+                            <option value="Gauteng">Gauteng</option>
+                            <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                            <option value="Limpopo">Limpopo</option>
+                            <option value="Mpumalanga">Mpumalanga</option>
+                            <option value="North West">North West</option>
+                            <option value="Northern Cape">Northern Cape</option>
+                            <option value="Western Cape">Western Cape</option>
+                            <option value="Other">Other/Not Listed</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">How would you rate our music?</label>
+                        <div class="rating-container">
+                            <span class="rating-star" data-value="1">★</span>
+                            <span class="rating-star" data-value="2">★</span>
+                            <span class="rating-star" data-value="3">★</span>
+                            <span class="rating-star" data-value="4">★</span>
+                            <span class="rating-star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="Rating" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="favoriteSong" class="form-label">Favorite Song</label>
+                        <select id="favoriteSong" name="Favorite Song" class="form-control" required>
+                            <option value="" disabled selected>Select your favorite</option>
+                            <option value="Good to be bad">Good to be bad</option>
+                            <option value="Tyler">Tyler</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedbackType" class="form-label">Type of Feedback</label>
+                        <select id="feedbackType" name="Feedback Type" class="form-control" required>
+                            <option value="" disabled selected>What's this about?</option>
+                            <option value="General feedback">General feedback</option>
+                            <option value="Suggestion">Suggestion</option>
+                            <option value="Bug report">Bug report</option>
+                            <option value="Feature request">Feature request</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="feedbackMessage" class="form-label">Your Feedback</label>
+                        <textarea id="feedbackMessage" name="Feedback Message" class="form-control" rows="5" placeholder="Tell us what you think..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="Subscribe to Updates" value="Yes"> I'd like to receive updates about new releases
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block">Send Feedback</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        if (window.location.protocol !== 'https:') {
+            document.body.className = '';
+            document.getElementById('securityWarning').style.display = 'block';
+            document.getElementById('secureLink').href = 'https://' + window.location.host + window.location.pathname;
+        } else {
+            document.body.className = 'secure';
+            document.getElementById('securityWarning').style.display = 'none';
+            
+            // Initialize particles.js
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#6e45e2" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#6e45e2", "opacity": 0.4, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "repulse" },
+                        "onclick": { "enable": true, "mode": "push" }
+                    }
+                }
+            });
+
+            const stars = document.querySelectorAll('.rating-star');
+            const ratingInput = document.getElementById('ratingValue');
+            
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    ratingInput.value = value;
+                    
+                    stars.forEach((s, index) => {
+                        if (index < value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+                
+                star.addEventListener('mouseover', function() {
+                    const value = this.getAttribute('data-value');
+                    
+                    stars.forEach((s, index) => {
+                        if (index < value) {
+                            s.style.color = 'var(--accent)';
+                            s.style.transform = 'scale(1.2)';
+                        }
+                    });
+                });
+                
+                star.addEventListener('mouseout', function() {
+                    const currentRating = ratingInput.value;
+                    
+                    stars.forEach((s, index) => {
+                        if (!currentRating || index >= currentRating) {
+                            s.style.color = 'rgba(255,255,255,0.3)';
+                            s.style.transform = 'scale(1)';
+                        }
+                    });
+                });
+            });
+
+            const countrySelect = document.getElementById('country');
+            const provinceSelect = document.getElementById('province');
+            
+            countrySelect.addEventListener('change', function() {
+                if (this.value !== 'South Africa') {
+                    provinceSelect.innerHTML = `
+                        <option value="" disabled selected>Select your state/province</option>
+                        <option value="Alabama">Alabama</option>
+                        <option value="Alaska">Alaska</option>
+                        <option value="Arizona">Arizona</option>
+                        <option value="Other">Other/Not Listed</option>
+                    `;
+                } else {
+                    provinceSelect.innerHTML = `
+                        <option value="" disabled selected>Select your province</option>
+                        <option value="Eastern Cape">Eastern Cape</option>
+                        <option value="Free State">Free State</option>
+                        <option value="Gauteng">Gauteng</option>
+                        <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                        <option value="Limpopo">Limpopo</option>
+                        <option value="Mpumalanga">Mpumalanga</option>
+                        <option value="North West">North West</option>
+                        <option value="Northern Cape">Northern Cape</option>
+                        <option value="Western Cape">Western Cape</option>
+                    `;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
