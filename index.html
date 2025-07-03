@@ -470,11 +470,7 @@
     </style>
 </head>
 <body>
-    <!-- LED Clock -->
-    <div class="led-clock" id="ledClock">
-        <span id="time">00:00:00</span>
-        <span id="date">2025-01-01</span>
-    </div>
+
 
     <!-- Intro Animation -->
     <div class="intro">
@@ -524,7 +520,7 @@
                     </div>
                     <div class="stat-box">
                         <h3>Debut Album</h3>
-                        <p>Tyler (2023)</p>
+                        <p>Tyler (2025)</p>
                     </div>
                 </div>
             </div>
@@ -582,7 +578,7 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        fetch('music.json')
+        fetch('cdn/music/ms.json')
             .then(response => {
                 if (!response.ok) throw new Error('No music data found');
                 return response.json();
@@ -599,7 +595,7 @@
                         
                         songCard.innerHTML = `
                             <div class="song-image-container">
-                                <img src="${song.image}" alt="${song.title}" class="song-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Cover'">
+                                <img src="${song.image}" alt="${song.title}" class="song-image" onerror="this.src='htttps://tbvs.run.place/cdn/music/error.png'">
                             </div>
                             <div class="song-info">
                                 <h3>${song.title}</h3>
@@ -674,7 +670,7 @@
                         
                         postCard.innerHTML = `
                             <div class="post-image-container">
-                                <img src="${post.image || 'https://via.placeholder.com/300x300?text=No+Image'}" alt="${post.title || 'Post image'}" class="post-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
+                                <img src="${post.image || 'https://www.tbvs.run.place/cdn/music/error.png'}" alt="${post.title || 'Post image'}" class="post-image" onerror="this.src='https://via.placeholder.com/300x300?text=No+Image'">
                             </div>
                             <div class="post-info">
                                 <h3>${post.title || 'Untitled Post'}</h3>
