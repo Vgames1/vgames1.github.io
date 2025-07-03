@@ -578,7 +578,7 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        fetch('cdn/music/ms.json')
+        fetch('music.json')
             .then(response => {
                 if (!response.ok) throw new Error('No music data found');
                 return response.json();
