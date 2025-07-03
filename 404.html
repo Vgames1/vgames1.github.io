@@ -2,78 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>404 - Page Not Found</title>
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      height: 100%;
+      overflow: hidden;
     }
-
     body {
-      background: #fff;
-      color: #444;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      height: 100vh;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .image {
-      max-width: 300px;
-      margin-bottom: 30px;
-    }
-
-    h1 {
-      font-size: 6rem;
-      color: #ff6b6b;
-      animation: bounce 1.5s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-15px);
-      }
-    }
-
-    h2 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
-    }
-
-    a {
-      display: inline-block;
-      text-decoration: none;
-      color: white;
-      background-color: #007bff;
-      padding: 12px 24px;
-      border-radius: 8px;
-      transition: background-color 0.3s ease;
-    }
-
-    a:hover {
-      background-color: #0056b3;
+      background: url('https://www.tbvs.run.place/cdn/404.png') no-repeat center center fixed;
+      background-size: cover;
     }
   </style>
+  <script>
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 5000);
+  </script>
 </head>
 <body>
-  <img src="https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif" alt="Confused robot" class="image">
-  <h1>404</h1>
-  <h2>Page Not Found</h2>
-  <p>Sorry, we couldn't find the page you were looking for.</p>
-  <a href="/">Return to Home</a>
 </body>
 </html>
