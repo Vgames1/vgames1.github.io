@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini AI Assistant</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        .container {
+            max-width: 90%; /* Fluid width for responsiveness */
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .header img {
+            max-width: 120px; /* Adjust logo size */
+            height: auto;
+            border-radius: 0.75rem; /* Rounded corners for logo */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #e2e8f0; /* Light gray for inactive tab */
+            color: #4a5568; /* Dark gray text */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .tab-button.active {
+            background-color: #6366f1; /* Indigo for active tab */
+            color: white;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+        .tab-content {
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .tab-content.active {
+            display: flex; /* Show active content */
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease-in-out;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            background-color: #6366f1;
+            color: white;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        button:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        button:disabled {
+            background-color: #a7a7a7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message-box {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            text-align: center;
+        }
+        .message-box.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .message-box.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Chat specific styles */
+        .chat-history {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .chat-message {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            max-width: 80%;
+        }
+        .chat-message.user {
+            background-color: #e0e7ff;
+            align-self: flex-end;
+            text-align: right;
+        }
+        .chat-message.model {
+            background-color: #f0f4f8;
+            align-self: flex-start;
+            text-align: left;
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .chat-input-area textarea {
+            flex-grow: 1;
+            min-height: 40px;
+            max-height: 120px;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+        .chat-input-area button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        /* Search specific styles */
+        .search-results {
+            min-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            background-color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .search-result-item {
+            padding: 0.5rem 0.75rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .search-result-item strong {
+            color: #6366f1;
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 640px) {
+            .container {
+                max-width: 600px;
+            }
+        }
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="Logo">
+            <h1 class="text-3xl font-bold text-gray-800 text-center">Gemini AI Assistant</h1>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-button active" data-tab="chat">Chat</button>
+            <button class="tab-button" data-tab="search">Simulated Search</button>
+        </div>
+
+        <!-- Chat Section -->
+        <div id="chat-tab-content" class="tab-content active">
+            <h2 class="text-2xl font-bold text-gray-800 text-center">AI Chat</h2>
+            <div id="chat-history" class="chat-history">
+                <p class="text-gray-500 text-center">Start a conversation with the AI!</p>
+            </div>
+            <div class="chat-input-area">
+                <textarea
+                    id="chat-input"
+                    placeholder="Type your message here..."
+                    class="text-gray-800 focus:ring-indigo-500 focus:border-indigo-500"
+                ></textarea>
+                <button id="send-chat-button">
+                    Send
+                </button>
+            </div>
+            <div id="chat-message-area" class="message-box hidden"></div>
+        </div>
+
+        <!-- Simulated Search Section -->
+        <div id="search-tab-content" class="tab-content">
+            <h2 class="text-2xl font-bold text-gray-800 text-center">Simulated Google Search</h2>
+            <div class="input-area">
+                <label for="search-input" class="text-gray-700 text-lg font-medium">Ask a question:</label>
+                <textarea
+                    id="search-input"
+                    placeholder="e.g., What is the capital of France?"
+                    class="text-gray-800 focus:ring-indigo-500 focus:border-indigo-500"
+                ></textarea>
+                <button id="search-button">
+                    Search
+                </button>
+            </div>
+            <div id="search-message-area" class="message-box hidden"></div>
+            <div id="search-results-display" class="search-results">
+                <p class="text-gray-500 text-center">Results will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // API Key
+            const API_KEY = "AIzaSyBWqzSdeMfA3r77dkyeZSzs2GpLwAgRuWU";
+
+            // Tab elements
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            // Chat elements
+            const chatInput = document.getElementById('chat-input');
+            const sendChatButton = document.getElementById('send-chat-button');
+            const chatHistoryDisplay = document.getElementById('chat-history');
+            const chatMessageArea = document.getElementById('chat-message-area');
+
+            // Search elements
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const searchResultsDisplay = document.getElementById('search-results-display');
+            const searchMessageArea = document.getElementById('search-message-area');
+
+            // --- Tab Switching Logic ---
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+
+                    // Deactivate all buttons and content
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Activate clicked button and corresponding content
+                    button.classList.add('active');
+                    document.getElementById(`${targetTab}-tab-content`).classList.add('active');
+                });
+            });
+
+            // --- Chat Logic ---
+            let chatHistory = []; // Stores the conversation history for the chat model
+
+            function showChatMessage(message, type) {
+                chatMessageArea.textContent = message;
+                chatMessageArea.className = `message-box ${type}`;
+                chatMessageArea.classList.remove('hidden');
+            }
+
+            function clearChatMessage() {
+                chatMessageArea.classList.add('hidden');
+                chatMessageArea.textContent = '';
+            }
+
+            function addMessageToChatHistoryDisplay(text, sender) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message', sender);
+                messageElement.textContent = text;
+                chatHistoryDisplay.appendChild(messageElement);
+                chatHistoryDisplay.scrollTop = chatHistoryDisplay.scrollHeight; // Scroll to bottom
+            }
+
+            sendChatButton.addEventListener('click', async () => {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) {
+                    showChatMessage('Please type a message to chat.', 'error');
+                    return;
+                }
+
+                clearChatMessage();
+                addMessageToChatHistoryDisplay(userMessage, 'user');
+                chatInput.value = '';
+                sendChatButton.disabled = true;
+                sendChatButton.innerHTML = '<div class="loading-spinner w-4 h-4 border-2"></div> Sending...';
+
+                chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+                try {
+                    const chatApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+                    const payload = { contents: chatHistory };
+
+                    const response = await fetch(chatApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const modelResponse = result.candidates[0].content.parts[0].text;
+                        addMessageToChatHistoryDisplay(modelResponse, 'model');
+                        chatHistory.push({ role: "model", parts: [{ text: modelResponse }] });
+                    } else {
+                        console.error('API response error (Chat):', result);
+                        showChatMessage('Failed to get a response from the chat AI. Please try again.', 'error');
+                    }
+
+                } catch (error) {
+                    console.error('Error sending chat message:', error);
+                    showChatMessage('An error occurred while chatting. Please check your network connection or try again later.', 'error');
+                } finally {
+                    sendChatButton.disabled = false;
+                    sendChatButton.innerHTML = 'Send';
+                }
+            });
+
+            // --- Simulated Search Logic ---
+
+            function showSearchMessage(message, type) {
+                searchMessageArea.textContent = message;
+                searchMessageArea.className = `message-box ${type}`;
+                searchMessageArea.classList.remove('hidden');
+            }
+
+            function clearSearchMessage() {
+                searchMessageArea.classList.add('hidden');
+                searchMessageArea.textContent = '';
+            }
+
+            function showSearchLoading() {
+                searchResultsDisplay.innerHTML = '<div class="loading-spinner"></div>';
+                searchButton.disabled = true;
+                searchButton.innerHTML = '<div class="loading-spinner w-5 h-5 border-2"></div> Searching...';
+            }
+
+            function hideSearchLoading() {
+                searchButton.disabled = false;
+                searchButton.innerHTML = 'Search';
+            }
+
+            searchButton.addEventListener('click', async () => {
+                const query = searchInput.value.trim();
+                if (!query) {
+                    showSearchMessage('Please enter a question to search.', 'error');
+                    return;
+                }
+
+                clearSearchMessage();
+                showSearchLoading();
+                searchResultsDisplay.innerHTML = '<p class="text-gray-500 text-center">Searching...</p>';
+
+
+                try {
+                    const searchApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+                    // Simulate Google Search by asking Gemini to answer the question
+                    // The model will use its training data to respond as if it performed a search.
+                    const prompt = `Based on your knowledge, answer the following question as if you performed a Google search: "${query}"`;
+
+                    const payload = {
+                        contents: [{ role: "user", parts: [{ text: prompt }] }]
+                    };
+
+                    const response = await fetch(searchApiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const searchAnswer = result.candidates[0].content.parts[0].text;
+                        searchResultsDisplay.innerHTML = `
+                            <div class="search-result-item">
+                                <strong>Your Question:</strong> ${query}
+                            </div>
+                            <div class="search-result-item">
+                                <strong>Answer:</strong> ${searchAnswer}
+                            </div>
+                        `;
+                        showSearchMessage('Search completed!', 'success');
+                    } else {
+                        console.error('API response error (Search):', result);
+                        searchResultsDisplay.innerHTML = '<p class="text-gray-500 text-center">No results found or an error occurred.</p>';
+                        showSearchMessage('Failed to get a search result. Please try again.', 'error');
+                    }
+
+                } catch (error) {
+                    console.error('Error during search:', error);
+                    searchResultsDisplay.innerHTML = '<p class="text-gray-500 text-center">An error occurred during search.</p>';
+                    showSearchMessage('An error occurred during search. Please check your network connection or try again later.', 'error');
+                } finally {
+                    hideSearchLoading();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
