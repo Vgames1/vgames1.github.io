@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Digital Footprint of Natalie Reynolds: An Interactive Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA uses a vertical, story-driven layout to guide the user through the complex narrative of Natalie Reynolds. It begins with a high-level profile (stats, platforms) to provide immediate context. The core of the application is an interactive timeline, which turns the report's chronological events into an engaging, explorable journey. This is more user-friendly than a static text block. Following the narrative, dedicated sections analyze the central controversy and key thematic takeaways using clear, card-based layouts. This structure—Overview > Narrative > Analysis > Conclusion—provides a logical flow that makes the multifaceted report accessible and easy to synthesize, prioritizing user understanding over simply replicating the report's linear format. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Follower Counts -> Goal: Compare -> Viz: Bar Chart (Chart.js) -> Interaction: Hover for details -> Justification: Provides an immediate visual comparison of audience scale across platforms, with hover interactions offering deeper data without cluttering the UI.
+        - Report Info: Timeline of Events -> Goal: Show Change/Sequence -> Viz: Interactive Vertical Timeline -> Interaction: Click event nodes to reveal details, "Read More" button for AI-generated expansion -> Justification: Transforms a static chronology into an engaging, user-controlled narrative, preventing information overload, with AI providing deeper dives on demand. Implemented with HTML/CSS/JS and Gemini API.
+        - Report Info: Key Stats (Net Worth, etc.) -> Goal: Inform -> Viz: Statistic Cards -> Interaction: Static -> Justification: Delivers high-impact, scannable data points for quick context. Implemented with HTML/Tailwind.
+        - Report Info: Central Controversy Analysis -> Goal: Explain/Analyze -> Viz: Thematic Cards & Column Layouts -> Interaction: Static -> Justification: Breaks down the complex incident and its ethical implications into digestible, clearly defined sections. Implemented with HTML/Tailwind.
+        - Report Info: Highlighted Words -> Goal: Define -> Viz: Dynamic Tooltip -> Interaction: Text selection (mouseup) triggers definition via AI -> Justification: Provides on-demand explanations for unfamiliar terms, enhancing comprehension without disrupting flow. Implemented with HTML/CSS/JS and Gemini API.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4; /* stone-100 */
+            -webkit-user-select: text; /* Allow text selection */
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+        .timeline-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        .timeline-item-content.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 40vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover {
+            color: #57534e; /* stone-600 */
+        }
+        .nav-link.active {
+             border-bottom-color: #a8a29e; /* stone-400 */
+        }
+        .no-download {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -ms-user-drag: none;
+            user-drag: none;
+            pointer-events: none; /* Prevents clicks and right-clicks */
+        }
+        #definition-tooltip {
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            max-width: 300px;
+            pointer-events: none; /* Allow clicks to pass through to select text again */
+        }
+        #definition-tooltip.active {
+            opacity: 1;
+            pointer-events: auto; /* Enable interaction when active */
+        }
+        .ai-disclaimer {
+            font-size: 0.7rem;
+            color: #78716c; /* stone-500 */
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ai-disclaimer img {
+            height: 14px;
+            width: 14px;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 border-b border-stone-200">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <span class="text-lg font-bold text-stone-700">The Reynolds Report</span>
+                <div class="hidden sm:flex items-center space-x-8 text-sm font-medium text-stone-500">
+                    <a href="https://tbvs.run.place/news" class="nav-link border-b-2 border-transparent pb-1" target="_blank" rel="noopener noreferrer">Home</a>
+                    <a href="#profile" class="nav-link border-b-2 border-transparent pb-1">Profile</a>
+                    <a href="#timeline" class="nav-link border-b-2 border-transparent pb-1">Timeline</a>
+                    <a href="#controversy" class="nav-link border-b-2 border-transparent pb-1">Controversy</a>
+                    <a href="#analysis" class="nav-link border-b-2 border-transparent pb-1">Analysis</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        
+        <section class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-stone-900">The Digital Footprint of Natalie Reynolds</h1>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">An interactive case study on influencer accountability, platform dynamics, and the volatile nature of online fame.</p>
+        </section>
+
+        <section id="profile" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">Influencer Snapshot</h2>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">This section provides a high-level overview of Natalie Reynolds' digital presence and financial standing. These key metrics offer immediate context for her scale of influence before delving into the timeline of her career.</p>
+            </div>
+            <div class="flex flex-col items-center mb-8">
+                <img src="https://www.famousbirthdays.com/faces/reynolds-natalie-youtubestar-image.jpg" alt="Natalie Reynolds" class="rounded-full w-32 h-32 object-cover shadow-lg border-4 border-white no-download" draggable="false" oncontextmenu="return false;">
+                <h3 class="text-2xl font-semibold text-stone-800 mt-4">Natalie Reynolds</h3>
+                <div class="text-sm text-stone-600 mt-2">
+                    <p><strong>Birthday:</strong> January 17, 2003</p>
+                    <p><strong>Age:</strong> 22 years old</p>
+                    <p><strong>Birth Sign:</strong> Capricorn</p>
+                    <p><strong>Birthplace:</strong> United States</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-4xl font-bold text-teal-600">$2M</h3>
+                    <p class="mt-1 text-sm font-medium text-stone-500">Estimated Net Worth (2025)</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-4xl font-bold text-teal-600">8.6M+</h3>
+                    <p class="mt-1 text-sm font-medium text-stone-500">Combined Follower Reach</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="text-4xl font-bold text-teal-600">4</h3>
+                    <p class="mt-1 text-sm font-medium text-stone-500">Major Platforms</p>
+                </div>
+            </div>
+            <div class="mt-12">
+                 <div class="chart-container">
+                    <canvas id="platformChart"></canvas>
+                </div>
+                <p class="text-center mt-4 text-sm text-stone-500">Hover over the bars to see platform-specific follower counts.</p>
+            </div>
+        </section>
+
+        <section id="timeline" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">The Rise and Fall: An Interactive Timeline</h2>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">This timeline chronicles the key moments in Natalie Reynolds' career, from her initial rise to the major controversies that defined her public image. Click on each event to reveal more details and understand the sequence that led to widespread debate. You can also click "Read More" for an AI-generated deeper dive into each event.</p>
+            </div>
+            <div id="timeline-container" class="max-w-3xl mx-auto">
+            </div>
+        </section>
+
+        <section id="controversy" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">Case Study: The "Lady Bird Lake" Incident</h2>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">The pivotal moment that ignited a firestorm of criticism and brought influencer ethics into sharp focus. This section breaks down the event, the public reaction, and the ethical questions it raised.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+                <div class="p-6 md:p-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="font-bold text-lg text-red-700">The Prank</h3>
+                            <p class="mt-2 text-stone-600">In May, Reynolds filmed a video in Austin, Texas, where she convinced a homeless woman to jump into Lady Bird Lake for $20. The woman reportedly could not swim. After she entered the water, Reynolds and her group allegedly left the scene without rendering aid as promised. A firetruck was later observed arriving.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-blue-700">The Outcry</h3>
+                            <p class="mt-2 text-stone-600">The video sparked immediate and widespread outrage online, with viewers demanding legal action and her removal from social platforms. Reynolds showed no remorse in follow-up content, which further fueled public anger and accusations of exploiting a vulnerable person for views.</p>
+                        </div>
+                    </div>
+                     <div class="mt-6 pt-6 border-t border-stone-200">
+                        <h3 class="font-bold text-lg text-stone-700">Ethical Analysis: Commodification of Vulnerability</h3>
+                        <p class="mt-2 text-stone-600">This incident serves as a stark example of leveraging a person's desperation for online content. The act transcends a mere "prank," framing human distress as a transactional commodity for entertainment. It highlights a disturbing ethical void where the relentless pursuit of virality can desensitize creators to the real-world consequences of their actions, sacrificing human dignity for digital engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-stone-800">Key Themes & Takeaways</h2>
+                <p class="mt-2 text-stone-600 max-w-2xl mx-auto">The Natalie Reynolds case study reveals several critical dynamics at play in the modern creator economy. These themes explore the complex relationship between creators, platforms, and audiences.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="font-bold text-lg mb-2">Platform Responsibility</h3>
+                    <p class="text-stone-600 text-sm">TikTok's quick reinstatement of Reynolds' account, despite massive public outcry, raises questions about consistency. It suggests that a creator's "clout" and economic value may influence moderation decisions, creating a perception that platforms prioritize engagement over creator accountability.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="font-bold text-lg mb-2">The "Controversy Premium"</h3>
+                    <p class="text-stone-600 text-sm">Despite backlash, Reynolds' net worth is estimated at $2M. Negative publicity can paradoxically increase an influencer's visibility and engagement, leading to financial gain. For some, controversy is not a career-ender but a monetizable aspect of their brand.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="font-bold text-lg mb-2">Resilience & Multi-Platform Strategy</h3>
+                    <p class="text-stone-600 text-sm">Reynolds' strong presence on YouTube, Instagram, and Kick ensured her career survived the TikTok ban. This highlights a crucial survival strategy for influencers: diversifying audiences to mitigate the risk of relying on a single, volatile platform.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="font-bold text-lg mb-2">Performative Authenticity</h3>
+                    <p class="text-stone-600 text-sm">The viral video of Reynolds crying outside TikTok HQ sparked debate: was it genuine distress or a calculated publicity stunt? The incident shows how emotional displays can be used as powerful narrative tools to manage public perception, blurring the lines between real emotion and strategic performance.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="font-bold text-lg mb-2">The Unapologetic Comeback</h3>
+                    <p class="text-stone-600 text-sm">Her defiant return to content creation challenges traditional ideas of "cancel culture." It suggests that for some audiences, an "unfiltered" persona that rejects criticism is valued, allowing controversial figures to weather storms and even thrive on the drama.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-200">
+                    <h3 class="font-bold text-lg mb-2">Evolving Digital Legacy</h3>
+                    <p class="text-stone-600 text-sm">Will this controversy define her? In an age of rapid news cycles, scandal can become an integrated, rather than destructive, part of an influencer's brand. Her continued success suggests that audience attention, positive or negative, is the key metric for legacy and viability.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-white mt-12 border-t border-stone-200">
+        <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-stone-500">
+            <p>&copy; 2025 Interactive Report. All information is based on the source document "The Digital Footprint of Natalie Reynolds: A Case Study in Influencer Accountability and Platform Dynamics".</p>
+        </div>
+    </footer>
+
+    <div id="definition-tooltip" class="rounded-lg shadow-xl p-3 bg-gray-800 text-white text-sm hidden">
+        <div id="tooltip-content"></div>
+        <div class="ai-disclaimer mt-2">
+            <span>Gemini can make mistakes, double-check. Powered by Gemini</span>
+            <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini Sparkle">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const apiKey = ""; // API key will be provided by Canvas runtime for gemini-2.0-flash
+
+            const platformData = {
+                labels: ['YouTube', 'TikTok (Pre-Ban)', 'Instagram', 'Kick'],
+                datasets: [{
+                    label: 'Follower Count',
+                    data: [5800000, 2500000, 316000, 33000],
+                    backgroundColor: [
+                        'rgba(20, 83, 45, 0.7)',  // dark green
+                        'rgba(204, 37, 37, 0.7)', // red
+                        'rgba(67, 56, 202, 0.7)', // indigo
+                        'rgba(5, 150, 105, 0.7)'  // emerald
+                    ],
+                    borderColor: [
+                        'rgba(20, 83, 45, 1)',
+                        'rgba(204, 37, 37, 1)',
+                        'rgba(67, 56, 202, 1)',
+                        'rgba(5, 150, 105, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const platformChartCtx = document.getElementById('platformChart').getContext('2d');
+            new Chart(platformChartCtx, {
+                type: 'bar',
+                data: platformData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                             ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'k';
+                                    return value;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Follower Distribution Across Platforms',
+                            font: { size: 16, family: 'Inter' },
+                            color: '#44403c' // stone-700
+                        },
+                        tooltip: {
+                             callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.x !== null) {
+                                        label += new Intl.NumberFormat('en-US').format(context.parsed.x);
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const timelineData = [
+                { 
+                    date: '2022', 
+                    title: 'Initial Rise on TikTok', 
+                    content: 'Natalie Reynolds first gained traction on TikTok with lip-sync and dance videos, establishing her initial foothold in the creator economy.'
+                },
+                { 
+                    date: 'Early 2020s', 
+                    title: 'Content Evolution', 
+                    content: 'She shifted her content strategy to include prank skits, relationship comedy, and "cringe videos," often featuring her boyfriend Zack. This evolution proved successful, landing her videos on TikTok\'s "For You" page and rapidly growing her audience.'
+                },
+                { 
+                    date: 'May 2025', 
+                    title: 'The "Lady Bird Lake" Prank', 
+                    content: 'The pivotal controversy. Reynolds convinced a homeless woman to jump into Lady Bird Lake for $20. The woman reportedly could not swim. After she entered the water, Reynolds and her group allegedly left the scene without rendering aid as promised. A firetruck was later observed arriving.'
+                },
+                { 
+                    date: 'Post-Prank', 
+                    title: 'TikTok Account Banned', 
+                    content: 'Following the intense backlash from the lake incident, TikTok suspended her account, which had 2.5 million followers. The ban was widely seen as a direct consequence of her actions.'
+                },
+                { 
+                    date: 'June 9, 2025', 
+                    title: 'Viral Meltdown at TikTok HQ', 
+                    content: 'A video emerged showing a visibly distressed Reynolds outside TikTok\'s LA headquarters, pleading on the phone. The video went viral, sparking debate on whether her emotional display was genuine or a calculated publicity stunt.'
+                },
+                { 
+                    date: 'June 2025', 
+                    title: 'The Unapologetic Comeback', 
+                    content: 'Just 14 days after the ban, her account was reinstated. She returned defiantly, mocking critics and fueling speculation about influential connections. This swift return, despite the severity of the controversy, became a major point of discussion about platform accountability.'
+                },
+            ];
+
+            const timelineContainer = document.getElementById('timeline-container');
+            timelineData.forEach((item, index) => {
+                const isLast = index === timelineData.length - 1;
+                const timelineItemHTML = `
+                    <div class="timeline-item relative pl-8 pb-8 ${isLast ? '' : 'border-l-2 border-stone-300'}">
+                        <div class="absolute -left-[11px] top-1 w-5 h-5 bg-white border-2 border-stone-400 rounded-full cursor-pointer timeline-trigger"></div>
+                        <h3 class="font-bold text-lg text-stone-700 cursor-pointer timeline-trigger">${item.date}: ${item.title}</h3>
+                        <div class="timeline-item-content text-stone-600 mt-2">
+                            <p>${item.content}</p>
+                            <button class="read-more-btn mt-2 px-3 py-1 bg-stone-200 text-stone-700 rounded-md text-sm hover:bg-stone-300 transition-colors">Read More</button>
+                            <div class="ai-generated-content mt-2 text-sm text-stone-700"></div>
+                            <div class="ai-disclaimer hidden">
+                                <span>Gemini can make mistakes, double-check. Powered by Gemini</span>
+                                <img src="https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" alt="Gemini Sparkle">
+                            </div>
+                        </div>
+                    </div>
+                `;
+                timelineContainer.innerHTML += timelineItemHTML;
+            });
+            
+            timelineContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('timeline-trigger')) {
+                    const content = e.target.closest('.timeline-item').querySelector('.timeline-item-content');
+                    content.classList.toggle('active');
+                } else if (e.target.classList.contains('read-more-btn')) {
+                    const button = e.target;
+                    const originalContentElement = button.previousElementSibling;
+                    const aiGeneratedContentElement = button.nextElementSibling;
+                    const aiDisclaimerElement = aiGeneratedContentElement.nextElementSibling;
+
+                    if (aiGeneratedContentElement.textContent.trim() === '') {
+                        button.textContent = 'Loading...';
+                        button.disabled = true;
+                        generateMoreContent(originalContentElement.textContent.trim())
+                            .then(aiContent => {
+                                aiGeneratedContentElement.innerHTML = `<p>${aiContent}</p>`;
+                                aiDisclaimerElement.classList.remove('hidden');
+                            })
+                            .catch(error => {
+                                aiGeneratedContentElement.textContent = 'Failed to load more content. Please try again.';
+                                console.error('Error generating content:', error);
+                            })
+                            .finally(() => {
+                                button.textContent = 'Read More';
+                                button.disabled = false;
+                            });
+                    } else {
+                        aiGeneratedContentElement.innerHTML = '';
+                        aiDisclaimerElement.classList.add('hidden');
+                    }
+                }
+            });
+
+            async function generateMoreContent(promptText) {
+                const prompt = `Expand on the following text about Natalie Reynolds' career, providing more detail and context, focusing on the event described: "${promptText}"`;
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error('Unexpected API response structure or no content.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching from Gemini API:', error);
+                    throw error;
+                }
+            }
+
+            const definitionTooltip = document.getElementById('definition-tooltip');
+            const tooltipContent = document.getElementById('tooltip-content');
+            let tooltipTimeout;
+
+            document.body.addEventListener('mouseup', async (e) => {
+                clearTimeout(tooltipTimeout);
+                const selectedText = window.getSelection().toString().trim();
+
+                if (selectedText.length > 0 && selectedText.length < 50 && !e.target.closest('.ai-disclaimer')) { // Limit length to avoid full paragraphs
+                    definitionTooltip.classList.remove('hidden');
+                    tooltipContent.textContent = 'Defining...';
+                    definitionTooltip.style.left = `${e.pageX + 10}px`;
+                    definitionTooltip.style.top = `${e.pageY + 10}px`;
+                    definitionTooltip.classList.add('active');
+
+                    try {
+                        const definition = await getDefinition(selectedText);
+                        tooltipContent.textContent = definition;
+                    } catch (error) {
+                        tooltipContent.textContent = 'Could not define.';
+                        console.error('Error defining word:', error);
+                    } finally {
+                        tooltipTimeout = setTimeout(() => {
+                            definitionTooltip.classList.remove('active');
+                            definitionTooltip.classList.add('hidden');
+                        }, 5000); // Hide after 5 seconds
+                    }
+                } else {
+                    definitionTooltip.classList.remove('active');
+                    definitionTooltip.classList.add('hidden');
+                }
+            });
+
+            async function getDefinition(word) {
+                const prompt = `Provide a concise definition for the word or phrase: "${word}"`;
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error('Unexpected API response structure or no content.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching definition from Gemini API:', error);
+                    throw error;
+                }
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section[id]');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href.startsWith('#')) {
+                                link.classList.toggle('active', href.substring(1) === entry.target.id);
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+
+</body>
+</html>
