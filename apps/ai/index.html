@@ -7,6 +7,7 @@
     <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary-bg: #0f172a;
@@ -16,13 +17,6 @@
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --border-color: #334155;
-        }
-
-        * {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         body {
@@ -48,6 +42,13 @@
             display: flex;
             flex-direction: column;
             padding: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed {
+            transform: translateX(-90%);
+            width: 40px;
+            overflow: hidden;
         }
 
         .main-content {
@@ -69,12 +70,6 @@
             align-items: center;
             padding: 1rem;
             border-bottom: 1px solid var(--border-color);
-        }
-
-        .chat-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin: 0;
         }
 
         .chat-messages {
@@ -102,12 +97,6 @@
             border: 1px solid var(--border-color);
             border-radius: 1rem 1rem 1rem 0;
             padding: 0.75rem 1rem;
-        }
-
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
         }
 
         .chat-input-container {
@@ -186,98 +175,6 @@
             border-top: 1px solid var(--border-color);
         }
 
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin-right: 0.5rem;
-        }
-
-        .username {
-            font-weight: 600;
-        }
-
-        .login-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .login-container {
-            background-color: var(--secondary-bg);
-            border-radius: 0.75rem;
-            padding: 2rem;
-            width: 400px;
-            max-width: 90%;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .login-header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-header p {
-            color: var(--text-secondary);
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: var(--primary-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .login-button {
-            background-color: var(--accent-blue);
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-
-        .guest-button {
-            background-color: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
         .country-flag {
             width: 24px;
             height: 24px;
@@ -345,52 +242,58 @@
             display: none;
         }
 
-        .context-menu {
-            position: absolute;
+        .language-selector {
+            margin-left: 1rem;
             background-color: var(--secondary-bg);
             border: 1px solid var(--border-color);
+            color: var(--text-primary);
             border-radius: 0.5rem;
-            z-index: 100;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 0.25rem 0.5rem;
         }
 
-        .context-menu-item {
-            padding: 0.5rem 1rem;
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: var(--text-primary);
             cursor: pointer;
-        }
-
-        .context-menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+            font-size: 1.5rem;
+            margin-right: 1rem;
         }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
     <div class="container">
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <button class="new-chat-button" id="newChatButton">+ New Chat</button>
-            <div class="chat-history" id="chatHistory">
-                <!-- Chat history items will be added here -->
-            </div>
-            <div class="user-info" id="userInfo">
-                <!-- User info will be added here -->
-            </div>
+            <div class="chat-history" id="chatHistory"></div>
+            <div class="user-info" id="userInfo"></div>
         </div>
 
         <div class="main-content">
             <div class="top-bar">
-                <div class="country-info">
-                    <img src="https://flagcdn.com/us.svg" class="country-flag" id="countryFlag">
-                    <span id="countryName">United States</span>
+                <div style="display: flex; align-items: center;">
+                    <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+                    <div class="country-info">
+                        <img src="https://flagcdn.com/za.svg" class="country-flag" id="countryFlag">
+                        <span id="countryName">South Africa</span>
+                    </div>
                 </div>
-                <div class="mode-toggle" id="modeToggle">
-                    <div class="toggle-option active" data-mode="paragraph">Paragraph</div>
-                    <div class="toggle-option" data-mode="bullet">Bullet Points</div>
+                <div style="display: flex; align-items: center;">
+                    <select class="language-selector" id="languageSelector">
+                        <option value="en">English</option>
+                        <option value="zu">Zulu</option>
+                        <option value="af">Afrikaans</option>
+                        <option value="es">Spanish</option>
+                    </select>
+                    <div class="mode-toggle" id="modeToggle">
+                        <div class="toggle-option active" data-mode="paragraph">Paragraph</div>
+                        <div class="toggle-option" data-mode="bullet">Bullet Points</div>
+                    </div>
                 </div>
             </div>
 
             <div class="tab-container">
                 <div class="tab active" data-tab="chat">Chat</div>
-                <div class="tab" data-tab="search">Search</div>
                 <div class="tab" data-tab="research">AI Research</div>
             </div>
 
@@ -400,9 +303,7 @@
                     <button class="download-button hidden" id="downloadButton">Download PDF</button>
                 </div>
 
-                <div class="chat-messages" id="chatMessages">
-                    <!-- Chat messages will be added here -->
-                </div>
+                <div class="chat-messages" id="chatMessages"></div>
 
                 <div class="chat-input-container">
                     <div class="chat-input">
@@ -414,36 +315,14 @@
         </div>
     </div>
 
-    <div class="login-modal" id="loginModal">
-        <div class="login-container">
-            <div class="login-header">
-                <h2>Welcome to tbsv AI</h2>
-                <p>Log in to access your chat history and preferences</p>
-            </div>
-            <form class="login-form" id="loginForm">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="login-button">Log In</button>
-                <button type="button" class="guest-button" id="guestButton">Continue as Guest</button>
-            </form>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const { jsPDF } = window.jspdf;
             const API_KEY = "AIzaSyBWqzSdeMfA3r77dkyeZSzs2GpLwAgRuWU";
-            const LOGIN_URL = "https://tbvs.run.place/secure/ai/login.html";
-            const LOGS_URL = "https://tbvs.run.place/secure/ai/log.json";
 
+            const sidebar = document.getElementById('sidebar');
+            const toggleSidebar = document.getElementById('toggleSidebar');
             const loginModal = document.getElementById('loginModal');
-            const loginForm = document.getElementById('loginForm');
-            const guestButton = document.getElementById('guestButton');
             const newChatButton = document.getElementById('newChatButton');
             const chatHistory = document.getElementById('chatHistory');
             const userInfo = document.getElementById('userInfo');
@@ -456,21 +335,106 @@
             const downloadButton = document.getElementById('downloadButton');
             const countryFlag = document.getElementById('countryFlag');
             const countryName = document.getElementById('countryName');
+            const languageSelector = document.getElementById('languageSelector');
 
-            let currentUser = null;
+            let currentUser = { username: 'Guest', isGuest: true };
             let currentChatId = null;
             let chats = [];
             let responseMode = 'paragraph';
             let currentTab = 'chat';
-            let country = 'us';
+            let currentLanguage = 'en';
 
             const countries = {
+                za: { name: 'South Africa', flag: 'https://flagcdn.com/za.svg' },
                 us: { name: 'United States', flag: 'https://flagcdn.com/us.svg' },
                 gb: { name: 'United Kingdom', flag: 'https://flagcdn.com/gb.svg' },
                 ca: { name: 'Canada', flag: 'https://flagcdn.com/ca.svg' },
                 au: { name: 'Australia', flag: 'https://flagcdn.com/au.svg' },
-                in: { name: 'India', flag: 'https://flagcdn.com/in.svg' }
+                in: { name: 'India', flag: 'https://flagcdn.com/in.svg' },
+                jp: { name: 'Japan', flag: 'https://flagcdn.com/jp.svg' },
+                de: { name: 'Germany', flag: 'https://flagcdn.com/de.svg' },
+                fr: { name: 'France', flag: 'https://flagcdn.com/fr.svg' },
+                br: { name: 'Brazil', flag: 'https://flagcdn.com/br.svg' },
+                cn: { name: 'China', flag: 'https://flagcdn.com/cn.svg' },
+                ru: { name: 'Russia', flag: 'https://flagcdn.com/ru.svg' },
+                ng: { name: 'Nigeria', flag: 'https://flagcdn.com/ng.svg' },
+                eg: { name: 'Egypt', flag: 'https://flagcdn.com/eg.svg' },
+                ke: { name: 'Kenya', flag: 'https://flagcdn.com/ke.svg' },
+                et: { name: 'Ethiopia', flag: 'https://flagcdn.com/et.svg' },
+                dz: { name: 'Algeria', flag: 'https://flagcdn.com/dz.svg' },
+                zw: { name: 'Zimbabwe', flag: 'https://flagcdn.com/zw.svg' },
+                bw: { name: 'Botswana', flag: 'https://flagcdn.com/bw.svg' },
+                na: { name: 'Namibia', flag: 'https://flagcdn.com/na.svg' },
+                mz: { name: 'Mozambique', flag: 'https://flagcdn.com/mz.svg' },
+                tz: { name: 'Tanzania', flag: 'https://flagcdn.com/tz.svg' },
+                ug: { name: 'Uganda', flag: 'https://flagcdn.com/ug.svg' },
+                gh: { name: 'Ghana', flag: 'https://flagcdn.com/gh.svg' },
+                ci: { name: 'Ivory Coast', flag: 'https://flagcdn.com/ci.svg' },
+                sn: { name: 'Senegal', flag: 'https://flagcdn.com/sn.svg' },
+                ma: { name: 'Morocco', flag: 'https://flagcdn.com/ma.svg' },
+                tn: { name: 'Tunisia', flag: 'https://flagcdn.com/tn.svg' },
+                ly: { name: 'Libya', flag: 'https://flagcdn.com/ly.svg' },
+                sd: { name: 'Sudan', flag: 'https://flagcdn.com/sd.svg' },
+                so: { name: 'Somalia', flag: 'https://flagcdn.com/so.svg' },
+                cm: { name: 'Cameroon', flag: 'https://flagcdn.com/cm.svg' },
+                ao: { name: 'Angola', flag: 'https://flagcdn.com/ao.svg' },
+                mg: { name: 'Madagascar', flag: 'https://flagcdn.com/mg.svg' }
             };
+
+            const translations = {
+                en: {
+                    newChat: "New Chat",
+                    send: "Send",
+                    paragraph: "Paragraph",
+                    bullet: "Bullet Points",
+                    chat: "Chat",
+                    research: "AI Research",
+                    download: "Download PDF",
+                    placeholder: "Type your message here..."
+                },
+                zu: {
+                    newChat: "Ingxoxo Entsha",
+                    send: "Thumela",
+                    paragraph: "Ipharagraphi",
+                    bullet: "Amaphuzu",
+                    chat: "Ingxoxo",
+                    research: "Ucwaningo lwe-AI",
+                    download: "Landa i-PDF",
+                    placeholder: "Bhala umyalezo wakho lapha..."
+                },
+                af: {
+                    newChat: "Nuwe Gesprek",
+                    send: "Stuur",
+                    paragraph: "Paragraaf",
+                    bullet: "Puntlys",
+                    chat: "Gesprek",
+                    research: "AI Navorsing",
+                    download: "Laai PDF af",
+                    placeholder: "Tik jou boodskap hier..."
+                },
+                es: {
+                    newChat: "Nuevo Chat",
+                    send: "Enviar",
+                    paragraph: "Párrafo",
+                    bullet: "Viñetas",
+                    chat: "Chat",
+                    research: "Investigación AI",
+                    download: "Descargar PDF",
+                    placeholder: "Escribe tu mensaje aquí..."
+                }
+            };
+
+            function updateUIText() {
+                const texts = translations[currentLanguage];
+                newChatButton.textContent = "+ " + texts.newChat;
+                sendButton.textContent = texts.send;
+                document.querySelector('[data-mode="paragraph"]').textContent = texts.paragraph;
+                document.querySelector('[data-mode="bullet"]').textContent = texts.bullet;
+                document.querySelector('[data-tab="chat"]').textContent = texts.chat;
+                document.querySelector('[data-tab="research"]').textContent = texts.research;
+                downloadButton.textContent = texts.download;
+                messageInput.placeholder = texts.placeholder;
+            }
 
             function detectCountry() {
                 fetch('https://ipapi.co/json/')
@@ -478,96 +442,50 @@
                     .then(data => {
                         const countryCode = data.country_code.toLowerCase();
                         if (countries[countryCode]) {
-                            country = countryCode;
-                            updateCountryDisplay();
+                            updateCountryDisplay(countryCode);
                         }
                     })
                     .catch(() => {
-                        country = 'us';
-                        updateCountryDisplay();
+                        updateCountryDisplay('za');
                     });
             }
 
-            function updateCountryDisplay() {
-                countryFlag.src = countries[country].flag;
-                countryName.textContent = countries[country].name;
+            function updateCountryDisplay(countryCode) {
+                countryFlag.src = countries[countryCode].flag;
+                countryName.textContent = countries[countryCode].name;
             }
 
-            function showLoginModal() {
-                loginModal.style.display = 'flex';
-            }
-
-            function hideLoginModal() {
-                loginModal.style.display = 'none';
-            }
-
-            function login(username, password) {
-                fetch(LOGIN_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        currentUser = {
-                            username: username,
-                            isGuest: false
-                        };
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        loadChatHistory();
-                        hideLoginModal();
-                        updateUserInfo();
-                    } else {
-                        alert('Login failed: ' + (data.message || 'Invalid credentials'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Login error:', error);
-                    alert('Login failed. Please try again later.');
+            function newChat() {
+                currentChatId = Date.now().toString();
+                chats.unshift({
+                    id: currentChatId,
+                    title: translations[currentLanguage].newChat,
+                    messages: [],
+                    createdAt: new Date().toISOString()
                 });
-            }
-
-            function loginAsGuest() {
-                currentUser = {
-                    username: 'Guest',
-                    isGuest: true
-                };
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                chats = [];
-                currentChatId = null;
                 renderChatHistory();
-                hideLoginModal();
-                updateUserInfo();
-                newChat();
+                renderChatMessages();
+                currentChatTitle.textContent = translations[currentLanguage].newChat;
+                document.querySelector(`.chat-item[data-chat-id="${currentChatId}"]`)?.classList.add('active');
+                saveChats();
             }
 
-            function updateUserInfo() {
-                if (currentUser) {
-                    userInfo.innerHTML = `
-                        <img src="https://ui-avatars.com/api/?name=${currentUser.username}&background=3b82f6&color=fff" class="user-avatar">
-                        <span class="username">${currentUser.username}</span>
-                    `;
-                }
-            }
-
-            function loadChatHistory() {
-                const savedChats = localStorage.getItem(`chats_${currentUser.username}`);
-                if (savedChats) {
-                    chats = JSON.parse(savedChats);
-                    renderChatHistory();
-                    if (chats.length > 0) {
-                        loadChat(chats[0].id);
+            function loadChat(chatId) {
+                currentChatId = chatId;
+                const chat = chats.find(c => c.id === chatId);
+                if (chat) {
+                    renderChatMessages(chat.messages);
+                    currentChatTitle.textContent = chat.title;
+                    document.querySelectorAll('.chat-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    document.querySelector(`.chat-item[data-chat-id="${chatId}"]`)?.classList.add('active');
+                    
+                    if (currentTab === 'research') {
+                        downloadButton.classList.remove('hidden');
                     } else {
-                        newChat();
+                        downloadButton.classList.add('hidden');
                     }
-                } else {
-                    newChat();
                 }
             }
 
@@ -583,58 +501,23 @@
                 });
             }
 
-            function newChat() {
-                currentChatId = Date.now().toString();
-                chats.unshift({
-                    id: currentChatId,
-                    title: 'New Chat',
-                    messages: [],
-                    createdAt: new Date().toISOString()
-                });
-                renderChatHistory();
-                renderChatMessages();
-                currentChatTitle.textContent = 'New Chat';
-                document.querySelector(`.chat-item[data-chat-id="${currentChatId}"]`).classList.add('active');
-                saveChats();
-            }
-
-            function loadChat(chatId) {
-                currentChatId = chatId;
-                const chat = chats.find(c => c.id === chatId);
-                if (chat) {
-                    renderChatMessages(chat.messages);
-                    currentChatTitle.textContent = chat.title;
-                    document.querySelectorAll('.chat-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    document.querySelector(`.chat-item[data-chat-id="${chatId}"]`).classList.add('active');
-                    
-                    if (currentTab === 'research') {
-                        downloadButton.classList.remove('hidden');
-                    } else {
-                        downloadButton.classList.add('hidden');
-                    }
-                }
-            }
-
             function renderChatMessages(messages = []) {
                 chatMessages.innerHTML = '';
                 if (messages.length === 0) {
                     const welcomeMessage = document.createElement('div');
                     welcomeMessage.className = 'message ai-message';
                     welcomeMessage.innerHTML = `
-                        <p>Hello! I'm tbsv AI. How can I help you today?</p>
-                        <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                        <p>${currentLanguage === 'en' ? "Hello! I'm tbsv AI. How can I help you today?" : 
+                          currentLanguage === 'zu' ? "Sawubona! Ngingu-tbsv AI. Ngingakusiza kanjani namuhla?" :
+                          currentLanguage === 'af' ? "Hallo! Ek is tbsv AI. Hoe kan ek jou vandag help?" :
+                          "¡Hola! Soy tbsv AI. ¿Cómo puedo ayudarte hoy?"}</p>
                     `;
                     chatMessages.appendChild(welcomeMessage);
                 } else {
                     messages.forEach(msg => {
                         const messageDiv = document.createElement('div');
                         messageDiv.className = `message ${msg.role === 'user' ? 'user-message' : 'ai-message'}`;
-                        messageDiv.innerHTML = `
-                            <p>${msg.content}</p>
-                            <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</div>
-                        `;
+                        messageDiv.innerHTML = `<p>${msg.content}</p>`;
                         chatMessages.appendChild(messageDiv);
                     });
                 }
@@ -642,15 +525,10 @@
             }
 
             function saveChats() {
-                if (currentUser && !currentUser.isGuest) {
-                    localStorage.setItem(`chats_${currentUser.username}`, JSON.stringify(chats));
-                }
+                localStorage.setItem(`chats_${currentUser.username}`, JSON.stringify(chats));
             }
 
             function generateResponse(prompt) {
-                const currentChat = chats.find(c => c.id === currentChatId);
-                if (!currentChat) return;
-
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
                 
                 let formattedPrompt = prompt;
@@ -697,7 +575,7 @@
                 };
 
                 currentChat.messages.push(userMessage);
-                if (currentChat.title === 'New Chat') {
+                if (currentChat.title === translations[currentLanguage].newChat) {
                     currentChat.title = message.length > 30 ? message.substring(0, 30) + '...' : message;
                     currentChatTitle.textContent = currentChat.title;
                 }
@@ -708,7 +586,10 @@
 
                 const loadingMessage = {
                     role: 'ai',
-                    content: 'Thinking...',
+                    content: currentLanguage === 'en' ? "Thinking..." :
+                            currentLanguage === 'zu' ? "Ngicabanga..." :
+                            currentLanguage === 'af' ? "Dink..." :
+                            "Pensando...",
                     timestamp: new Date().toISOString()
                 };
                 currentChat.messages.push(loadingMessage);
@@ -734,7 +615,10 @@
                         currentChat.messages.pop();
                         const errorMessage = {
                             role: 'ai',
-                            content: 'Sorry, I encountered an error. Please try again.',
+                            content: currentLanguage === 'en' ? "Sorry, I encountered an error. Please try again." :
+                                    currentLanguage === 'zu' ? "Uxolo, ngenze iphutha. Ngicela uzame futhi." :
+                                    currentLanguage === 'af' ? "Jammer, ek het 'n fout teëgekom. Probeer asseblief weer." :
+                                    "Lo siento, encontré un error. Por favor, inténtalo de nuevo.",
                             timestamp: new Date().toISOString()
                         };
                         currentChat.messages.push(errorMessage);
@@ -747,42 +631,114 @@
                 const currentChat = chats.find(c => c.id === currentChatId);
                 if (!currentChat || currentTab !== 'research') return;
 
-                const researchContent = currentChat.messages
-                    .filter(msg => msg.role === 'ai')
-                    .map(msg => msg.content)
-                    .join('\n\n');
-
-                const blob = new Blob([researchContent], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `Research_${currentChat.title.replace(/[^a-z0-9]/gi, '_')}.txt`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                const doc = new jsPDF();
+                const logoUrl = 'https://www.tbvs.run.place/cdn/favicon.ico';
+                const logoWidth = 20;
+                const logoHeight = 20;
+                
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                img.crossOrigin = 'Anonymous';
+                img.src = logoUrl;
+                
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    
+                    doc.addImage(imgData, 'PNG', 10, 10, logoWidth, logoHeight);
+                    doc.setFontSize(18);
+                    doc.text(currentChat.title, 35, 20);
+                    doc.setFontSize(10);
+                    doc.setTextColor(100);
+                    doc.text(`Generated on ${new Date().toLocaleDateString()}`, 35, 27);
+                    
+                    doc.setFontSize(12);
+                    doc.setTextColor(0);
+                    
+                    let y = 40;
+                    const lineHeight = 7;
+                    const pageHeight = doc.internal.pageSize.height - 20;
+                    const margin = 15;
+                    
+                    currentChat.messages.forEach(msg => {
+                        if (msg.role === 'ai') {
+                            const lines = doc.splitTextToSize(msg.content, 180);
+                            
+                            if (y > pageHeight - 20) {
+                                doc.addPage();
+                                y = margin;
+                            }
+                            
+                            doc.setFont('helvetica', 'bold');
+                            doc.text('AI Response:', margin, y);
+                            y += lineHeight;
+                            
+                            doc.setFont('helvetica', 'normal');
+                            for (let i = 0; i < lines.length; i++) {
+                                if (y > pageHeight) {
+                                    doc.addPage();
+                                    y = margin;
+                                }
+                                doc.text(lines[i], margin, y);
+                                y += lineHeight;
+                            }
+                            y += lineHeight;
+                        } else if (msg.role === 'user') {
+                            const lines = doc.splitTextToSize(msg.content, 180);
+                            
+                            if (y > pageHeight - 20) {
+                                doc.addPage();
+                                y = margin;
+                            }
+                            
+                            doc.setFont('helvetica', 'bold');
+                            doc.text('User Question:', margin, y);
+                            y += lineHeight;
+                            
+                            doc.setFont('helvetica', 'normal');
+                            for (let i = 0; i < lines.length; i++) {
+                                if (y > pageHeight) {
+                                    doc.addPage();
+                                    y = margin;
+                                }
+                                doc.text(lines[i], margin, y);
+                                y += lineHeight;
+                            }
+                            y += lineHeight;
+                        }
+                    });
+                    
+                    doc.save(`Research_${currentChat.title.replace(/[^a-z0-9]/gi, '_')}.pdf`);
+                };
             }
 
             function init() {
                 detectCountry();
+                updateUIText();
 
-                const savedUser = localStorage.getItem('currentUser');
-                if (savedUser) {
-                    currentUser = JSON.parse(savedUser);
-                    updateUserInfo();
-                    loadChatHistory();
+                const savedChats = localStorage.getItem('chats_Guest');
+                if (savedChats) {
+                    chats = JSON.parse(savedChats);
+                    renderChatHistory();
+                    if (chats.length > 0) {
+                        loadChat(chats[0].id);
+                    } else {
+                        newChat();
+                    }
                 } else {
-                    showLoginModal();
+                    newChat();
                 }
 
-                loginForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const username = document.getElementById('username').value;
-                    const password = document.getElementById('password').value;
-                    login(username, password);
+                updateUserInfo();
+
+                toggleSidebar.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
                 });
 
-                guestButton.addEventListener('click', loginAsGuest);
                 newChatButton.addEventListener('click', newChat);
                 sendButton.addEventListener('click', sendMessage);
 
@@ -817,17 +773,20 @@
                     });
                 });
 
+                languageSelector.addEventListener('change', (e) => {
+                    currentLanguage = e.target.value;
+                    updateUIText();
+                    renderChatMessages();
+                });
+
                 downloadButton.addEventListener('click', downloadResearch);
+            }
 
-                document.addEventListener('contextmenu', (e) => {
-                    e.preventDefault();
-                });
-
-                document.addEventListener('mousedown', (e) => {
-                    if (e.button === 2) {
-                        e.preventDefault();
-                    }
-                });
+            function updateUserInfo() {
+                userInfo.innerHTML = `
+                    <img src="https://ui-avatars.com/api/?name=${currentUser.username}&background=3b82f6&color=fff" class="user-avatar">
+                    <span class="username">${currentUser.username}</span>
+                `;
             }
 
             init();
