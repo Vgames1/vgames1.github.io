@@ -22,8 +22,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f5f5f4; /* stone-100 */
-            -webkit-user-select: text; /* Allow text selection */
+            background-color: #f5f5f4;
+            -webkit-user-select: text;
             -moz-user-select: text;
             -ms-user-select: text;
             user-select: text;
@@ -56,10 +56,10 @@
             transition: color 0.3s, border-bottom-color 0.3s;
         }
         .nav-link:hover {
-            color: #57534e; /* stone-600 */
+            color: #57534e; 
         }
         .nav-link.active {
-             border-bottom-color: #a8a29e; /* stone-400 */
+             border-bottom-color: #a8a29e; 
         }
         .no-download {
             -webkit-user-drag: none;
@@ -67,7 +67,7 @@
             -moz-user-drag: none;
             -ms-user-drag: none;
             user-drag: none;
-            pointer-events: none; /* Prevents clicks and right-clicks */
+            pointer-events: none; 
         }
         #definition-tooltip {
             position: absolute;
@@ -81,15 +81,15 @@
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
             max-width: 300px;
-            pointer-events: none; /* Allow clicks to pass through to select text again */
+            pointer-events: none; 
         }
         #definition-tooltip.active {
             opacity: 1;
-            pointer-events: auto; /* Enable interaction when active */
+            pointer-events: auto; 
         }
         .ai-disclaimer {
             font-size: 0.7rem;
-            color: #78716c; /* stone-500 */
+            color: #78716c; 
             margin-top: 8px;
             display: flex;
             align-items: center;
@@ -233,7 +233,7 @@
     
     <footer class="bg-white mt-12 border-t border-stone-200">
         <div class="container mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-stone-500">
-            <p>&copy; 2025 Interactive Report. All information is based on the source document "The Digital Footprint of Natalie Reynolds: A Case Study in Influencer Accountability and Platform Dynamics".</p>
+            <p>&copy; 2025 Interactive Report,2025 TBSV. All information is based on the source document "The Digital Footprint of Natalie Reynolds: A Case Study in Influencer Accountability and Platform Dynamics".</p>
         </div>
     </footer>
 
@@ -248,18 +248,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            const apiKey = ""; // API key will be provided by Canvas runtime for gemini-2.0-flash
-
+            const apiKey = "AIzaSyBWqzSdeMfA3r77dkyeZSzs2GpLwAgRuWU"; 
             const platformData = {
                 labels: ['YouTube', 'TikTok (Pre-Ban)', 'Instagram', 'Kick'],
                 datasets: [{
                     label: 'Follower Count',
                     data: [5800000, 2500000, 316000, 33000],
                     backgroundColor: [
-                        'rgba(20, 83, 45, 0.7)',  // dark green
-                        'rgba(204, 37, 37, 0.7)', // red
-                        'rgba(67, 56, 202, 0.7)', // indigo
-                        'rgba(5, 150, 105, 0.7)'  // emerald
+                        'rgba(20, 83, 45, 0.7)', 
+                        'rgba(204, 37, 37, 0.7)', 
+                        'rgba(67, 56, 202, 0.7)', 
+                        'rgba(5, 150, 105, 0.7)'  
                     ],
                     borderColor: [
                         'rgba(20, 83, 45, 1)',
@@ -299,7 +298,7 @@
                             display: true,
                             text: 'Follower Distribution Across Platforms',
                             font: { size: 16, family: 'Inter' },
-                            color: '#44403c' // stone-700
+                            color: '#44403c'
                         },
                         tooltip: {
                              callbacks: {
@@ -441,7 +440,7 @@
                 clearTimeout(tooltipTimeout);
                 const selectedText = window.getSelection().toString().trim();
 
-                if (selectedText.length > 0 && selectedText.length < 50 && !e.target.closest('.ai-disclaimer')) { // Limit length to avoid full paragraphs
+                if (selectedText.length > 0 && selectedText.length < 50 && !e.target.closest('.ai-disclaimer')) { 
                     definitionTooltip.classList.remove('hidden');
                     tooltipContent.textContent = 'Defining...';
                     definitionTooltip.style.left = `${e.pageX + 10}px`;
@@ -458,7 +457,7 @@
                         tooltipTimeout = setTimeout(() => {
                             definitionTooltip.classList.remove('active');
                             definitionTooltip.classList.add('hidden');
-                        }, 5000); // Hide after 5 seconds
+                        }, 5000); 
                     }
                 } else {
                     definitionTooltip.classList.remove('active');
