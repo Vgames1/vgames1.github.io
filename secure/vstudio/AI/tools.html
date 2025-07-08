@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TBSV AI Tools</title>
+    <meta name="description" content="TBSV AI Tools - HTML Creator and Storybook Generator">
+    <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            background-image: radial-gradient(at 0% 0%, hsla(210,100%,20%,1) 0, transparent 50%),
+                              radial-gradient(at 100% 100%, hsla(270,100%,20%,1) 0, transparent 50%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+        .tbsv-logo {
+            background-image: url('https://www.tbvs.run.place/cdn/logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 50px;
+            width: 150px;
+        }
+        .tool-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-color: #6366f1;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .page-preview {
+            background-color: white;
+            color: #1e293b;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-height: 300px;
+            position: relative;
+        }
+        .preview-container {
+            background-color: white;
+            color: #1e293b;
+            border-radius: 8px;
+            min-height: 300px;
+            padding: 20px;
+        }
+        .tab-button {
+            background-color: #1e293b;
+            color: #94a3b8;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-bottom: 3px solid #6366f1;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .theme-option {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .theme-option.selected {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        .hidden {
+            display: none;
+        }
+        .preview-image-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #334155;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        .preview-image-wrapper .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: 2px solid #0f172a;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        .pulse {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div id="mainMenu" class="max-w-4xl mx-auto text-center">
+        <div class="tbsv-logo mx-auto mb-6"></div>
+        <h1 class="text-4xl font-bold text-center text-white mb-2">TBSV AI Tools</h1>
+        <p class="text-center text-slate-300 mb-8">Powered by Gemini AI</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div class="tool-card p-8" onclick="showTool('htmlCreator')">
+                <div class="bg-indigo-100 text-indigo-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">HTML Creator</h3>
+                <p class="text-slate-300">Generate complete HTML pages with AI</p>
+            </div>
+            
+            <div class="tool-card p-8" onclick="showTool('storyCreator')">
+                <div class="bg-purple-100 text-purple-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">Storybook Creator</h3>
+                <p class="text-slate-300">Create and export illustrated storybooks</p>
+            </div>
+
+            <div class="tool-card p-8" onclick="showTool('textRewriter')">
+                <div class="bg-green-100 text-green-800 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">✨ Text Rewriter & Summarizer ✨</h3>
+                <p class="text-slate-300">Summarize, rewrite, expand, or change text tone</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="htmlCreator" class="max-w-6xl mx-auto hidden">
+        <div class="flex items-center mb-6 cursor-pointer" onclick="showMainMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="text-slate-400">Back to Tools</span>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-white mb-2">HTML Creator</h1>
+        <p class="text-slate-300 mb-8">Generate complete HTML pages with AI</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-2xl font-bold text-white mb-6">Create Your Content</h2>
+                
+                <div class="mb-6">
+                    <label for="contentType" class="block text-slate-200 text-lg font-medium mb-2">Content Type</label>
+                    <select id="contentType" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white">
+                        <option value="blog">Blog Post</option>
+                        <option value="landing">Landing Page</option>
+                        <option value="product">Product Page</option>
+                        <option value="newsletter">Email Newsletter</option>
+                        <option value="custom">Custom HTML</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label for="contentPrompt" class="block text-slate-200 text-lg font-medium mb-2">Content Description</label>
+                    <textarea id="contentPrompt" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white min-h-[100px]" placeholder="Describe what you want to create..."></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-slate-200 text-lg font-medium mb-2">Include Images?</label>
+                    <div class="flex gap-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="includeImages" class="form-radio text-indigo-600" checked value="yes">
+                            <span class="ml-2">Yes</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="includeImages" class="form-radio text-indigo-600" value="no">
+                            <span class="ml-2">No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="imageUploadSection" class="mb-6">
+                    <label class="block text-slate-200 text-lg font-medium mb-2">Upload Images (Optional)</label>
+                    <input type="file" id="imageUpload" class="hidden" accept="image/*" multiple>
+                    <div class="flex flex-wrap gap-4 mb-4" id="imagePreviews"></div>
+                    <button onclick="document.getElementById('imageUpload').click()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-white">
+                        Add Images
+                    </button>
+                </div>
+
+                <button id="generateHtmlBtn" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-indigo-600 hover:to-purple-700 flex items-center justify-center">
+                    <span id="generateHtmlBtnText">Generate HTML</span>
+                    <div id="generateHtmlSpinner" class="loading-spinner ml-3 hidden"></div>
+                </button>
+            </div>
+
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-2xl font-bold text-white mb-6">HTML Preview</h2>
+                
+                <div class="tabs-container flex mb-4">
+                    <button class="tab-button active" data-tab="preview">Preview</button>
+                    <button class="tab-button" data-tab="code">HTML Code</button>
+                </div>
+                
+                <div id="previewTab" class="preview-tab active">
+                    <div id="htmlPreview" class="preview-container mb-4">
+                        <div class="text-center text-slate-400 py-20">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p>Your generated content will appear here</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="codeTab" class="preview-tab hidden">
+                    <textarea id="htmlCode" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white min-h-[300px]" readonly></textarea>
+                </div>
+
+                <button id="copyCodeBtn" class="w-full mt-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 hidden">
+                    Copy HTML Code
+                </button>
+                
+                <button id="downloadHtmlBtn" class="w-full mt-2 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold rounded-lg shadow-md hover:from-green-600 hover:to-teal-700 hidden">
+                    Download HTML File
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="storyCreator" class="max-w-6xl mx-auto hidden">
+        <div class="flex items-center mb-6 cursor-pointer" onclick="showMainMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="text-slate-400">Back to Tools</span>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-white mb-2">Storybook Creator</h1>
+        <p class="text-slate-300 mb-8">Create and export illustrated storybooks</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-2xl font-bold text-white mb-6">Create Your Story</h2>
+                
+                <div class="mb-6">
+                    <label for="storyTheme" class="block text-slate-200 text-lg font-medium mb-2">Story Theme</label>
+                    <input type="text" id="storyTheme" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="e.g. Space Adventure, Fairy Tale, Jungle Animals">
+                </div>
+
+                <div class="mb-6">
+                    <label for="storyPrompt" class="block text-slate-200 text-lg font-medium mb-2">Story Details</label>
+                    <textarea id="storyPrompt" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white min-h-[100px]" placeholder="Describe your story (characters, plot, style, etc.)"></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-slate-200 text-lg font-medium mb-2">Include Images?</label>
+                    <div class="flex gap-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="storyIncludeImages" class="form-radio text-indigo-600" checked value="yes">
+                            <span class="ml-2">Yes</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="storyIncludeImages" class="form-radio text-indigo-600" value="no">
+                            <span class="ml-2">No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label for="storyLanguage" class="block text-slate-200 text-lg font-medium mb-2">Language</label>
+                    <select id="storyLanguage" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="pt">Portuguese</option>
+                        <option value="ru">Russian</option>
+                        <option value="zh">Chinese</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ar">Arabic</option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <label for="pageCount" class="block text-slate-200 text-lg font-medium mb-2">Number of Pages (5-30)</label>
+                    <input type="number" id="pageCount" min="5" max="30" value="10" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white">
+                </div>
+
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <div class="theme-option cursor-pointer p-2 rounded-lg bg-slate-700" data-theme="children">
+                        <div class="w-24 h-32 bg-gradient-to-br from-blue-100 to-purple-100 rounded-md"></div>
+                        <p class="text-center mt-2">Children's Book</p>
+                    </div>
+                    <div class="theme-option cursor-pointer p-2 rounded-lg bg-slate-700" data-theme="adventure">
+                        <div class="w-24 h-32 bg-gradient-to-br from-green-100 to-yellow-100 rounded-md"></div>
+                        <p class="text-center mt-2">Adventure</p>
+                    </div>
+                    <div class="theme-option cursor-pointer p-2 rounded-lg bg-slate-700" data-theme="fantasy">
+                        <div class="w-24 h-32 bg-gradient-to-br from-purple-100 to-pink-100 rounded-md"></div>
+                        <p class="text-center mt-2">Fantasy</p>
+                    </div>
+                    <div class="theme-option cursor-pointer p-2 rounded-lg bg-slate-700" data-theme="educational">
+                        <div class="w-24 h-32 bg-gradient-to-br from-green-100 to-blue-100 rounded-md"></div>
+                        <p class="text-center mt-2">Educational</p>
+                    </div>
+                    <div class="theme-option cursor-pointer p-2 rounded-lg bg-slate-700 selected" data-theme="custom">
+                        <div class="w-24 h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-md flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                        <p class="text-center mt-2">Custom</p>
+                    </div>
+                </div>
+
+                <button id="generateStoryBtn" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-indigo-600 hover:to-purple-700 flex items-center justify-center">
+                    <span id="generateStoryBtnText">Generate Story</span>
+                    <div id="generateStorySpinner" class="loading-spinner ml-3 hidden"></div>
+                </button>
+            </div>
+
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-2xl font-bold text-white mb-6">Story Preview</h2>
+                
+                <div id="storyPreviewContainer" class="mb-6">
+                    <div class="text-center text-slate-400 py-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p>Your generated story will appear here</p>
+                    </div>
+                </div>
+
+                <div id="storyPdfProgress" class="hidden">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-slate-300">Building PDF</span>
+                        <span id="storyProgressText" class="text-slate-300">0%</span>
+                    </div>
+                    <div id="storyLoadingBar" class="loading-bar rounded-full mb-6"></div>
+                    <div id="storyProgressMessages" class="text-sm text-slate-400 mb-4">
+                        <p class="pulse">Initializing document...</p>
+                    </div>
+                </div>
+
+                <button id="downloadStoryPdfBtn" class="w-full py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold rounded-lg shadow-md hover:from-green-600 hover:to-teal-700 hidden">
+                    Download PDF Storybook
+                </button>
+
+                <div id="storyPdfComplete" class="hidden text-center text-green-400 mt-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <p>PDF ready for download!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="textRewriter" class="max-w-6xl mx-auto hidden">
+        <div class="flex items-center mb-6 cursor-pointer" onclick="showMainMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="text-slate-400">Back to Tools</span>
+        </div>
+        
+        <h1 class="text-3xl font-bold text-white mb-2">Text Rewriter & Summarizer</h1>
+        <p class="text-slate-300 mb-8">Summarize, rewrite, expand, or change the tone of your text with AI.</p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-2xl font-bold text-white mb-6">Input Text</h2>
+                
+                <div class="mb-6">
+                    <label for="inputText" class="block text-slate-200 text-lg font-medium mb-2">Your Text</label>
+                    <textarea id="inputText" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white min-h-[150px]" placeholder="Paste your text here..."></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-slate-200 text-lg font-medium mb-2">Action</label>
+                    <div class="flex flex-wrap gap-4">
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="textAction" class="form-radio text-indigo-600" value="summarize" checked>
+                            <span class="ml-2">Summarize</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="textAction" class="form-radio text-indigo-600" value="rewrite">
+                            <span class="ml-2">Rewrite</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="textAction" class="form-radio text-indigo-600" value="expand">
+                            <span class="ml-2">Expand</span>
+                        </label>
+                        <label class="inline-flex items-center">
+                            <input type="radio" name="textAction" class="form-radio text-indigo-600" value="tone">
+                            <span class="ml-2">Change Tone</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="toneInputSection" class="mb-6 hidden">
+                    <label for="toneInput" class="block text-slate-200 text-lg font-medium mb-2">Desired Tone</label>
+                    <input type="text" id="toneInput" class="w-full p-3 rounded-lg bg-slate-700 border border-slate-600 text-white" placeholder="e.g. professional, casual, humorous">
+                </div>
+
+                <button id="processTextBtn" class="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:from-indigo-600 hover:to-purple-700 flex items-center justify-center">
+                    <span id="processTextBtnText">Process Text</span>
+                    <div id="processTextSpinner" class="loading-spinner ml-3 hidden"></div>
+                </button>
+            </div>
+
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                <h2 class="text-2xl font-bold text-white mb-6">Output</h2>
+                
+                <div id="textOutputContainer" class="preview-container mb-4">
+                    <div class="text-center text-slate-400 py-20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p>Processed text will appear here</p>
+                    </div>
+                </div>
+
+                <button id="copyTextOutputBtn" class="w-full mt-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 hidden">
+                    Copy Output Text
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <template id="pageTemplate">
+        <div class="page-preview p-6 mb-4">
+            <div class="flex flex-col h-full">
+                <div id="pageImage" class="mb-4 rounded-lg overflow-hidden">
+                </div>
+                <div id="pageContent" class="story-text flex-grow">
+                </div>
+                <div class="page-number"></div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        const API_KEY = "AIzaSyBWqzSdeMfA3r77dkyeZSzs2GpLwAgRuWU";
+        const { jsPDF } = window.jspdf;
+        
+        function showMainMenu() {
+            document.getElementById('mainMenu').classList.remove('hidden');
+            document.getElementById('htmlCreator').classList.add('hidden');
+            document.getElementById('storyCreator').classList.add('hidden');
+            document.getElementById('textRewriter').classList.add('hidden');
+        }
+        
+        function showTool(toolId) {
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('htmlCreator').classList.add('hidden');
+            document.getElementById('storyCreator').classList.add('hidden');
+            document.getElementById('textRewriter').classList.add('hidden');
+            document.getElementById(toolId).classList.remove('hidden');
+        }
+        
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const tabContainer = this.closest('.tabs-container');
+                tabContainer.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const tabsContainer = this.closest('.bg-slate-800');
+                tabsContainer.querySelectorAll('.preview-tab').forEach(tab => tab.classList.add('hidden'));
+                document.getElementById(`${this.dataset.tab}Tab`).classList.remove('hidden');
+            });
+        });
+        
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const container = this.closest('.flex.flex-wrap');
+                container.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        let uploadedImages = [];
+        
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const files = e.target.files;
+            const previewContainer = document.getElementById('imagePreviews');
+            previewContainer.innerHTML = '';
+            uploadedImages = [];
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) continue;
+
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'preview-image-wrapper';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'image-preview';
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = '×';
+                    removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center';
+                    removeBtn.onclick = function() {
+                        uploadedImages = uploadedImages.filter(item => item.data !== e.target.result);
+                        imgContainer.remove();
+                    };
+                    
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(removeBtn);
+                    
+                    previewContainer.appendChild(imgContainer);
+                    uploadedImages.push({ data: e.target.result, file: file });
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('generateHtmlBtn').addEventListener('click', async function() {
+            const contentType = document.getElementById('contentType').value;
+            const prompt = document.getElementById('contentPrompt').value.trim();
+            const includeImages = document.querySelector('input[name="includeImages"]:checked').value === 'yes';
+            
+            if (!prompt) {
+                alert('Please describe what you want to create');
+                return;
+            }
+            
+            const generateBtn = document.getElementById('generateHtmlBtn');
+            const generateText = document.getElementById('generateHtmlBtnText');
+            const spinner = document.getElementById('generateHtmlSpinner');
+            
+            generateText.textContent = 'Generating...';
+            spinner.classList.remove('hidden');
+            generateBtn.disabled = true;
+            
+            document.getElementById('htmlPreview').innerHTML = '<div class="text-center text-slate-400 py-20"><div class="pulse">Creating your content with AI...</div></div>';
+            
+            try {
+                let imageDescriptionPrompt = '';
+                if (includeImages && uploadedImages.length > 0) {
+                    imageDescriptionPrompt = '\n- Use the provided images as context if suitable for the content. Refer to them as "Image 1", "Image 2", etc. in your descriptions: ' + 
+                                            uploadedImages.map((img, i) => `Image ${i+1}`).join(', ');
+                } else if (includeImages && uploadedImages.length === 0) {
+                    imageDescriptionPrompt = '\n- Include placeholder images with descriptive alt text.';
+                } else {
+                    imageDescriptionPrompt = '\n- Do not include any images.';
+                }
+
+                const htmlPrompt = `Create HTML content for a ${contentType} based on the following description:
+${prompt}
+
+Requirements:
+- Generate complete, valid HTML5 code.
+- Include appropriate semantic HTML tags.
+- Make it responsive and mobile-friendly.
+- Include basic CSS styling within a style tag.
+${imageDescriptionPrompt}
+
+Return ONLY the complete HTML code with no additional explanations or markdown formatting.`;
+
+                const htmlCode = await callGeminiAPI(htmlPrompt);
+                
+                document.getElementById('htmlPreview').innerHTML = htmlCode;
+                document.getElementById('htmlCode').value = htmlCode;
+                
+                document.getElementById('copyCodeBtn').classList.remove('hidden');
+                document.getElementById('downloadHtmlBtn').classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('Generation error:', error);
+                document.getElementById('htmlPreview').innerHTML = `<div class="text-center text-red-400 py-20">Error: ${error.message || 'Failed to generate HTML. Please try again.'}</div>`;
+            } finally {
+                generateText.textContent = 'Generate HTML';
+                spinner.classList.add('hidden');
+                generateBtn.disabled = false;
+            }
+        });
+        
+        document.getElementById('copyCodeBtn').addEventListener('click', function() {
+            const code = document.getElementById('htmlCode');
+            code.select();
+            document.execCommand('copy');
+            
+            const originalText = this.textContent;
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = originalText;
+            }, 2000);
+        });
+        
+        document.getElementById('downloadHtmlBtn').addEventListener('click', function() {
+            const htmlCode = document.getElementById('htmlCode').value;
+            const blob = new Blob([htmlCode], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tbsv-ai-content.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+        
+        let generatedStory = [];
+        let selectedTheme = 'custom';
+        
+        document.getElementById('generateStoryBtn').addEventListener('click', async function() {
+            const theme = document.getElementById('storyTheme').value.trim();
+            const prompt = document.getElementById('storyPrompt').value.trim();
+            const includeImages = document.querySelector('input[name="storyIncludeImages"]:checked').value === 'yes';
+            const language = document.getElementById('storyLanguage').value;
+            const pageCount = parseInt(document.getElementById('pageCount').value);
+            
+            if (!theme) {
+                alert('Please enter a story theme');
+                return;
+            }
+            
+            if (pageCount < 5 || pageCount > 30) {
+                alert('Please choose between 5-30 pages');
+                return;
+            }
+            
+            const generateBtn = document.getElementById('generateStoryBtn');
+            const generateText = document.getElementById('generateStoryBtnText');
+            const spinner = document.getElementById('generateStorySpinner');
+            
+            generateText.textContent = 'Generating...';
+            spinner.classList.remove('hidden');
+            generateBtn.disabled = true;
+            
+            document.getElementById('storyPreviewContainer').innerHTML = '<div class="text-center text-slate-400 py-20"><div class="pulse">Creating your story with AI...</div></div>';
+            
+            try {
+                selectedTheme = document.querySelector('.theme-option.selected').dataset.theme;
+                
+                const storyPrompt = `Create a ${selectedTheme} story with the following details:
+Theme: ${theme}
+Details: ${prompt}
+Language: ${language}
+Pages: ${pageCount}
+
+Provide the story in JSON format with the following structure:
+{
+    "title": "Story Title",
+    "pages": [
+        {
+            "page_number": 1,
+            "text": "Page 1 text content...",
+            "image_prompt": "Description for an image that would fit this page"
+        }
+    ]
+}
+
+Include exactly ${pageCount} pages. Each page should have:
+1. A paragraph of text (3-5 sentences)
+2. An image prompt that describes what illustration would fit that page
+
+Make the story coherent and engaging.`;
+
+                const response = await callGeminiAPI(storyPrompt);
+                
+                try {
+                    generatedStory = JSON.parse(response);
+                    displayStoryPreview(generatedStory, includeImages);
+                    document.getElementById('downloadStoryPdfBtn').classList.remove('hidden');
+                    document.getElementById('storyPdfComplete').classList.add('hidden');
+                } catch (e) {
+                    console.error('Error parsing story JSON:', e);
+                    document.getElementById('storyPreviewContainer').innerHTML = '<div class="text-center text-red-400 py-20">Error generating story. Please try again.</div>';
+                }
+                
+            } catch (error) {
+                console.error('Story generation error:', error);
+                document.getElementById('storyPreviewContainer').innerHTML = '<div class="text-center text-red-400 py-20">Error: ' + error.message + '</div>';
+            } finally {
+                generateText.textContent = 'Generate Story';
+                spinner.classList.add('hidden');
+                generateBtn.disabled = false;
+            }
+        });
+        
+        function displayStoryPreview(story, includeImages) {
+            const container = document.getElementById('storyPreviewContainer');
+            container.innerHTML = '';
+            
+            const titleElement = document.createElement('h3');
+            titleElement.className = 'text-xl font-bold text-white mb-4';
+            titleElement.textContent = story.title;
+            container.appendChild(titleElement);
+            
+            story.pages.forEach((page, index) => {
+                const pageTemplate = document.getElementById('pageTemplate').content.cloneNode(true);
+                const pageElement = pageTemplate.querySelector('.page-preview');
+                
+                const contentElement = pageElement.querySelector('#pageContent');
+                contentElement.innerHTML = `<p>${page.text}</p>`;
+                
+                const pageNumberElement = pageElement.querySelector('.page-number');
+                pageNumberElement.textContent = `Page ${index + 1}`;
+                
+                if (includeImages) {
+                    const imageContainer = pageElement.querySelector('#pageImage');
+                    imageContainer.innerHTML = `
+                        <div class="bg-slate-100 h-32 flex items-center justify-center text-slate-400 rounded-lg">
+                            <div class="text-center p-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <p class="text-xs">Image: ${page.image_prompt}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    pageElement.querySelector('#pageImage').remove();
+                }
+                
+                container.appendChild(pageElement);
+            });
+        }
+        
+        document.getElementById('downloadStoryPdfBtn').addEventListener('click', async function() {
+            if (generatedStory.length === 0) return;
+            
+            const includeImages = document.querySelector('input[name="storyIncludeImages"]:checked').value === 'yes';
+            
+            this.classList.add('hidden');
+            document.getElementById('storyPdfProgress').classList.remove('hidden');
+            document.getElementById('storyProgressMessages').innerHTML = '<p class="pulse">Preparing document...</p>';
+            document.getElementById('storyLoadingBar').style.width = '0%';
+            document.getElementById('storyProgressText').textContent = '0%';
+            
+            const doc = new jsPDF();
+            
+            updateStoryProgress('Creating cover page...', 5);
+            doc.addImage('https://www.tbvs.run.place/cdn/logo.png', 'PNG', 75, 20, 60, 20);
+            doc.setFontSize(24);
+            doc.setTextColor(40, 40, 40);
+            doc.text(generatedStory.title, 105, 70, { align: 'center' });
+            doc.setFontSize(14);
+            doc.text('Created with TBSV AI Storybook Creator', 105, 80, { align: 'center' });
+            doc.text('Powered by Gemini AI', 105, 90, { align: 'center' });
+            doc.addPage();
+            
+            const totalPages = generatedStory.pages.length;
+            for (let i = 0; i < generatedStory.pages.length; i++) {
+                const page = generatedStory.pages[i];
+                const progress = 5 + ((i + 1) / totalPages * 90);
+                
+                updateStoryProgress(`Creating page ${i + 1}/${totalPages}...`, progress);
+                
+                doc.setFontSize(12);
+                doc.setTextColor(40, 40, 40);
+                
+                const lines = doc.splitTextToSize(page.text, 180);
+                
+                let yPosition = 30;
+                if (includeImages) {
+                    updateStoryProgress(`Generating image for page ${i + 1}...`, progress + 2);
+                    
+                    try {
+                        const imageUrl = await generateImageWithAI(page.image_prompt);
+                        doc.addImage(imageUrl, 'JPEG', 15, yPosition, 180, 100);
+                        yPosition += 110;
+                    } catch (e) {
+                        console.error('Error generating image:', e);
+                        yPosition += 10;
+                    }
+                }
+                
+                doc.text(lines, 15, yPosition);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Page ${i + 1}`, 190, 285, { align: 'right' });
+                
+                doc.setFontSize(8);
+                doc.text('Created by TBSV - Powered by Gemini AI', 105, 290, { align: 'center' });
+                
+                if (i < generatedStory.pages.length - 1) {
+                    doc.addPage();
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+            
+            updateStoryProgress('Finalizing PDF...', 98);
+            
+            updateStoryProgress('PDF ready!', 100);
+            doc.save(`${generatedStory.title.replace(/[^a-z0-9]/gi, '_')}_by_TBSV.pdf`);
+            
+            document.getElementById('storyPdfComplete').classList.remove('hidden');
+        });
+        
+        function updateStoryProgress(message, percent) {
+            document.getElementById('storyProgressMessages').innerHTML += `<p>${message}</p>`;
+            document.getElementById('storyProgressText').textContent = `${Math.min(100, Math.floor(percent))}%`;
+            document.getElementById('storyLoadingBar').style.width = `${percent}%`;
+            document.getElementById('storyProgressMessages').scrollTop = document.getElementById('storyProgressMessages').scrollHeight;
+        }
+        
+        async function callGeminiAPI(prompt) {
+            const chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+            
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error?.message || 'API request failed');
+            }
+            
+            const result = await response.json();
+            
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                return result.candidates[0].content.parts[0].text.trim();
+            } else {
+                throw new Error('No valid response from API');
+            }
+        }
+        
+        async function generateImageWithAI(prompt) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(`https://placehold.co/600x400/EEE/31343C?text=${encodeURIComponent(prompt.substring(0, 30))}`);
+                }, 1000);
+            });
+        }
+
+        document.querySelectorAll('input[name="textAction"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'tone') {
+                    document.getElementById('toneInputSection').classList.remove('hidden');
+                } else {
+                    document.getElementById('toneInputSection').classList.add('hidden');
+                }
+            });
+        });
+
+        document.getElementById('processTextBtn').addEventListener('click', async function() {
+            const inputText = document.getElementById('inputText').value.trim();
+            const textAction = document.querySelector('input[name="textAction"]:checked').value;
+            const toneInput = document.getElementById('toneInput').value.trim();
+
+            if (!inputText) {
+                alert('Please enter some text to process.');
+                return;
+            }
+
+            const processBtn = document.getElementById('processTextBtn');
+            const processText = document.getElementById('processTextBtnText');
+            const spinner = document.getElementById('processTextSpinner');
+            const outputContainer = document.getElementById('textOutputContainer');
+            const copyOutputBtn = document.getElementById('copyTextOutputBtn');
+
+            processText.textContent = 'Processing...';
+            spinner.classList.remove('hidden');
+            processBtn.disabled = true;
+            outputContainer.innerHTML = '<div class="text-center text-slate-400 py-20"><div class="pulse">Processing your text with AI...</div></div>';
+            copyOutputBtn.classList.add('hidden');
+
+            try {
+                let textPrompt = '';
+                switch (textAction) {
+                    case 'summarize':
+                        textPrompt = `Summarize the following text concisely:\n\n${inputText}`;
+                        break;
+                    case 'rewrite':
+                        textPrompt = `Rewrite the following text to improve clarity and flow:\n\n${inputText}`;
+                        break;
+                    case 'expand':
+                        textPrompt = `Expand on the following text with more details and examples:\n\n${inputText}`;
+                        break;
+                    case 'tone':
+                        if (!toneInput) {
+                            alert('Please specify the desired tone.');
+                            return;
+                        }
+                        textPrompt = `Rewrite the following text with a ${toneInput} tone:\n\n${inputText}`;
+                        break;
+                }
+
+                const processedText = await callGeminiAPI(textPrompt);
+                outputContainer.innerHTML = `<p class="text-base text-gray-800">${processedText}</p>`;
+                copyOutputBtn.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Text processing error:', error);
+                outputContainer.innerHTML = `<div class="text-center text-red-400 py-20">Error: ${error.message || 'Failed to process text. Please try again.'}</div>`;
+            } finally {
+                processText.textContent = 'Process Text';
+                spinner.classList.add('hidden');
+                processBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('copyTextOutputBtn').addEventListener('click', function() {
+            const outputText = document.getElementById('textOutputContainer').innerText;
+            navigator.clipboard.writeText(outputText).then(() => {
+                const originalText = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy text. Please copy manually.');
+            });
+        });
+    </script>
+</body>
+</html>
