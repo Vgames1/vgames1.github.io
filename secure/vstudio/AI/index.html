@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TBSV¬Text Translator</title>
+    <meta name="description" content="TBSV AI Translator - Advanced translation with AI-powered features">
+    <meta name="keywords" content="TBSV, AI translator, language translation, text to speech">
+    <meta name="author" content="TBSV">
+    <meta property="og:title" content="TBSV AI Universal Translator">
+    <meta property="og:description" content="Powerful AI translation with advanced features">
+    <meta property="og:image" content="https://www.tbvs.run.place/cdn/logo.png">
+    <meta property="og:url" content="https://translator.tbvs.run.place">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>TBSV¬AI Universal Translator</title>
     <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #e0e7ff; /* Lighter blue background */
-            background-image: radial-gradient(at 0% 0%, hsla(210,100%,90%,1) 0, transparent 50%),
-                              radial-gradient(at 100% 100%, hsla(270,100%,90%,1) 0, transparent 50%);
+            background-color: #0f172a;
+            background-image: radial-gradient(at 0% 0%, hsla(210,100%,20%,1) 0, transparent 50%),
+                              radial-gradient(at 100% 100%, hsla(270,100%,20%,1) 0, transparent 50%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #e2e8f0;
         }
         .container {
-            max-width: 900px;
-            width: 95%; /* Make it slightly more fluid */
-            margin: 20px auto; /* Adjust margin for better centering */
+            max-width: 1000px;
+            width: 95%;
+            margin: 20px auto;
             padding: 30px;
-            background-color: #ffffff;
-            border-radius: 16px; /* More rounded corners */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+            background-color: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             animation: fadeIn 0.8s ease-out;
+            border: 1px solid #334155;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
@@ -36,22 +46,24 @@
             min-height: 150px;
             resize: vertical;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #334155;
         }
         textarea:focus {
             outline: none;
-            border-color: #6366f1; /* Indigo-500 */
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); /* Indigo-500 shadow */
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
         }
         button {
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
         }
         button:active {
             transform: translateY(0);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .loading-spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
@@ -60,111 +72,203 @@
             width: 24px;
             height: 24px;
             animation: spin 1s linear infinite;
-            display: none; /* Hidden by default */
+            display: none;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        .read-aloud-button {
-            background-color: #4CAF50; /* Green */
-            background-image: linear-gradient(to right, #4CAF50, #66BB6A);
+        .tbsv-logo {
+            background-image: url('https://www.tbvs.run.place/cdn/logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 40px;
+            width: 120px;
+            margin: 0 auto 20px;
+        }
+        .ai-feature-btn {
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
             color: white;
-            padding: 10px 20px;
+            border: none;
+            padding: 10px 15px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
-        .read-aloud-button:hover {
-            background-image: linear-gradient(to right, #45a049, #5cb85c);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+        .ai-feature-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(124, 58, 237, 0.3);
         }
-        .read-aloud-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(76, 175, 80, 0.2);
+        .feature-panel {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #334155;
+            display: none;
         }
-        .stop-read-aloud-button {
-            background-color: #f44336; /* Red */
-            background-image: linear-gradient(to right, #f44336, #ef5350);
-            color: white;
+        .feature-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .tab-button {
+            background-color: #1e293b;
+            color: #94a3b8;
+            border: none;
             padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
+            border-radius: 8px 8px 0 0;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            border-bottom: 3px solid #6366f1;
+        }
+        .tabs-container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-        }
-        .stop-read-aloud-button:hover {
-            background-image: linear-gradient(to right, #d32f2f, #e57373);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 12px rgba(244, 67, 54, 0.4);
-        }
-        .stop-read-aloud-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(244, 67, 54, 0.2);
+            gap: 5px;
+            margin-bottom: -1px;
         }
     </style>
 </head>
 <body class="p-4">
     <div class="container">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Universal Translator</h1>
+        <div class="tbsv-logo"></div>
+        <h1 class="text-4xl font-bold text-center text-white mb-2">TBSV AI Universal Translator</h1>
+        <p class="text-center text-slate-300 mb-8">Powered by Gemini AI</p>
 
-        <div class="mb-6">
-            <label for="inputText" class="block text-gray-700 text-lg font-medium mb-2">Enter Text to Translate:</label>
-            <textarea id="inputText" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-base shadow-sm" placeholder="Type your text here..."></textarea>
+        <div class="tabs-container mb-4">
+            <button class="tab-button active" data-tab="translate">Translate</button>
+            <button class="tab-button" data-tab="summarize">Summarize</button>
+            <button class="tab-button" data-tab="rewrite">Rewrite</button>
+            <button class="tab-button" data-tab="analyze">Analyze</button>
         </div>
 
-        <div class="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="w-full sm:w-1/2">
-                <label for="targetLanguage" class="block text-gray-700 text-lg font-medium mb-2">Choose Language:</label>
-                <select id="targetLanguage" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 text-gray-800 text-base shadow-sm" aria-label="Select target language for translation">
-                    <!-- Language options will be populated by JavaScript -->
+        <div id="translate" class="feature-panel active">
+            <div class="mb-6">
+                <label for="inputText" class="block text-slate-200 text-lg font-medium mb-2">Enter Text:</label>
+                <textarea id="inputText" class="w-full p-4 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-base shadow-sm" placeholder="Type or paste your text here..."></textarea>
+            </div>
+
+            <div class="mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="w-full sm:w-1/2">
+                    <label for="targetLanguage" class="block text-slate-200 text-lg font-medium mb-2">Target Language:</label>
+                    <select id="targetLanguage" class="w-full p-3 rounded-lg bg-slate-800 focus:ring-blue-500 focus:border-blue-500 text-slate-200 text-base shadow-sm border border-slate-700">
+                    </select>
+                </div>
+                <button id="translateButton" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center justify-center">
+                    <span id="buttonText">Translate</span>
+                    <div id="loadingSpinner" class="loading-spinner ml-3"></div>
+                </button>
+            </div>
+
+            <div class="mb-6">
+                <label for="translatedText" class="block text-slate-200 text-lg font-medium mb-2">Result:</label>
+                <div id="translatedText" class="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-base min-h-[150px] overflow-auto shadow-inner">
+                    Your translation will appear here.
+                </div>
+                <div class="flex justify-end mt-4 gap-2">
+                    <button id="copyButton" class="ai-feature-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/>
+                        </svg>
+                        Copy
+                    </button>
+                    <button id="readAloudButton" class="ai-feature-btn hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0v5zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3z"/>
+                        </svg>
+                        Read Aloud
+                    </button>
+                    <button id="stopReadAloudButton" class="ai-feature-btn bg-red-600 hover:bg-red-700 hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/>
+                        </svg>
+                        Stop
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="summarize" class="feature-panel">
+            <div class="mb-6">
+                <label for="summarizeInput" class="block text-slate-200 text-lg font-medium mb-2">Text to Summarize:</label>
+                <textarea id="summarizeInput" class="w-full p-4 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-base shadow-sm" placeholder="Paste the text you want to summarize..."></textarea>
+            </div>
+            <button id="summarizeButton" class="w-full px-8 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-purple-600 hover:to-indigo-700 mb-4 flex items-center justify-center">
+                <span id="summarizeButtonText">Summarize</span>
+                <div id="summarizeSpinner" class="loading-spinner ml-3"></div>
+            </button>
+            <div id="summarizeOutput" class="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-base min-h-[150px] overflow-auto shadow-inner">
+                Your summary will appear here.
+            </div>
+        </div>
+
+        <div id="rewrite" class="feature-panel">
+            <div class="mb-6">
+                <label for="rewriteInput" class="block text-slate-200 text-lg font-medium mb-2">Text to Rewrite:</label>
+                <textarea id="rewriteInput" class="w-full p-4 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-base shadow-sm" placeholder="Paste the text you want to rewrite..."></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="rewriteStyle" class="block text-slate-200 text-lg font-medium mb-2">Style:</label>
+                <select id="rewriteStyle" class="w-full p-3 rounded-lg bg-slate-800 focus:ring-blue-500 focus:border-blue-500 text-slate-200 text-base shadow-sm border border-slate-700">
+                    <option value="formal">Formal</option>
+                    <option value="casual">Casual</option>
+                    <option value="professional">Professional</option>
+                    <option value="simple">Simple</option>
+                    <option value="creative">Creative</option>
                 </select>
             </div>
-            <button id="translateButton" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-4 focus:ring-blue-300 flex items-center justify-center" aria-live="polite">
-                <span id="buttonText">Translate Text</span>
-                <div id="loadingSpinner" class="loading-spinner ml-3"></div>
+            <button id="rewriteButton" class="w-full px-8 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white font-semibold rounded-lg shadow-md hover:from-green-600 hover:to-teal-700 mb-4 flex items-center justify-center">
+                <span id="rewriteButtonText">Rewrite</span>
+                <div id="rewriteSpinner" class="loading-spinner ml-3"></div>
             </button>
-        </div>
-
-        <div class="mb-6">
-            <label for="translatedText" class="block text-gray-700 text-lg font-medium mb-2">Translated Text:</label>
-            <div id="translatedText" class="w-full p-4 bg-indigo-50 border border-indigo-200 rounded-lg text-gray-800 text-base min-h-[150px] overflow-auto shadow-inner" aria-live="polite">
-                Your translated text will appear here.
-            </div>
-            <div class="flex justify-end mt-4 gap-2">
-                <button id="readAloudButton" class="read-aloud-button hidden" aria-label="Read translated text aloud">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                        <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06L13.25 10.25a.75.75 0 0 1-1.06 0L8.75 6.25a.75.75 0 0 1 0-1.06l3.75-3.75ZM12 4.5v7.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 1.5 0Zm.75 14.75a.75.75 0 0 0-1.5 0v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008ZM12 15a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75.75.75 0 0 1-.75-.75v-.008A.75.75 0 0 1 12 15Zm.75 2.25a.75.75 0 0 0-1.5 0v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008Z" clip-rule="evenodd" />
-                        <path d="M12 1.5a.75.75 0 0 1 .75.75V15a.75.75 0 0 1-1.5 0V2.25A.75.75 0 0 1 12 1.5ZM12 16.5a.75.75 0 0 0-1.5 0v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V16.5ZM12 18a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75.75.75 0 0 1-.75-.75v-.008A.75.75 0 0 1 12 18Zm.75 2.25a.75.75 0 0 0-1.5 0v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008Z" />
-                        <path fill-rule="evenodd" d="M11.47 2.47a.75.75 0 0 1 1.06 0l3.75 3.75a.75.75 0 0 1 0 1.06L13.25 10.25a.75.75 0 0 1-1.06 0L8.75 6.25a.75.75 0 0 1 0-1.06l3.75-3.75ZM12 4.5v7.5a.75.75 0 0 1-1.5 0V4.5a.75.75 0 0 1 1.5 0Zm.75 14.75a.75.75 0 0 0-1.5 0v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008ZM12 15a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75.75.75 0 0 1-.75-.75v-.008A.75.75 0 0 1 12 15Zm.75 2.25a.75.75 0 0 0-1.5 0v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008Z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Read Aloud</span>
-                </button>
-                <button id="stopReadAloudButton" class="stop-read-aloud-button hidden" aria-label="Stop reading aloud">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
-                        <path fill-rule="evenodd" d="M4.5 7.5a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9a3 3 0 0 1-3-3v-9Z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Stop</span>
-                </button>
+            <div id="rewriteOutput" class="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-base min-h-[150px] overflow-auto shadow-inner">
+                Your rewritten text will appear here.
             </div>
         </div>
 
-        <div id="errorMessage" class="text-red-600 text-center mt-4 hidden" role="alert"></div>
+        <div id="analyze" class="feature-panel">
+            <div class="mb-6">
+                <label for="analyzeInput" class="block text-slate-200 text-lg font-medium mb-2">Text to Analyze:</label>
+                <textarea id="analyzeInput" class="w-full p-4 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-base shadow-sm" placeholder="Paste the text you want to analyze..."></textarea>
+            </div>
+            <button id="analyzeButton" class="w-full px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-lg shadow-md hover:from-amber-600 hover:to-orange-700 mb-4 flex items-center justify-center">
+                <span id="analyzeButtonText">Analyze</span>
+                <div id="analyzeSpinner" class="loading-spinner ml-3"></div>
+            </button>
+            <div id="analyzeOutput" class="w-full p-4 bg-slate-800 border border-slate-700 rounded-lg text-slate-200 text-base min-h-[150px] overflow-auto shadow-inner">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-700 p-4 rounded-lg">
+                        <h3 class="font-bold text-blue-400 mb-2">Sentiment</h3>
+                        <p id="sentimentResult" class="text-sm">-</p>
+                    </div>
+                    <div class="bg-slate-700 p-4 rounded-lg">
+                        <h3 class="font-bold text-purple-400 mb-2">Key Topics</h3>
+                        <p id="topicsResult" class="text-sm">-</p>
+                    </div>
+                    <div class="bg-slate-700 p-4 rounded-lg">
+                        <h3 class="font-bold text-green-400 mb-2">Readability</h3>
+                        <p id="readabilityResult" class="text-sm">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="text-red-400 text-center mt-4 hidden" role="alert"></div>
     </div>
 
     <script type="module">
+        const API_KEY = "AIzaSyBWqzSdeMfA3r77dkyeZSzs2GpLwAgRuWU";
+        const tabs = document.querySelectorAll('.tab-button');
+        const featurePanels = document.querySelectorAll('.feature-panel');
         const inputText = document.getElementById('inputText');
         const targetLanguageSelect = document.getElementById('targetLanguage');
         const translateButton = document.getElementById('translateButton');
@@ -174,8 +278,22 @@
         const errorMessageDiv = document.getElementById('errorMessage');
         const readAloudButton = document.getElementById('readAloudButton');
         const stopReadAloudButton = document.getElementById('stopReadAloudButton');
+        const copyButton = document.getElementById('copyButton');
+        const summarizeInput = document.getElementById('summarizeInput');
+        const summarizeButton = document.getElementById('summarizeButton');
+        const summarizeOutput = document.getElementById('summarizeOutput');
+        const rewriteInput = document.getElementById('rewriteInput');
+        const rewriteStyle = document.getElementById('rewriteStyle');
+        const rewriteButton = document.getElementById('rewriteButton');
+        const rewriteOutput = document.getElementById('rewriteOutput');
+        const analyzeInput = document.getElementById('analyzeInput');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const analyzeOutput = document.getElementById('analyzeOutput');
+        const sentimentResult = document.getElementById('sentimentResult');
+        const topicsResult = document.getElementById('topicsResult');
+        const readabilityResult = document.getElementById('readabilityResult');
 
-        let currentUtterance = null; 
+        let currentUtterance = null;
 
         const languages = [
             { code: 'af', name: 'Afrikaans' },
@@ -251,7 +369,7 @@
             { code: 'ps', name: 'Pashto' },
             { code: 'fa', name: 'Persian' },
             { code: 'pl', name: 'Polish' },
-            { code: 'pt', name: 'Portuguese (Portugal, Brazil)' },
+            { code: 'pt', name: 'Portuguese' },
             { code: 'pa', name: 'Punjabi' },
             { code: 'ro', name: 'Romanian' },
             { code: 'ru', name: 'Russian' },
@@ -261,7 +379,7 @@
             { code: 'st', name: 'Sesotho' },
             { code: 'sn', name: 'Shona' },
             { code: 'sd', name: 'Sindhi' },
-            { code: 'si', name: 'Sinhala (Sinhalese)' },
+            { code: 'si', name: 'Sinhala' },
             { code: 'sk', name: 'Slovak' },
             { code: 'sl', name: 'Slovenian' },
             { code: 'so', name: 'Somali' },
@@ -269,7 +387,7 @@
             { code: 'su', name: 'Sundanese' },
             { code: 'sw', name: 'Swahili' },
             { code: 'sv', name: 'Swedish' },
-            { code: 'tl', name: 'Tagalog (Filipino)' },
+            { code: 'tl', name: 'Tagalog' },
             { code: 'tg', name: 'Tajik' },
             { code: 'ta', name: 'Tamil' },
             { code: 'tt', name: 'Tatar' },
@@ -299,14 +417,30 @@
             targetLanguageSelect.value = 'en';
         }
 
-        populateLanguages();
+        function switchTab(tabName) {
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            featurePanels.forEach(panel => {
+                if (panel.id === tabName) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        }
 
         function speakText(text, lang) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
 
                 currentUtterance = new SpeechSynthesisUtterance(text);
-                currentUtterance.lang = lang; // Set language for better pronunciation
+                currentUtterance.lang = lang;
 
                 currentUtterance.onend = () => {
                     readAloudButton.classList.remove('hidden');
@@ -314,7 +448,7 @@
                 };
                 currentUtterance.onerror = (event) => {
                     console.error('Speech synthesis error:', event.error);
-                    errorMessageDiv.textContent = 'Speech synthesis failed. Your browser might not support this language or has an issue.';
+                    errorMessageDiv.textContent = 'Speech synthesis failed. Your browser might not support this language.';
                     errorMessageDiv.classList.remove('hidden');
                     readAloudButton.classList.remove('hidden');
                     stopReadAloudButton.classList.add('hidden');
@@ -337,15 +471,68 @@
             }
         }
 
+        async function callGeminiAPI(prompt) {
+            const chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`API error: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+            }
+
+            const result = await response.json();
+
+            if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                return result.candidates[0].content.parts[0].text.trim();
+            } else {
+                throw new Error('No valid response from API');
+            }
+        }
+
+        function showLoading(button, spinner, buttonTextElement, loadingText = 'Processing...') {
+            button.disabled = true;
+            spinner.style.display = 'block';
+            buttonTextElement.textContent = loadingText;
+        }
+
+        function hideLoading(button, spinner, buttonTextElement, defaultText) {
+            button.disabled = false;
+            spinner.style.display = 'none';
+            buttonTextElement.textContent = defaultText;
+        }
+
+        function showError(message) {
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.classList.remove('hidden');
+            setTimeout(() => {
+                errorMessageDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        populateLanguages();
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.dataset.tab);
+            });
+        });
+
         translateButton.addEventListener('click', async () => {
             const textToTranslate = inputText.value.trim();
             const targetLang = targetLanguageSelect.value;
 
             stopSpeaking();
-
             errorMessageDiv.textContent = '';
             errorMessageDiv.classList.add('hidden');
-            translatedTextDiv.textContent = '';
             readAloudButton.classList.add('hidden');
 
             if (!textToTranslate) {
@@ -353,71 +540,137 @@
                 return;
             }
 
-            buttonText.textContent = 'Translating...';
-            loadingSpinner.style.display = 'block';
-            translateButton.disabled = true;
+            showLoading(translateButton, loadingSpinner, buttonText, 'Translating...');
 
             try {
                 const prompt = `Provide ONLY the translated text for the following. Do not include any introductory phrases, explanations, or the original text. Just the translation.\n\nTranslate "${textToTranslate}" into ${targetLanguageSelect.options[targetLanguageSelect.selectedIndex].text} (language code: ${targetLang}).`;
 
-                const chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
-
-                const apiKey = ""; 
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`API error: ${response.status} - ${errorData.error.message || 'Unknown error'}`);
+                const translatedText = await callGeminiAPI(prompt);
+                translatedTextDiv.textContent = translatedText;
+                if (translatedText) {
+                    readAloudButton.classList.remove('hidden');
                 }
-
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const translatedText = result.candidates[0].content.parts[0].text.trim();
-                    translatedTextDiv.textContent = translatedText;
-                    if (translatedText) { 
-                        readAloudButton.classList.remove('hidden');
-                    }
-                } else {
-                    translatedTextDiv.textContent = 'Translation failed: No valid response from API.';
-                    errorMessageDiv.textContent = 'Could not get a valid translation. Please try again.';
-                    errorMessageDiv.classList.remove('hidden');
-                }
-
             } catch (error) {
                 console.error('Translation error:', error);
-                translatedTextDiv.textContent = 'An error occurred during translation.';
-                errorMessageDiv.textContent = `Error: ${error.message}. Please try again.`;
-                errorMessageDiv.classList.remove('hidden');
+                translatedTextDiv.textContent = 'Translation failed. Please try again.';
+                showError(`Error: ${error.message}`);
             } finally {
-                buttonText.textContent = 'Translate Text';
-                loadingSpinner.style.display = 'none';
-                translateButton.disabled = false;
+                hideLoading(translateButton, loadingSpinner, buttonText, 'Translate');
+            }
+        });
+
+        summarizeButton.addEventListener('click', async () => {
+            const textToSummarize = summarizeInput.value.trim();
+
+            if (!textToSummarize) {
+                summarizeOutput.textContent = 'Please enter some text to summarize.';
+                return;
+            }
+
+            showLoading(summarizeButton, document.getElementById('summarizeSpinner'), document.getElementById('summarizeButtonText'), 'Summarizing...');
+
+            try {
+                const prompt = `Provide a concise summary of the following text. Focus on the main points and key information. Keep it brief but comprehensive. Do not include any introductory phrases or explanations. Just the summary.\n\nText to summarize: "${textToSummarize}"`;
+
+                const summary = await callGeminiAPI(prompt);
+                summarizeOutput.textContent = summary;
+            } catch (error) {
+                console.error('Summarization error:', error);
+                summarizeOutput.textContent = 'Summarization failed. Please try again.';
+                showError(`Error: ${error.message}`);
+            } finally {
+                hideLoading(summarizeButton, document.getElementById('summarizeSpinner'), document.getElementById('summarizeButtonText'), 'Summarize');
+            }
+        });
+
+        rewriteButton.addEventListener('click', async () => {
+            const textToRewrite = rewriteInput.value.trim();
+            const style = rewriteStyle.value;
+
+            if (!textToRewrite) {
+                rewriteOutput.textContent = 'Please enter some text to rewrite.';
+                return;
+            }
+
+            showLoading(rewriteButton, document.getElementById('rewriteSpinner'), document.getElementById('rewriteButtonText'), 'Rewriting...');
+
+            try {
+                const prompt = `Rewrite the following text in a ${style} style. Maintain the original meaning but adapt the tone and phrasing to match the requested style. Do not include any introductory phrases or explanations. Just provide the rewritten text.\n\nOriginal text: "${textToRewrite}"`;
+
+                const rewrittenText = await callGeminiAPI(prompt);
+                rewriteOutput.textContent = rewrittenText;
+            } catch (error) {
+                console.error('Rewriting error:', error);
+                rewriteOutput.textContent = 'Rewriting failed. Please try again.';
+                showError(`Error: ${error.message}`);
+            } finally {
+                hideLoading(rewriteButton, document.getElementById('rewriteSpinner'), document.getElementById('rewriteButtonText'), 'Rewrite');
+            }
+        });
+
+        analyzeButton.addEventListener('click', async () => {
+            const textToAnalyze = analyzeInput.value.trim();
+
+            if (!textToAnalyze) {
+                analyzeOutput.textContent = 'Please enter some text to analyze.';
+                return;
+            }
+
+            showLoading(analyzeButton, document.getElementById('analyzeSpinner'), document.getElementById('analyzeButtonText'), 'Analyzing...');
+
+            try {
+                const sentimentPrompt = `Analyze the sentiment of the following text and provide a brief assessment (positive, negative, neutral). Just provide the assessment, no explanations.\n\nText: "${textToAnalyze}"`;
+                const topicsPrompt = `Identify the 2-3 main topics or themes in the following text. List them as short bullet points. Just provide the topics, no explanations.\n\nText: "${textToAnalyze}"`;
+                const readabilityPrompt = `Assess the readability level of the following text (basic, intermediate, advanced). Just provide the level, no explanations.\n\nText: "${textToAnalyze}"`;
+
+                const [sentiment, topics, readability] = await Promise.all([
+                    callGeminiAPI(sentimentPrompt),
+                    callGeminiAPI(topicsPrompt),
+                    callGeminiAPI(readabilityPrompt)
+                ]);
+
+                sentimentResult.textContent = sentiment;
+                topicsResult.textContent = topics;
+                readabilityResult.textContent = readability;
+            } catch (error) {
+                console.error('Analysis error:', error);
+                showError(`Error: ${error.message}`);
+            } finally {
+                hideLoading(analyzeButton, document.getElementById('analyzeSpinner'), document.getElementById('analyzeButtonText'), 'Analyze');
             }
         });
 
         readAloudButton.addEventListener('click', () => {
             const textToSpeak = translatedTextDiv.textContent;
             const targetLang = targetLanguageSelect.value;
-            if (textToSpeak && textToSpeak !== 'Your translated text will appear here.' && textToSpeak !== 'Translation failed: No valid response from API.' && textToSpeak !== 'An error occurred during translation.') {
+            if (textToSpeak && !textToSpeak.includes('Your translation will appear here') && !textToSpeak.includes('failed')) {
                 speakText(textToSpeak, targetLang);
             } else {
-                errorMessageDiv.textContent = 'Nothing to read aloud. Please translate some text first.';
-                errorMessageDiv.classList.remove('hidden');
+                showError('Nothing to read aloud. Please translate some text first.');
             }
         });
 
         stopReadAloudButton.addEventListener('click', stopSpeaking);
+
+        copyButton.addEventListener('click', () => {
+            const textToCopy = translatedTextDiv.textContent;
+            if (textToCopy && !textToCopy.includes('Your translation will appear here')) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        const originalText = copyButton.innerHTML;
+                        copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.5 1a1.5 1.5 0 0 0-1.5 1.5v6a1.5 1.5 0 0 0 1.5 1.5h1.5a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-1.5-1.5h-1.5zm-11 4.5a1.5 1.5 0 0 1 1.5-1.5h1.5a1.5 1.5 0 0 1 1.5 1.5v6a1.5 1.5 0 0 1-1.5 1.5h-1.5a1.5 1.5 0 0 1-1.5-1.5v-6z"/><path d="M2 2a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1.5a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H2zm11.5 2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1.5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2h1.5z"/></svg> Copied!';
+                        setTimeout(() => {
+                            copyButton.innerHTML = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        showError('Failed to copy text to clipboard');
+                    });
+            } else {
+                showError('Nothing to copy. Please translate some text first.');
+            }
+        });
     </script>
 </body>
 </html>
