@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "username": "tylerblakesiyandavuyani",
+      "password": "tbsv.vilakazi",
+      "email": "tyler@tbvs.run.place",
+      "createdAt": "2023-01-15T08:30:00Z",
+      "lastLogin": "2024-06-20T14:25:00Z",
+      "isAdmin": true
+    },
+    {
+      "username": "johndoe",
+      "password": "secure123",
+      "email": "john@example.com",
+      "createdAt": "2023-03-10T11:15:00Z",
+      "lastLogin": "2024-06-18T09:45:00Z",
+      "isAdmin": false
+    },
+    {
+      "username": "sarahsmith",
+      "password": "password456",
+      "email": "sarah@example.com",
+      "createdAt": "2023-05-22T16:20:00Z",
+      "lastLogin": "2024-06-19T13:10:00Z",
+      "isAdmin": false
+    },
+    {
+      "username": "mikejones",
+      "password": "mike2024",
+      "email": "mike@example.com",
+      "createdAt": "2023-07-30T14:00:00Z",
+      "lastLogin": "2024-06-15T10:30:00Z",
+      "isAdmin": false
+    },
+    {
+      "username": "emilywilson",
+      "password": "wilson!789",
+      "email": "emily@example.com",
+      "createdAt": "2023-09-05T09:45:00Z",
+      "lastLogin": "2024-06-17T16:55:00Z",
+      "isAdmin": false
+    }
+  ],
+  "metadata": {
+    "totalUsers": 5,
+    "lastUpdated": "2024-06-20T15:00:00Z",
+    "version": "1.0.0"
+  }
+}
