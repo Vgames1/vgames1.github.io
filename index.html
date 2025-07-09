@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TBSV - Innovations in AI and Beyond</title>
+    <link rel="icon" href="https://www.tbvs.run.place/cdn/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00bcd4; /* Cyan */
+            --secondary-color: #ff4081; /* Pink */
+            --dark-bg: #1a1a2e;
+            --light-bg: #0f0f1c;
+            --text-color: #e0e0e0;
+            --button-hover-glow: #00e0ff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg), var(--light-bg));
+            color: var(--text-color);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .intro-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 188, 212, 0.2) 0%, rgba(26, 26, 46, 0) 70%);
+            animation: pulse-glow 5s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes pulse-glow {
+            from {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            to {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+        }
+
+        .logo-intro {
+            width: 200px;
+            margin-bottom: 30px;
+            animation: fadeInScale 2s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .intro-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
+            margin: 0 0 20px 0;
+            opacity: 0;
+            animation: fadeInDown 1.5s ease-out 0.5s forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        .intro-section p {
+            font-size: 1.5em;
+            color: var(--text-color);
+            opacity: 0;
+            animation: fadeInDown 1.5s ease-out 1s forwards;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .enter-button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1.5s forwards;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .enter-button:hover {
+            background-color: #ff6e9e;
+            box-shadow: 0 0 25px rgba(255, 64, 129, 0.9);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-section {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--light-bg), var(--dark-bg));
+            min-height: 100vh;
+        }
+
+        .menu-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            animation: slideInFromLeft 1s ease-out forwards;
+        }
+
+        .logo-menu {
+            width: 80px;
+            margin-right: 20px;
+        }
+
+        .menu-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
+            margin: 0;
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .menu-item {
+            background: rgba(0, 188, 212, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .menu-item:nth-child(1) { animation-delay: 0.1s; }
+        .menu-item:nth-child(2) { animation-delay: 0.2s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        .menu-item:nth-child(4) { animation-delay: 0.4s; }
+        .menu-item:nth-child(5) { animation-delay: 0.5s; }
+        .menu-item:nth-child(6) { animation-delay: 0.6s; }
+        .menu-item:nth-child(7) { animation-delay: 0.7s; }
+        .menu-item:nth-child(8) { animation-delay: 0.8s; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 188, 212, 0.3) 0%, rgba(0, 188, 212, 0) 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .menu-item:hover::before {
+            opacity: 1;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 30px var(--primary-color), 0 0 50px rgba(0, 188, 212, 0.5);
+            background: rgba(0, 188, 212, 0.2);
+        }
+
+        .menu-item h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary-color);
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-item p {
+            color: var(--text-color);
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-item a {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
+        }
+
+        .menu-item a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transition: width 0.4s ease, height 0.4s ease, top 0.4s ease, left 0.4s ease;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .menu-item a:hover::before {
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+        }
+
+        .menu-item a:hover {
+            background-color: #ff6e9e;
+            box-shadow: 0 0 20px rgba(255, 64, 129, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .old-apps-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 165, 0, 0.1); /* A touch of orange for 'old' vibe */
+            border: 1px solid orange;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+            animation-delay: 0.9s;
+        }
+
+        .old-apps-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 30px orange, 0 0 50px rgba(255, 165, 0, 0.5);
+            background: rgba(255, 165, 0, 0.2);
+        }
+
+        .old-apps-item h3 {
+            color: orange;
+            text-shadow: 0 0 8px orange;
+        }
+
+        .old-apps-item img {
+            max-width: 150px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 2px solid orange;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+            background: var(--dark-bg);
+            border-top: 1px solid rgba(0, 188, 212, 0.2);
+            margin-top: auto;
+        }
+
+        .footer .logo-footer {
+            width: 50px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .intro-section h1 {
+                font-size: 2.5em;
+            }
+
+            .intro-section p {
+                font-size: 1.2em;
+            }
+
+            .enter-button {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            .menu-section h2 {
+                font-size: 2em;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-intro {
+                width: 150px;
+            }
+
+            .logo-menu {
+                width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-section" id="introSection">
+        <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="logo-intro">
+        <h1>Welcome to TBSV</h1>
+        <p>Innovating the Future with Advanced AI and Creative Solutions</p>
+        <a href="#menuSection" class="enter-button" id="enterButton">Explore Our Universe</a>
+    </div>
+
+    <div class="menu-section" id="menuSection">
+        <div class="menu-header">
+            <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="logo-menu">
+            <h2>Our Innovations</h2>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <h3>TBSV AI Universal Translator</h3>
+                <p>Break language barriers instantly with our cutting-edge AI-powered translator.</p>
+                <a href="https://www.tbvs.run.place/secure/vstudio/AI/index.html">Discover Translator</a>
+            </div>
+            <div class="menu-item">
+                <h3>TBSV AI Chat</h3>
+                <p>Engage in intelligent conversations with our advanced AI Chat assistant.</p>
+                <a href="https://www.tbvs.run.place/apps/ai/">Chat Now</a>
+            </div>
+            <div class="menu-item">
+                <h3>TBSV AI Tools</h3>
+                <p>A suite of powerful AI tools: Debugging, HTML Creator, Text Writer, and Code Assistant. Maximize your productivity.</p>
+                <a href="https://www.tbvs.run.place/secure/vstudio/AI/tools">Access AI Tools</a>
+                <a href="https://www.tbvs.run.place/secure/vstudio/AI/old-tools" style="margin-top: 10px; background-color: #555; border: 1px solid #777;">Old Version</a>
+            </div>
+            <div class="menu-item">
+                <h3>TBSV Our Music</h3>
+                <p>Dive into the auditory world of TBSV. Explore our unique music creations and artists.</p>
+                <a href="https://www.tbvs.run.place/vstudio/music/artist">Listen Now</a>
+            </div>
+            <div class="menu-item">
+                <h3>TBSV Old AI Model</h3>
+                <p>Explore the foundations of our AI journey with our previous generation AI model.</p>
+                <a href="https://www.tbvs.run.place/GEM/AI/test.html">Experience Old AI</a>
+            </div>
+            <div class="menu-item">
+                <h3>TBSV Researcher AI</h3>
+                <p>Unlock new insights with our dedicated AI for research, designed to assist your discoveries.</p>
+                <a href="https://www.tbvs.run.place/secure/vstudio/AI/research/">Start Research</a>
+            </div>
+            <div class="menu-item">
+                <h3>New Old AI</h3>
+                <p>A fresh look at our classic AI model, updated for modern experiences.</p>
+                <a href="https://www.tbvs.run.place/apps/ai/iindex">Explore New Old AI</a>
+            </div>
+            <div class="old-apps-item">
+                <h3>Our Previous Website Old Apps</h3>
+                <img src="https://www.tbvs.run.place/vgameswhite.png" alt="Old Version">
+                <p>Step back in time and revisit the applications from our previous website.</p>
+                <a href="https://www.tbvs.run.place/apps">Go to Old Apps</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 TBSV. All rights reserved. Powered by Innovation.
+        <img src="https://www.tbvs.run.place/cdn/20250627_1321_Rainbow%20Neon%20Glow_remix_01jyrhv607f0ss4f83y5jksnf4.png" alt="TBSV Logo" class="logo-footer">
+    </footer>
+
+    <script>
+        document.getElementById('enterButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('introSection').style.display = 'none';
+            document.getElementById('menuSection').style.display = 'flex';
+            document.getElementById('menuSection').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
