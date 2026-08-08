@@ -1,1 +1,1 @@
-{"name":"LGBTQ+ South Africa | Pride Nation","short_name":"Pride Nation","description":"A welcoming LGBTQ+ community for South Africa and beyond.","start_url":"/","display":"standalone","background_color":"#fffaf7","theme_color":"#7c3aed","lang":"en-ZA","icons":[{"src":"assets/favicon.svg","sizes":"any","type":"image/svg+xml"}]}
+{"name":"Pride Community","short_name":"Pride","start_url":"/","display":"standalone","background_color":"#fffaf5","theme_color":"#ff5d45","icons":[{"src":"/assets/community-logo.webp","sizes":"512x512","type":"image/webp"}]}
